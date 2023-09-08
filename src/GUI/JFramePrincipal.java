@@ -23,7 +23,8 @@ public class JFramePrincipal extends JFrame {
 
         JMenu drawMenu = new JMenu("Desenhar");
         JMenuItem drawRetaBresenhamMenuItem = new JMenuItem("Reta (Alg. Bresenham)");
-        JMenuItem drawRetaSimplesMenuItem = new JMenuItem("Reta (Simples)");
+        JMenuItem drawRetaSimplesMenuItem = new JMenuItem("Reta (Eq. da Reta)");
+        JMenuItem drawRetaParametricaMenuItem = new JMenuItem("Reta (Eq. Pametrica)");
 
 
         JMenuItem drawCircParametricaMenuItem = new JMenuItem("Circunferência (Eq. Paramétrica)");
@@ -52,33 +53,27 @@ public class JFramePrincipal extends JFrame {
 
 
         drawRetaBresenhamMenuItem.addActionListener(e -> {
-            if (imagePanel != null) {
-                imagePanel.setDrawingMethod(ImagePanel.DrawingMethod.RBRESENHAM);
-            }
+            imagePanel.metodoDesenho(ImagePanel.DrawingMethod.RBRESENHAM);
         });
 
         drawRetaSimplesMenuItem.addActionListener(e -> {
-            if (imagePanel != null) {
-                imagePanel.setDrawingMethod(ImagePanel.DrawingMethod.RSIMPLES);
-            }
+            imagePanel.metodoDesenho(ImagePanel.DrawingMethod.RSIMPLES);
         });
 
         drawCircParametricaMenuItem.addActionListener(e -> {
-            if (imagePanel != null) {
-                imagePanel.setDrawingMethod(ImagePanel.DrawingMethod.CPARAMETRICA);
-            }
+            imagePanel.metodoDesenho(ImagePanel.DrawingMethod.CPARAMETRICA);
         });
 
         drawCircImplicitaMenuItem.addActionListener(e -> {
-            if (imagePanel != null) {
-                imagePanel.setDrawingMethod(ImagePanel.DrawingMethod.CIMPLICITA);
-            }
+            imagePanel.metodoDesenho(ImagePanel.DrawingMethod.CIMPLICITA);
         });
 
         drawCircBresenhamMenuItem.addActionListener(e -> {
-            if (imagePanel != null) {
-                imagePanel.setDrawingMethod(ImagePanel.DrawingMethod.CBRESENHAM);
-            }
+            imagePanel.metodoDesenho(ImagePanel.DrawingMethod.CBRESENHAM);
+        });
+
+        drawRetaParametricaMenuItem.addActionListener(e -> {
+            imagePanel.metodoDesenho(ImagePanel.DrawingMethod.RPARAMETRICA);
         });
 
         fileMenu.add(openMenuItem);
@@ -87,6 +82,7 @@ public class JFramePrincipal extends JFrame {
 
         drawMenu.add(drawRetaBresenhamMenuItem);
         drawMenu.add(drawRetaSimplesMenuItem);
+        drawMenu.add(drawRetaParametricaMenuItem);
         drawMenu.add(drawCircParametricaMenuItem);
         drawMenu.add(drawCircImplicitaMenuItem);
         drawMenu.add(drawCircBresenhamMenuItem);

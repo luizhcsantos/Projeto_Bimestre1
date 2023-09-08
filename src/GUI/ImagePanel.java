@@ -22,11 +22,12 @@ public class ImagePanel extends JPanel {
     private boolean drawing = false;
 
     public enum DrawingMethod {
-        RBRESENHAM, // reta com alg. de bresenham
-        RSIMPLES, // reta simples
-        CPARAMETRICA, // circunferencia com equação paramétrica
-        CIMPLICITA, // circunferencia com equação implicita
-        CBRESENHAM // circunferencia com alg. de bresenham
+        RBRESENHAM,     // reta com alg. de bresenham
+        RSIMPLES,       // reta com equação da reta y = ax + b
+        RPARAMETRICA,   // reta com equação paramétrica
+        CPARAMETRICA,   // circunferencia com equação paramétrica
+        CIMPLICITA,     // circunferencia com equação implicita
+        CBRESENHAM      // circunferencia com alg. de bresenham
     }
     private DrawingMethod drawingMethod;
 
@@ -50,15 +51,18 @@ public class ImagePanel extends JPanel {
                 yy2 = e.getY();
                 drawing = false;
                 if (drawingMethod == DrawingMethod.RBRESENHAM) {
-                    drawBresenhamLine(buffer.getGraphics(), xx1, yy1, xx2, yy2);
+                    desenharRetaBresenham(buffer.getGraphics(), xx1, yy1, xx2, yy2);
                 } else if (drawingMethod == DrawingMethod.RSIMPLES) {
                     desenharReta(buffer.getGraphics(), xx1, yy1, xx2, yy2);
+                } else if (drawingMethod == DrawingMethod.RPARAMETRICA) {
+                    desenharRetaParametrica(buffer.getGraphics(), xx1, yy1, xx2, yy2);
                 }else if (drawingMethod == DrawingMethod.CPARAMETRICA) {
-                    circunferenciaParametrica(buffer.getGraphics(), xx1, yy1, xx2, yy2);
+                    desenharCircParametrica(buffer.getGraphics(), xx1, yy1, xx2, yy2);
                 }else if (drawingMethod == DrawingMethod.CIMPLICITA) {
-                    circunferenciaImplicita(buffer.getGraphics(), xx1, yy1, xx2, yy2);
+                    desenharCircImplicita(buffer.getGraphics(), xx1, yy1, xx2, yy2);
                 }else if (drawingMethod == DrawingMethod.CBRESENHAM) {
-                    bresenham2(buffer.getGraphics(), xx1, yy1, xx2, yy2);
+                    drawCircle(buffer.getGraphics(), xx1, yy1, xx2, yy2);
+                    //desenharCircBresenham(buffer.getGraphics(), xx1, yy1, xx2, yy2);
                 }
                 repaint();
             }
@@ -77,12 +81,12 @@ public class ImagePanel extends JPanel {
     }
 
 
-    public void setDrawingMethod(DrawingMethod drawingMethod) {
+    public void metodoDesenho(DrawingMethod drawingMethod) {
         this.drawingMethod = drawingMethod;
-        clearBuffer(); // Limpa o buffer ao alterar o modo de desenho
+        limparBuffer(); // Limpa o buffer ao alterar o modo de desenho
     }
 
-    private void clearBuffer() {
+    private void limparBuffer() {
         Graphics2D g2d = buffer.createGraphics();
         g2d.drawImage(image, 0, 0, null);
         g2d.dispose();
@@ -97,38 +101,37 @@ public class ImagePanel extends JPanel {
         }
     }
 
-
-    private void desenharReta(Graphics g, int x1, int y1, int x2, int y2) {
+    private void desenharReta(Graphics g, int xx1, int yy1, int xx2, int yy2) {
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.BLUE);
 
-        double m = (double) (y2 - y1) / (x2 - x1);
+        double m = (double) (yy2 - yy1) / (xx2 - xx1);
 
-        int dx = Math.abs(x2 - x1);
-        int dy = Math.abs(y2 - y1);
+        int dx = Math.abs(xx2 - xx1);
+        int dy = Math.abs(yy2 - yy1);
 
         if (dx > dy) {
-            if (x1 < x2) {
-                for (int xi = x1; xi <= x2; xi++) {
-                    int yi = (int) Math.round(m * (xi - x1) + y1);
+            if (xx1 < xx2) {
+                for (int xi = xx1; xi <= xx2; xi++) {
+                    int yi = (int) Math.round(m * (xi - xx1) + yy1);
                     g2d.fillRect(xi, yi, 1, 1);
                 }
             } else {
-                for (int xi = x2; xi <= x1; xi++) {
-                    int yi = (int) Math.round(m * (xi - x1) + y1);
+                for (int xi = xx2; xi <= xx1; xi++) {
+                    int yi = (int) Math.round(m * (xi - xx1) + yy1);
                     g2d.fillRect(xi, yi, 1, 1);
                 }
             }
         } else {
-            if (y1 < y2) {
-                for (int yi = y1; yi <= y2; yi++) {
-                    int xi = (int) Math.round((yi - y1) / m + x1);
+            if (yy1 < yy2) {
+                for (int yi = yy1; yi <= yy2; yi++) {
+                    int xi = (int) Math.round((yi - yy1) / m + xx1);
                     g2d.fillRect(xi, yi, 1, 1);
                 }
             } else {
-                for (int yi = y2; yi <= y1; yi++) {
-                    int xi = (int) Math.round((yi - y1) / m + x1);
+                for (int yi = yy2; yi <= yy1; yi++) {
+                    int xi = (int) Math.round((yi - yy1) / m + xx1);
                     g2d.fillRect(xi, yi, 1, 1);
                 }
             }
@@ -137,7 +140,7 @@ public class ImagePanel extends JPanel {
         repaint();
     }
 
-    private void drawBresenhamLine(Graphics g, int xx1, int yy1, int xx2, int yy2) {
+    private void desenharRetaBresenham(Graphics g, int xx1, int yy1, int xx2, int yy2) {
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.GREEN);
@@ -209,16 +212,7 @@ public class ImagePanel extends JPanel {
         }
     }
 
-    void setImage(BufferedImage image) {
-        this.image = image;
-        buffer = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
-        Graphics2D g2d = buffer.createGraphics();
-        g2d.drawImage(image, 0, 0, null);
-        g2d.dispose();
-        repaint();
-    }
-
-    private void circunferenciaParametrica(Graphics g, int xx1, int yy1, int xx2, int yy2) {    // desenha circunferência usando equação paramétrica
+    private void desenharCircParametrica(Graphics g, int xx1, int yy1, int xx2, int yy2) {    // desenha circunferência usando equação paramétrica
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.BLUE);
@@ -251,7 +245,7 @@ public class ImagePanel extends JPanel {
         } while (ang < 2* Math.PI);
     }
 
-    private void circunferenciaImplicita(Graphics g, int xx1, int yy1, int xx2, int yy2) {
+    private void desenharCircImplicita(Graphics g, int xx1, int yy1, int xx2, int yy2) {
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.ORANGE);
@@ -274,21 +268,31 @@ public class ImagePanel extends JPanel {
         }
     }
 
-    private static void espelhoCirculoBresenham(Graphics g, int xx1, int yy1, int x, int y, Color cor) {
+    private static void espelharCircBresenham(Graphics g, int xx1, int yy1, int x, int y) {
 
-        g.setColor(cor);
-        g.fillRect(xx1 + x,yy1 + y, 1, 1);
-        g.fillRect(xx1 - x,yy1 + y, 1, 1);
-        g.fillRect(xx1 - y,yy1 + x , 1, 1);
-        g.fillRect(xx1 - y,yy1 - x, 1, 1);
-        g.fillRect(xx1 - x,yy1 - y , 1, 1);
-        g.fillRect(xx1 + x,yy1 - y , 1, 1);
-        g.fillRect(xx1 + y,yy1 - x , 1, 1);
-        g.fillRect(xx1 + y,yy1 + x, 1, 1);
+        g.setColor(Color.WHITE);
+        g.fillRect(xx1 + x,yy1 + y,1, 1);
+        g.fillRect(xx1 - x,yy1 + y,1, 1);
+        g.fillRect(xx1 - y,yy1 + x,1, 1);
+        g.fillRect(xx1 - y,yy1 - x,1, 1);
+        g.fillRect(xx1 - x,yy1 - y,1, 1);
+        g.fillRect(xx1 + x,yy1 - y,1, 1);
+        g.fillRect(xx1 + y,yy1 - x,1, 1);
+        g.fillRect(xx1 + y,yy1 + x,1, 1);
 
     }
+    private static void drawSymmetricPoints(Graphics g, int xx1, int yy1, int x, int y) {
+        g.fillRect(xx1 + x, yy1 + y, 1, 1);
+        g.fillRect(xx1 - x, yy1 + y, 1, 1);
+        g.fillRect(xx1 + x, yy1 - y, 1, 1);
+        g.fillRect(xx1 - x, yy1 - y, 1, 1);
+        g.fillRect(xx1 + y, yy1 + x, 1, 1);
+        g.fillRect(xx1 - y, yy1 + x, 1, 1);
+        g.fillRect(xx1 + y, yy1 - x, 1, 1);
+        g.fillRect(xx1 - y, yy1 - x, 1, 1);
+    }
 
-    private static void circunferenciaBresenham(Graphics g, int xx1, int yy1, int xx2, int yy2) {
+    private static void desenharCircBresenham(Graphics g, int xx1, int yy1, int xx2, int yy2) {
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.RED);
@@ -299,66 +303,80 @@ public class ImagePanel extends JPanel {
         int h;
         double dSE;
         double dE;
-        double dNE;
 
         raio = (int) Math.abs(Math.round(Math.sqrt((yy2 - yy1)*(yy2 - yy1) + (xx2 - xx1)*(xx2 - xx1))));
-        x = 0;
+        x = xx1;
         y = raio;
         h = 1 - raio;
         dE = 3;
-        dNE = (-2 * raio) + 5;
+        dSE = (-2 * raio) + 5;
 
-        espelhoCirculoBresenham(g, xx1, yy1, x, y, Color.RED);
+        //espelharCircBresenham(g, xx1, yy1, x, y, Color.RED);
+        g2d.fillRect(xx1, yy1, 1, 1);
 
         while (x < y) {
-            if (h < 0) {
-                h = h + 2*x + 3;
-            } else {
-                h = h + 2*(x-y) + 5;
-                y = y - 1;
+            if (h < 0) { // seleciona E
+                h += (int) dE;
+                dE += 2;
+                dSE += 2;
+                //h = h + 2*x + 3;
+            } else { // seleciona SE
+                h += (int) dSE;
+                dE += 2;
+                dSE += 4;
+                //h = h + 2*(x-y) + 5;
+                y--;
             }
-            x = x + 1;
-            espelhoCirculoBresenham(g2d, xx1, yy1, x, y, Color.RED);
+            x++;
+            g2d.fillRect(x, y, 1, 1);
+            //espelharCircBresenham(g2d, xx1, yy1, x, y, Color.RED);
         }
+    }
+
+    private static void desenharRetaParametrica(Graphics g, int xx1, int yy1, int xx2, int yy2) {
+
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.MAGENTA);
+
+        for (double t = 0; t <= 1; t += 0.01) {
+            double x = xx1 + (xx2 - xx1) * t;
+            double y = yy1 + (yy2 - yy1) * t;
+            g2d.fillRect((int) x, (int) y, 1, 1);
+        }
+    }
+
+    void setImage(BufferedImage image) {
+        this.image = image;
+        buffer = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2d = buffer.createGraphics();
+        g2d.drawImage(image, 0, 0, null);
+        g2d.dispose();
+        repaint();
     }
 
     public BufferedImage getImage() {
         return image;
     }
 
-    private static void bresenham2(Graphics g, int xx1, int yy1, int xx2, int yy2) {
-
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.cyan);
-
-        int raio = (int) Math.abs(Math.round(Math.sqrt((yy2 - yy1)*(yy2 - yy1) + (double) ((xx2 - xx1)*(xx2 - xx1)))));
-
+    public static void drawCircle(Graphics g, int xx1, int yy1, int xx2, int yy2) {
+        int radius = (int) Math.abs(Math.round(Math.sqrt((yy2 - yy1)*(yy2 - yy1) + (xx2 - xx1)*(xx2 - xx1))));
         int x = 0;
-        int y = raio;
-        int h = 1 - raio;
-        int dE = 3;
-        int dSE = -2*raio + 5;
-        g2d.fillRect(x, y, 1, 1);
-        // plotaPixel(x, y, cor);
+        int y = radius;
+        int d = 3 - 2 * radius;
 
-        while (x < y) {
-            if (h < 0) {
-                // Seleciona E
-                h = h + dE;
-                dE = dE + 2;
-                dSE = dSE + 2;
+        while (x <= y) {
+            espelharCircBresenham(g, xx1, yy1, x, y);
+            if (d < 0) {
+                d = d + 4 * x + 6;
             } else {
-                // Seleciona SE
-                h = h + dSE;
-                dE = dE + 2;
-                dSE = dSE + 4;
-                y = y - 1;
+                d = d + 4 * (x - y) + 10;
+                y--;
             }
-            x = x + 1;
-
-            g2d.fillRect(x, y, 1, 1);
+            x++;
         }
-
     }
+
+
+
 
 }
