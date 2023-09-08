@@ -28,6 +28,7 @@ public class JFramePrincipal extends JFrame {
 
         JMenuItem drawCircParametricaMenuItem = new JMenuItem("Circunferência (Eq. Paramétrica)");
         JMenuItem drawCircImplicitaMenuItem = new JMenuItem("Circunferência (Eq. Implicita)");
+        JMenuItem drawCircBresenhamMenuItem = new JMenuItem("Circunferência (Alg. Bresenham)");
 
 
         imagePanel = new ImagePanel();
@@ -52,13 +53,13 @@ public class JFramePrincipal extends JFrame {
 
         drawRetaBresenhamMenuItem.addActionListener(e -> {
             if (imagePanel != null) {
-                imagePanel.setDrawingMethod(ImagePanel.DrawingMethod.BRESENHAM);
+                imagePanel.setDrawingMethod(ImagePanel.DrawingMethod.RBRESENHAM);
             }
         });
 
         drawRetaSimplesMenuItem.addActionListener(e -> {
             if (imagePanel != null) {
-                imagePanel.setDrawingMethod(ImagePanel.DrawingMethod.SIMPLES);
+                imagePanel.setDrawingMethod(ImagePanel.DrawingMethod.RSIMPLES);
             }
         });
 
@@ -74,6 +75,12 @@ public class JFramePrincipal extends JFrame {
             }
         });
 
+        drawCircBresenhamMenuItem.addActionListener(e -> {
+            if (imagePanel != null) {
+                imagePanel.setDrawingMethod(ImagePanel.DrawingMethod.CBRESENHAM);
+            }
+        });
+
         fileMenu.add(openMenuItem);
         menuBar.add(fileMenu);
         setJMenuBar(menuBar);
@@ -82,6 +89,7 @@ public class JFramePrincipal extends JFrame {
         drawMenu.add(drawRetaSimplesMenuItem);
         drawMenu.add(drawCircParametricaMenuItem);
         drawMenu.add(drawCircImplicitaMenuItem);
+        drawMenu.add(drawCircBresenhamMenuItem);
         menuBar.add(drawMenu);
 
         add(imagePanel);
