@@ -61,8 +61,7 @@ public class ImagePanel extends JPanel {
                 }else if (drawingMethod == DrawingMethod.CIMPLICITA) {
                     desenharCircImplicita(buffer.getGraphics(), xx1, yy1, xx2, yy2);
                 }else if (drawingMethod == DrawingMethod.CBRESENHAM) {
-                    drawCircle(buffer.getGraphics(), xx1, yy1, xx2, yy2);
-                    //desenharCircBresenham(buffer.getGraphics(), xx1, yy1, xx2, yy2);
+                    desenharCircBresenham(buffer.getGraphics(), xx1, yy1, xx2, yy2);
                 }
                 repaint();
             }
@@ -305,31 +304,26 @@ public class ImagePanel extends JPanel {
         double dE;
 
         raio = (int) Math.abs(Math.round(Math.sqrt((yy2 - yy1)*(yy2 - yy1) + (xx2 - xx1)*(xx2 - xx1))));
-        x = xx1;
+        x = 0;
         y = raio;
         h = 1 - raio;
         dE = 3;
         dSE = (-2 * raio) + 5;
 
-        //espelharCircBresenham(g, xx1, yy1, x, y, Color.RED);
-        g2d.fillRect(xx1, yy1, 1, 1);
-
-        while (x < y) {
+        while (x <= y) {
+            espelharCircBresenham(g2d, xx1, yy1, x, y);
             if (h < 0) { // seleciona E
                 h += (int) dE;
                 dE += 2;
                 dSE += 2;
-                //h = h + 2*x + 3;
             } else { // seleciona SE
                 h += (int) dSE;
                 dE += 2;
                 dSE += 4;
-                //h = h + 2*(x-y) + 5;
                 y--;
             }
             x++;
-            g2d.fillRect(x, y, 1, 1);
-            //espelharCircBresenham(g2d, xx1, yy1, x, y, Color.RED);
+            //espelharCircBresenham(g2d, xx1, yy1, x, y);
         }
     }
 
@@ -359,13 +353,17 @@ public class ImagePanel extends JPanel {
     }
 
     public static void drawCircle(Graphics g, int xx1, int yy1, int xx2, int yy2) {
+
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.RED);
+
         int radius = (int) Math.abs(Math.round(Math.sqrt((yy2 - yy1)*(yy2 - yy1) + (xx2 - xx1)*(xx2 - xx1))));
         int x = 0;
         int y = radius;
         int d = 3 - 2 * radius;
 
         while (x <= y) {
-            espelharCircBresenham(g, xx1, yy1, x, y);
+            espelharCircBresenham(g2d, xx1, yy1, x, y);
             if (d < 0) {
                 d = d + 4 * x + 6;
             } else {
@@ -375,8 +373,6 @@ public class ImagePanel extends JPanel {
             x++;
         }
     }
-
-
 
 
 }

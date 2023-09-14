@@ -2,6 +2,7 @@ package GUI;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -10,11 +11,14 @@ public class JFramePrincipal extends JFrame {
 
     private static final long serialVersionUID = 2726163241486755910L;
     private final ImagePanel imagePanel;
+    private final RGBHSL rgbhslPanel;
 
     public JFramePrincipal() {
         setTitle("Projeto de Imagem");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
+        setSize(1000, 600);
+
+        setLayout(new GridBagLayout());
 
         // Criação da barra de menus
         JMenuBar menuBar = new JMenuBar();
@@ -88,6 +92,29 @@ public class JFramePrincipal extends JFrame {
         drawMenu.add(drawCircBresenhamMenuItem);
         menuBar.add(drawMenu);
 
-        add(imagePanel);
+        // Configura as restrições para o primeiro painel
+        GridBagConstraints gbc1 = new GridBagConstraints();
+        gbc1.gridx = 1; // coluna 2
+        gbc1.gridy = 0;
+        gbc1.weightx = 2; // Proporção 1
+        gbc1.weighty = 1; // Proporção 2
+        gbc1.fill = GridBagConstraints.BOTH; // Preenche ambos os eixos
+        // definimos a âncora para GridBagConstraints.WEST para ambos os painéis,
+        // o que alinha os painéis à esquerda dentro de suas células do layout.
+        //gbc1.anchor = GridBagConstraints.WEST; // Alinha à direita
+
+        rgbhslPanel = new RGBHSL();
+
+        // Configura as restrições para o segundo painel
+        GridBagConstraints gbc2 = new GridBagConstraints();
+        gbc2.gridx = 0; // Coluna 1
+        gbc2.gridy = 0; // Mesma linha que o primeiro painel
+        gbc2.weightx = 1; // Proporção 1
+        gbc2.weighty = 1; // Proporção 1
+        gbc2.fill = GridBagConstraints.BOTH; // Preenche ambos os eixos
+        //gbc2.anchor = GridBagConstraints.WEST; // Alinha à esquerda
+
+        add(imagePanel, gbc1);
+        add(rgbhslPanel, gbc2);
     }
 }
