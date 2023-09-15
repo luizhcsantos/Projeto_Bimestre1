@@ -5,15 +5,21 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.stream.IntStream;
 
 public class RGBHSL extends JPanel {
 
+    private final ArrayList<JTextField> listatextfieldsRGB;
+    private final ArrayList<JTextField> listatextfieldsHSL;
+
+    private Color corPainel;
 
     public RGBHSL() {
 
         setLayout(new GridBagLayout());
+
+        listatextfieldsRGB = new ArrayList<>();
+        listatextfieldsHSL = new ArrayList<>();
 
         String[] labelNames = {"Red", "Green", "Blue",
                 "Hue", "Saturation", "Lightness"};
@@ -21,11 +27,13 @@ public class RGBHSL extends JPanel {
         JPanel painel1 = new JPanel(new GridBagLayout());
         JPanel painel2 = new JPanel(new GridLayout(2, 1));
         JPanel painel3 = new JPanel(new GridBagLayout());
+        JPanel painelCor = new JPanel();
 
         // Adiciona os painéis internos ao painel principal
         add(painel1);
         add(painel2);
         add(painel3);
+        //add(painelCor);
 
         // Adiciona os componentes ao primeiro e terceiro painel
         GridBagConstraints gbc = new GridBagConstraints();
@@ -34,12 +42,12 @@ public class RGBHSL extends JPanel {
         for (int i = 0; i < 3; i++) {
             JLabel label1 = new JLabel(labelNames[i]);
             JTextField textField1 = new JTextField(10);
-            textField1.setText("0");
-            textField1.setName("textField" + i);
+            textField1.setName("textFieldRGB" + i);
             JLabel label2 = new JLabel(labelNames[i + 3]);
             JTextField textField2 = new JTextField(10);
-            textField2.setText("0");
-            textField2.setName("textField" + (i+3));
+            textField2.setName("textFieldHSL" + (i+3));
+            listatextfieldsRGB.add(textField1);
+            listatextfieldsHSL.add(textField2);
 
             gbc.gridx = 0;
             gbc.gridy = i;
@@ -54,94 +62,62 @@ public class RGBHSL extends JPanel {
 
             gbc.gridx = 1;
             painel3.add(textField2, gbc);
+
         }
 
         // Adiciona os botões ao segundo painel
-        JButton botao1 = new JButton("->");
-        JButton botao2 = new JButton("<-");
+        JButton botaoRGB = new JButton("->");
+        JButton botaoHSL = new JButton("<-");
 
         // Adiciona ActionListener para cada botão
-        botao1.addActionListener(new botao1Listener());
-        botao2.addActionListener(new botao2Listener());
+        botaoRGB.addActionListener(new BotaoRGBListener());
+        botaoHSL.addActionListener(new BotaoHSLListener());
 
-        painel2.add(botao1);
-        painel2.add(botao2);
+        painel2.add(botaoRGB);
+        painel2.add(botaoHSL);
     }
 
 
-    public static double[] rgbToHsl(double valor1, double valor2, double valor3) {
-        double[] resp = new double[3];
-        double[] rgb = new double[3];
+    public static double[] rgbParaHsl(double r, double g, double b) {
+        r /= 255;
+        g /= 255;
+        b /= 255;
 
-        rgb[0] = valor1 / 255;
-        rgb[1] = valor2 / 255;
-        rgb[2] = valor3 / 255;
+        double max = Math.max(r, Math.max(g, b));
+        double min = Math.min(r, Math.min(g, b));
+        double h;
+        double s;
+        double l = (max + min) / 2;
 
-        double min = minValue(rgb);
-        double max = maxValue(rgb);
-
-        double delta = max - min;
-
-        resp[0] = 0;
-        resp[1] = 0;
-        resp[2] = 0;
-
-        // calcular brilho (L)
-        double brilho = (max + min) / 2;
-
-        // calcular saturação (S)
-        double saturacao;
-        if (delta == 0) {
-            saturacao = 0;
+        if (max == min) {
+            h = s = 0; // achromatic
         } else {
-            saturacao = delta / (1 - Math.abs(2 * brilho - 1));
-        }
+            double d = max - min;
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
 
-        // calcular tonalidade (H)
-        double tonalidade = 0;
-        if (delta != 0) {
-            if (rgb[0] == max) { // vermelho é o max
-                tonalidade = ((rgb[1] - rgb[2]) / delta) % 6 * 60; // g - b
-            } else if (rgb[1] == max) { // verde é o max
-                tonalidade = ((rgb[2] - rgb[0]) / delta + 2) * 60; // b - r
-            } else if (rgb[2] == max) { // azul é o max
-                tonalidade = ((rgb[0] - rgb[1]) / delta + 4) * 60; // r - g
+            if (max == r) {
+                h = (g - b) / d + (g < b ? 6 : 0);
+            } else if (max == g) {
+                h = (b - r) / d + 2;
+            } else {
+                h = (r - g) / d + 4;
             }
+
+            h /= 6;
         }
+        double [] hsl = new double[3];
+        hsl[0] = Math.round( ((h/360)*240)*360);
+        hsl[1] = Math.round(s*240);
+        hsl[2] = Math.round(l*240);
 
-        tonalidade = Math.round(tonalidade);
-
-        resp[0] = Math.round((tonalidade / 360) * 240);
-        resp[1] = Math.round(saturacao * 240);
-        resp[2] = Math.round(brilho * 240);
-
-        return resp;
+        return hsl;
     }
 
-    private static double minValue(double[] arr) {
-        double min = arr[0];
-        for (double value : arr) {
-            if (value < min) {
-                min = value;
-            }
-        }
-        return min;
-    }
-
-    private static double maxValue(double[] arr) {
-        double max = arr[0];
-        for (double value : arr) {
-            if (value > max) {
-                max = value;
-            }
-        }
-        return max;
-    }
-
-    public static double[] hslToRgb(double valor1, double valor2, double valor3) {
+    public static double[] hslParaRgb(double valor1, double valor2, double valor3) {
         double[] resp = new double[3];
         double[] hsl = new double[3];
-        double temp1, temp2;
+        double temp1;
+        double temp2;
 
         hsl[0] = (valor1 * 360) / 240;
         hsl[1] = valor2 / 240;
@@ -196,68 +172,92 @@ public class RGBHSL extends JPanel {
         return resp;
     }
 
-    private class botao1Listener implements ActionListener {
+    private class BotaoRGBListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             // rgb - hsl
-            System.out.println("teste");
-            JOptionPane.showMessageDialog(null, "Botão 1 foi clicado!");
-            Component[] components = getComponents();
 
             ArrayList<String> valoresRGB = new ArrayList<>();
-            ArrayList<JTextField> listaFields = new ArrayList<>();
-            ArrayList<Component> listaComponentes = new ArrayList<>();
 
-            for (Component componente : components) {
-
-                listaComponentes = percorrerComponentes(componente);
-
-                if (componente instanceof JTextField jTextField) {
-                    String texto = jTextField.getText();
-                    if (!Objects.equals(texto, "0")) {
-                        valoresRGB.add(texto);
-                    }
-                    else {
-                        listaFields.add(jTextField);
-                    }
+            for (JTextField jTextField : listatextfieldsRGB) {
+                if (jTextField.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Valores inválidos!");
                 }
-            }
-            double valor1 = Double.parseDouble(valoresRGB.get(0));
-            double valor2 = Double.parseDouble(valoresRGB.get(1));
-            double valor3 = Double.parseDouble(valoresRGB.get(2));
-            double[] resposta = rgbToHsl(valor1, valor2, valor3);
+                else {
+                    valoresRGB.add(jTextField.getText());
+                }
 
-            IntStream.range(0, 3).forEach(i -> listaFields.get(i).setText(String.valueOf(resposta[i])));
+            }
+
+            double [] valor = new double[3];
+            valor[0] = Double.parseDouble(valoresRGB.get(0));
+            valor[1] = Double.parseDouble(valoresRGB.get(1));
+            valor[2] = Double.parseDouble(valoresRGB.get(2));
+            double[] resposta = rgbParaHsl(valor[0], valor[1], valor[2]);
+
+            corPainel = new Color((int) valor[0],
+                    (int) valor[1],
+                    (int) valor[2]);
+            repaint();
+
+            IntStream.range(0, valoresRGB.size()).forEach(i -> {
+                JTextField jTextField = listatextfieldsHSL.get(i);
+                if (!jTextField.getText().isEmpty())
+                    jTextField.setText("");
+                jTextField.setText(String.valueOf(resposta[i]));
+
+            });
         }
     }
 
-    private class botao2Listener implements ActionListener {
+    private class BotaoHSLListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             // hsl - rgb
-            JOptionPane.showMessageDialog(null, "Botão 2 foi clicado!");
-        }
-    }
+            ArrayList<String> valoresHSL = new ArrayList<>();
 
-    // Método para percorrer os componentes recursivamente
-    private ArrayList<Component> percorrerComponentes(Component componente) {
-        ArrayList<Component> componentesEncontrados = new ArrayList<>();
-
-        if (componente instanceof Container) {
-            Component[] componentes = ((Container) componente).getComponents();
-            for (Component c : componentes) {
-                componentesEncontrados.add(c);
-
-                if (c instanceof JPanel) {
-                    // Se for um JPanel, chama a função recursivamente
-                    componentesEncontrados.addAll(percorrerComponentes(c));
+            for (JTextField jTextField : listatextfieldsHSL) {
+                if (jTextField.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Valores inválidos!");
                 }
-            }
-        }
+                else {
+                    valoresHSL.add(jTextField.getText());
+                }
 
-        return componentesEncontrados;
+            }
+
+            double [] valor = new double[3];
+            valor[0] = Double.parseDouble(valoresHSL.get(0));
+            valor[1] = Double.parseDouble(valoresHSL.get(1));
+            valor[2] = Double.parseDouble(valoresHSL.get(2));
+            double[] resposta = hslParaRgb(valor[0], valor[1], valor[2]);
+
+            corPainel = new Color((int) resposta[0],
+                    (int) resposta[1],
+                    (int) resposta[2]);
+            repaint();
+
+            IntStream.range(0, valoresHSL.size()).forEach(i -> {
+                JTextField jTextField = listatextfieldsRGB.get(i);
+                if (!jTextField.getText().isEmpty())
+                    jTextField.setText("");
+                jTextField.setText(String.valueOf(resposta[i]));
+            });
+        }
     }
 
+    public Color getCorPainel() {
+        return corPainel;
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        if (corPainel != null) {
+            g.setColor(corPainel);
+            g.fillRect(0, 0, getWidth(), getHeight());
+        }
+    }
 }

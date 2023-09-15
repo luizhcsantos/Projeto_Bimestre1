@@ -21,6 +21,7 @@ public class ImagePanel extends JPanel {
     private int yy2;
     private boolean drawing = false;
 
+
     public enum DrawingMethod {
         RBRESENHAM,     // reta com alg. de bresenham
         RSIMPLES,       // reta com equação da reta y = ax + b

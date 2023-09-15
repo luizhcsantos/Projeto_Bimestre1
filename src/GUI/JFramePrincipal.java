@@ -6,16 +6,19 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serial;
+
+import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public class JFramePrincipal extends JFrame {
 
+    @Serial
     private static final long serialVersionUID = 2726163241486755910L;
     private final ImagePanel imagePanel;
-    private final RGBHSL rgbhslPanel;
 
     public JFramePrincipal() {
         setTitle("Projeto de Imagem");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(1000, 600);
 
         setLayout(new GridBagLayout());
@@ -103,7 +106,8 @@ public class JFramePrincipal extends JFrame {
         // o que alinha os painéis à esquerda dentro de suas células do layout.
         //gbc1.anchor = GridBagConstraints.WEST; // Alinha à direita
 
-        rgbhslPanel = new RGBHSL();
+        RGBHSL rgbhslPanel = new RGBHSL();
+        rgbhslPanel.setPreferredSize(new Dimension(150, 300));
 
         // Configura as restrições para o segundo painel
         GridBagConstraints gbc2 = new GridBagConstraints();
