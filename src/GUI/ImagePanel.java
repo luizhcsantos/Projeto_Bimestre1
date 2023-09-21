@@ -13,8 +13,8 @@ public class ImagePanel extends JPanel {
      */
     @Serial
     private static final long serialVersionUID = -1753912953142514844L;
-    private BufferedImage image;
-    private BufferedImage buffer;
+    private transient BufferedImage image;
+    private transient BufferedImage buffer;
     private int xx1;
     private int xx2;
     private int yy1;
@@ -23,6 +23,8 @@ public class ImagePanel extends JPanel {
 
 
     public enum DrawingMethod {
+        RETA,           // desenha reta com função do próprio java graphics
+        PIXEL,          // desenha apenas um pixel
         RBRESENHAM,     // reta com alg. de bresenham
         RSIMPLES,       // reta com equação da reta y = ax + b
         RPARAMETRICA,   // reta com equação paramétrica
@@ -63,6 +65,10 @@ public class ImagePanel extends JPanel {
                     desenharCircImplicita(buffer.getGraphics(), xx1, yy1, xx2, yy2);
                 }else if (drawingMethod == DrawingMethod.CBRESENHAM) {
                     desenharCircBresenham(buffer.getGraphics(), xx1, yy1, xx2, yy2);
+                }else if (drawingMethod == DrawingMethod.RETA) {
+                    desenharRetaSimples(buffer.getGraphics(), xx1, yy1, xx2, yy2);
+                }else if  (drawingMethod == DrawingMethod.PIXEL) {
+                    desenharPixel(buffer.getGraphics(), xx1, yy1);
                 }
                 repaint();
             }
@@ -99,6 +105,21 @@ public class ImagePanel extends JPanel {
         if (image != null) {
             g.drawImage(buffer, 0, 0, this);
         }
+    }
+
+    private void desenharRetaSimples(Graphics g, int xx1, int yy1, int xx2, int yy2) {
+
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.BLUE);
+        g2d.drawLine(xx1, yy1, xx2, yy2);
+        repaint();
+    }
+
+    private void desenharPixel(Graphics g, int xx1, int yy1) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.BLUE);
+        g2d.drawRect(xx1, yy1, 1, 1);
+        repaint();
     }
 
     private void desenharReta(Graphics g, int xx1, int yy1, int xx2, int yy2) {
@@ -231,7 +252,7 @@ public class ImagePanel extends JPanel {
         raio = (int) Math.abs(Math.round(Math.sqrt(((yy2 - yy1) * (yy2 - yy1)) + ((xx2 - xx1) * (xx2 - xx1)))));
         ang = 0;
         step = 1 /(6.28 * raio);
-            // número de pixels que serão pintados;
+            // número de pixels que serão pintados
             // valores maiores resultarão em mais pixels pintados
             // e, consequentemente, menos "buracos" na circunferencia
         do {

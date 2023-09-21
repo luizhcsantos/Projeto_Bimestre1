@@ -29,6 +29,8 @@ public class JFramePrincipal extends JFrame {
         JMenuItem openMenuItem = new JMenuItem("Abrir Imagem");
 
         JMenu drawMenu = new JMenu("Desenhar");
+        JMenuItem drawLinhaMenuItem = new JMenuItem("Desenhar Linha");
+        JMenuItem drawPixel = new JMenuItem("Desenha Pixel");
         JMenuItem drawRetaBresenhamMenuItem = new JMenuItem("Reta (Alg. Bresenham)");
         JMenuItem drawRetaSimplesMenuItem = new JMenuItem("Reta (Eq. da Reta)");
         JMenuItem drawRetaParametricaMenuItem = new JMenuItem("Reta (Eq. Pametrica)");
@@ -56,6 +58,14 @@ public class JFramePrincipal extends JFrame {
                     imagePanel.setImage(image);
                 }
             }
+        });
+
+        drawLinhaMenuItem.addActionListener(e -> {
+            imagePanel.metodoDesenho(ImagePanel.DrawingMethod.RETA);
+        });
+
+        drawPixel.addActionListener(e -> {
+            imagePanel.metodoDesenho(ImagePanel.DrawingMethod.PIXEL);
         });
 
 
@@ -87,6 +97,8 @@ public class JFramePrincipal extends JFrame {
         menuBar.add(fileMenu);
         setJMenuBar(menuBar);
 
+        drawMenu.add(drawLinhaMenuItem);
+        drawMenu.add(drawPixel);
         drawMenu.add(drawRetaBresenhamMenuItem);
         drawMenu.add(drawRetaSimplesMenuItem);
         drawMenu.add(drawRetaParametricaMenuItem);

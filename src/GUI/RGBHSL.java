@@ -27,13 +27,11 @@ public class RGBHSL extends JPanel {
         JPanel painel1 = new JPanel(new GridBagLayout());
         JPanel painel2 = new JPanel(new GridLayout(2, 1));
         JPanel painel3 = new JPanel(new GridBagLayout());
-        JPanel painelCor = new JPanel();
 
         // Adiciona os painéis internos ao painel principal
         add(painel1);
         add(painel2);
         add(painel3);
-        //add(painelCor);
 
         // Adiciona os componentes ao primeiro e terceiro painel
         GridBagConstraints gbc = new GridBagConstraints();
