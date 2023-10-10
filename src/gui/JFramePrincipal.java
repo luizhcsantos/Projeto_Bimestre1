@@ -1,4 +1,4 @@
-package GUI;
+package gui;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -7,8 +7,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serial;
-
-import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public class JFramePrincipal extends JFrame {
 
@@ -118,7 +116,7 @@ public class JFramePrincipal extends JFrame {
         // o que alinha os painéis à esquerda dentro de suas células do layout.
         //gbc1.anchor = GridBagConstraints.WEST; // Alinha à direita
 
-        RGBHSL rgbhslPanel = new RGBHSL();
+        RgbHsl rgbhslPanel = new RgbHsl();
         rgbhslPanel.setPreferredSize(new Dimension(150, 300));
 
         // Configura as restrições para o segundo painel
@@ -130,7 +128,18 @@ public class JFramePrincipal extends JFrame {
         gbc2.fill = GridBagConstraints.BOTH; // Preenche ambos os eixos
         //gbc2.anchor = GridBagConstraints.WEST; // Alinha à esquerda
 
+        projecoesPanel projecoesPanel = new projecoesPanel();
+        // Configura as restrições para o segundo painel
+        GridBagConstraints gbc3 = new GridBagConstraints();
+        gbc3.gridx = 0; // Coluna 1
+        gbc3.gridy = 1; // Mesma linha que o primeiro painel
+        gbc3.weightx = 1; // Proporção 1
+        gbc3.weighty = 1; // Proporção 1
+        gbc3.fill = GridBagConstraints.BOTH; // Preenche ambos os eixos
+        //gbc2.anchor = GridBagConstraints.WEST; // Alinha à esquerda
+
         add(imagePanel, gbc1);
         add(rgbhslPanel, gbc2);
+        add(projecoesPanel, gbc3);
     }
 }

@@ -4,11 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0198fd03-ba47-48ec-9f38-82092f7c7e8c" name="Changes" comment="Conversão RGB/HSL (e vice-versa) completa.">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="0198fd03-ba47-48ec-9f38-82092f7c7e8c" name="Changes" comment="Painel de transformações (vulgo &quot;casinha&quot;)">
+      <change afterPath="$PROJECT_DIR$/modelo interface.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/gui/projecoesPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/ImagePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/ImagePanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/JFramePrincipal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/JFramePrincipal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/ImagePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/ImagePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/JFramePrincipal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/JFramePrincipal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/RGBHSL.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/RgbHsl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Sistema/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Sistema/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,11 +78,11 @@
       </method>
     </configuration>
     <configuration name="interface_teste" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="GUI.interface_teste" />
+      <option name="MAIN_CLASS_NAME" value="gui.interface_teste" />
       <module name="Projeto_Bimestre1" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="GUI.*" />
+          <option name="PATTERN" value="gui.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -106,7 +109,9 @@
       <workItem from="1694711610448" duration="13024000" />
       <workItem from="1694793433698" duration="9136000" />
       <workItem from="1695223178911" duration="1940000" />
-      <workItem from="1695329340128" duration="429000" />
+      <workItem from="1695329340128" duration="1190000" />
+      <workItem from="1696950104322" duration="852000" />
+      <workItem from="1696951859034" duration="3497000" />
     </task>
     <task id="LOCAL-00001" summary="Criação do projeto">
       <option name="closed" value="true" />
@@ -164,7 +169,15 @@
       <option name="project" value="LOCAL" />
       <updated>1694801798393</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Adição de desenho de pixel e desenho de reta utilizando drawline">
+      <option name="closed" value="true" />
+      <created>1695330397134</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1695330397134</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -189,6 +202,8 @@
     <MESSAGE value="Criação painel &quot;converter rgb-hsl&quot;" />
     <MESSAGE value="Criação painel &quot;converter rgb-hsl&quot; v2" />
     <MESSAGE value="Conversão RGB/HSL (e vice-versa) completa." />
-    <option name="LAST_COMMIT_MESSAGE" value="Conversão RGB/HSL (e vice-versa) completa." />
+    <MESSAGE value="Adição de desenho de pixel e desenho de reta utilizando drawline" />
+    <MESSAGE value="Painel de transformações (vulgo &quot;casinha&quot;)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Painel de transformações (vulgo &quot;casinha&quot;)" />
   </component>
 </project>

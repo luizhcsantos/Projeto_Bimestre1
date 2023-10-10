@@ -1,6 +1,6 @@
 package Sistema;
 
-import GUI.JFramePrincipal;
+import gui.JFramePrincipal;
 
 import javax.swing.*;
 
