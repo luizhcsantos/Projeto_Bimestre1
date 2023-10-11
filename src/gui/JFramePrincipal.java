@@ -128,7 +128,7 @@ public class JFramePrincipal extends JFrame {
         gbc2.fill = GridBagConstraints.BOTH; // Preenche ambos os eixos
         //gbc2.anchor = GridBagConstraints.WEST; // Alinha à esquerda
 
-        projecoesPanel projecoesPanel = new projecoesPanel();
+        TransformacoesPanel TransformacoesPanel = new TransformacoesPanel();
         // Configura as restrições para o segundo painel
         GridBagConstraints gbc3 = new GridBagConstraints();
         gbc3.gridx = 0; // Coluna 1
@@ -140,6 +140,6 @@ public class JFramePrincipal extends JFrame {
 
         add(imagePanel, gbc1);
         add(rgbhslPanel, gbc2);
-        add(projecoesPanel, gbc3);
+        add(TransformacoesPanel, gbc3);
     }
 }

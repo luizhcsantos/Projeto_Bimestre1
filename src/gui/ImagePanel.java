@@ -14,7 +14,7 @@ public class ImagePanel extends JPanel {
     @Serial
     private static final long serialVersionUID = -1753912953142514844L;
     private transient BufferedImage image;
-    private transient BufferedImage buffer;
+    private static BufferedImage buffer;
     private int xx1;
     private int xx2;
     private int yy1;
@@ -92,7 +92,11 @@ public class ImagePanel extends JPanel {
         limparBuffer(); // Limpa o buffer ao alterar o modo de desenho
     }
 
-    private void limparBuffer() {
+    public DrawingMethod getDrawingMethod() {
+        return drawingMethod;
+    }
+
+    public void limparBuffer() {
         Graphics2D g2d = buffer.createGraphics();
         g2d.drawImage(image, 0, 0, null);
         g2d.dispose();
@@ -161,7 +165,7 @@ public class ImagePanel extends JPanel {
         repaint();
     }
 
-    private void desenharRetaBresenham(Graphics g, int xx1, int yy1, int xx2, int yy2) {
+    public static void desenharRetaBresenham(Graphics g, int xx1, int yy1, int xx2, int yy2) {
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.GREEN);
@@ -252,9 +256,9 @@ public class ImagePanel extends JPanel {
         raio = (int) Math.abs(Math.round(Math.sqrt(((yy2 - yy1) * (yy2 - yy1)) + ((xx2 - xx1) * (xx2 - xx1)))));
         ang = 0;
         step = 1 /(6.28 * raio);
-            // número de pixels que serão pintados
-            // valores maiores resultarão em mais pixels pintados
-            // e, consequentemente, menos "buracos" na circunferencia
+        // número de pixels que serão pintados
+        // valores maiores resultarão em mais pixels pintados
+        // e, consequentemente, menos "buracos" na circunferencia
         do {
             xr = (float) (xc + (raio * Math.cos(ang)));
             yr = (float) (yc + (raio * Math.sin(ang)));
@@ -276,8 +280,8 @@ public class ImagePanel extends JPanel {
                 Math.round(
                         Math.sqrt(
                                 (Math.pow((yy2 - yy1), 2))
-                                +
-                                (Math.pow((xx2 - xx1), 2))
+                                        +
+                                        (Math.pow((xx2 - xx1), 2))
                         )
                 )
         );
@@ -379,7 +383,7 @@ public class ImagePanel extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.RED);
 
-        int radius = (int) Math.abs(Math.round(Math.sqrt((yy2 - yy1)*(yy2 - yy1) + (xx2 - xx1)*(xx2 - xx1))));
+        int radius = (int) Math.abs(Math.round(Math.sqrt((yy2 - yy1) * (yy2 - yy1) + (xx2 - xx1) * (xx2 - xx1))));
         int x = 0;
         int y = radius;
         int d = 3 - 2 * radius;
@@ -396,5 +400,7 @@ public class ImagePanel extends JPanel {
         }
     }
 
-
+    public static BufferedImage getBuffer() {
+        return buffer;
+    }
 }

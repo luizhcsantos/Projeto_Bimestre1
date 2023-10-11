@@ -5,13 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0198fd03-ba47-48ec-9f38-82092f7c7e8c" name="Changes" comment="Painel de transformações (vulgo &quot;casinha&quot;)">
-      <change afterPath="$PROJECT_DIR$/modelo interface.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/gui/projecoesPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/ImagePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/ImagePanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/JFramePrincipal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/JFramePrincipal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/RGBHSL.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/RgbHsl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Sistema/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Sistema/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/ImagePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/ImagePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/JFramePrincipal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/JFramePrincipal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/projecoesPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/TransformacoesPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,7 +108,8 @@
       <workItem from="1695223178911" duration="1940000" />
       <workItem from="1695329340128" duration="1190000" />
       <workItem from="1696950104322" duration="852000" />
-      <workItem from="1696951859034" duration="3497000" />
+      <workItem from="1696951859034" duration="4242000" />
+      <workItem from="1696981275060" duration="8860000" />
     </task>
     <task id="LOCAL-00001" summary="Criação do projeto">
       <option name="closed" value="true" />
@@ -177,7 +175,15 @@
       <option name="project" value="LOCAL" />
       <updated>1695330397134</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Painel de transformações (vulgo &quot;casinha&quot;)">
+      <option name="closed" value="true" />
+      <created>1696958766418</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1696958766457</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

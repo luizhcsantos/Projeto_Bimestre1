@@ -1,22 +1,37 @@
 package gui;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.util.stream.IntStream;
 
-public class projecoesPanel extends JPanel {
+public class TransformacoesPanel extends JPanel {
 
-    public projecoesPanel() {
+    public BufferedImage buffer;
+    private double[][] pontosTotal = new double[10][4];
+    private int[][] arestas = new int[17][2];
+    private double[][] resultadoPrintado = new double[10][4];
+    private double[][] matrizDeProjecao = new double[4][4];
+
+    public TransformacoesPanel() {
         initComponents();
+        buffer = ImagePanel.getBuffer();
+        //inicializaPontoEAresta();
     }
 
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
         javax.swing.JTextField jTextField5;
-        JPanel jPanel3 = new JPanel();
+        JPanel jPanel1 = new JPanel(); // painel 1
+        jPanel1.setBorder(BorderFactory.createLineBorder(Color.black));
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        JPanel jPanel4 = new JPanel();
+        jButtonDesenhaCasinha = new javax.swing.JButton();
+        jButtonReset = new javax.swing.JButton();
+        JPanel jPanel2 = new JPanel(); // painel 2
+        jPanel2.setBorder(BorderFactory.createLineBorder(Color.black));
         JLabel jLabel2 = new JLabel();
         JLabel jLabel3 = new JLabel();
         JLabel jLabel4 = new JLabel();
@@ -24,20 +39,19 @@ public class projecoesPanel extends JPanel {
         JTextField jTextField1 = new JTextField();
         JTextField jTextField2 = new JTextField();
         JTextField jTextField3 = new JTextField();
-        jButton3 = new javax.swing.JButton();
+        jButtonTranslacao = new javax.swing.JButton();
         JLabel jLabel6 = new JLabel();
         JLabel jLabel7 = new JLabel();
         JTextField jTextField4 = new JTextField();
         JLabel jLabel8 = new JLabel();
         jTextField5 = new javax.swing.JTextField();
-        jButton4 = new javax.swing.JButton();
+        jButtonRotacao1Origem = new javax.swing.JButton();
         JLabel jLabel9 = new JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        JTextField jTextField6 = new JTextField();
-        JTextField jTextField7 = new JTextField();
-        jButton5 = new javax.swing.JButton();
-        JPanel jPanel5 = new JPanel();
+        jButtonRotacaoObjeto = new javax.swing.JButton();
+        JPanel jPanel3 = new JPanel(); // painel 3
+        jPanel3.setBorder(BorderFactory.createLineBorder(Color.black));
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         JTextField jTextField8 = new JTextField();
@@ -49,7 +63,8 @@ public class projecoesPanel extends JPanel {
         jLabel17 = new javax.swing.JLabel();
         JTextField jTextField11 = new JTextField();
         jButton6 = new javax.swing.JButton();
-        JPanel jPanel6 = new JPanel();
+        JPanel jPanel4 = new JPanel(); // painel 4
+        jPanel4.setBorder(BorderFactory.createLineBorder(Color.black));
         JLabel jLabel18 = new JLabel();
         JTextField jTextField12 = new JTextField();
         JTextField jTextField13 = new JTextField();
@@ -67,16 +82,22 @@ public class projecoesPanel extends JPanel {
         JTextField jTextField25 = new JTextField();
         JTextField jTextField26 = new JTextField();
         JTextField jTextField27 = new JTextField();
+
+        eixoRotacaoCentro = new JTextField();
+        grausRotacaoCentro = new JTextField();
+
         jButton7 = new javax.swing.JButton();
 
         jLabel1.setText("Desenhar Objeto");
 
-        jButton1.setText("Plano XY");
+        jButtonDesenhaCasinha.setText("Plano XY");
+        jButtonDesenhaCasinha.addActionListener(new BotaoCasinhaListener());
 
-        jButton2.setText("Reset");
+        jButtonReset.setText("Reset");
+        jButtonReset.addActionListener(new BotaoResetListener());
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
                 jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel3Layout.createSequentialGroup()
@@ -86,10 +107,10 @@ public class projecoesPanel extends JPanel {
                                                 .addComponent(jLabel1))
                                         .addGroup(jPanel3Layout.createSequentialGroup()
                                                 .addContainerGap()
-                                                .addComponent(jButton1))
+                                                .addComponent(jButtonDesenhaCasinha))
                                         .addGroup(jPanel3Layout.createSequentialGroup()
                                                 .addContainerGap()
-                                                .addComponent(jButton2)))
+                                                .addComponent(jButtonReset)))
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -98,9 +119,9 @@ public class projecoesPanel extends JPanel {
                                 .addGap(8, 8, 8)
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton1)
+                                .addComponent(jButtonDesenhaCasinha)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton2)
+                                .addComponent(jButtonReset)
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -118,7 +139,8 @@ public class projecoesPanel extends JPanel {
 
         jTextField3.setText("0");
 
-        jButton3.setText("Transladar");
+        jButtonTranslacao.setText("Transladar");
+        jButtonTranslacao.addActionListener(new BotaoTranslacaoListener());
 
         jLabel6.setText("Rotação em Relação à Origem");
 
@@ -130,7 +152,7 @@ public class projecoesPanel extends JPanel {
 
         jTextField5.setText("0");
 
-        jButton4.setText("Rotacionar");
+        jButtonRotacao1Origem.setText("Rotacionar");
 
         jLabel9.setText("Rotação em Relação ao Centro do Objeto");
 
@@ -139,14 +161,15 @@ public class projecoesPanel extends JPanel {
         jLabel11.setText("Graus");
         jLabel11.setToolTipText("");
 
-        jTextField6.setText("x");
+        eixoRotacaoCentro.setText("x");
 
-        jTextField7.setText("0");
+        grausRotacaoCentro.setText("0");
 
-        jButton5.setText("Rotacionar");
+        jButtonRotacaoObjeto.setText("Rotacionar");
+        jButtonRotacaoObjeto.addActionListener(new BotaoRotacaoCentroListener());
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
                 jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel4Layout.createSequentialGroup()
@@ -160,13 +183,13 @@ public class projecoesPanel extends JPanel {
                                                                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
                                                                                 .addComponent(jLabel11)
                                                                                 .addGap(4, 4, 4)
-                                                                                .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                                .addComponent(grausRotacaoCentro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
                                                                                 .addComponent(jLabel10)
                                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                                                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                                                .addComponent(eixoRotacaoCentro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                                                 .addGap(24, 24, 24)
-                                                                .addComponent(jButton5)))
+                                                                .addComponent(jButtonRotacaoObjeto)))
                                                 .addGap(0, 0, Short.MAX_VALUE))
                                         .addGroup(jPanel4Layout.createSequentialGroup()
                                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -192,14 +215,14 @@ public class projecoesPanel extends JPanel {
                                                                         .addGroup(jPanel4Layout.createSequentialGroup()
                                                                                 .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                                                .addComponent(jButton3))
+                                                                                .addComponent(jButtonTranslacao))
                                                                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                                         .addGroup(jPanel4Layout.createSequentialGroup()
                                                                 .addComponent(jLabel7)
                                                                 .addGap(18, 18, 18)
                                                                 .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                 .addGap(18, 18, 18)
-                                                                .addComponent(jButton4)))
+                                                                .addComponent(jButtonRotacao1Origem)))
                                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel4Layout.setVerticalGroup(
@@ -217,14 +240,14 @@ public class projecoesPanel extends JPanel {
                                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jButton3))
+                                        .addComponent(jButtonTranslacao))
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel6)
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel7)
                                         .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jButton4))
+                                        .addComponent(jButtonRotacao1Origem))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel8)
@@ -234,12 +257,12 @@ public class projecoesPanel extends JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel10)
-                                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jButton5))
+                                        .addComponent(eixoRotacaoCentro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jButtonRotacaoObjeto))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel11)
-                                        .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(grausRotacaoCentro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
@@ -265,8 +288,8 @@ public class projecoesPanel extends JPanel {
 
         jButton6.setText("Executar");
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
                 jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel5Layout.createSequentialGroup()
@@ -332,164 +355,353 @@ public class projecoesPanel extends JPanel {
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel6.setLayout(new java.awt.GridBagLayout());
+        jPanel4.setLayout(new java.awt.GridBagLayout());
 
         jLabel18.setText("Shearing (Cizalhamento)");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.insets = new java.awt.Insets(4, 3, 4, 4);
-        jPanel6.add(jLabel18, gridBagConstraints);
+        jPanel4.add(jLabel18, gridBagConstraints);
 
         jTextField12.setText("1");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new java.awt.Insets(4, 3, 4, 4);
-        jPanel6.add(jTextField12, gridBagConstraints);
+        jPanel4.add(jTextField12, gridBagConstraints);
 
         jTextField13.setText("0");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new java.awt.Insets(4, 3, 4, 4);
-        jPanel6.add(jTextField13, gridBagConstraints);
+        jPanel4.add(jTextField13, gridBagConstraints);
 
         jTextField14.setText("0");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new java.awt.Insets(4, 3, 4, 4);
-        jPanel6.add(jTextField14, gridBagConstraints);
+        jPanel4.add(jTextField14, gridBagConstraints);
 
         jTextField15.setText("0");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new java.awt.Insets(4, 3, 4, 4);
-        jPanel6.add(jTextField15, gridBagConstraints);
+        jPanel4.add(jTextField15, gridBagConstraints);
 
         jTextField16.setText("0");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.insets = new java.awt.Insets(4, 3, 4, 4);
-        jPanel6.add(jTextField16, gridBagConstraints);
+        jPanel4.add(jTextField16, gridBagConstraints);
 
         jTextField17.setText("1");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.insets = new java.awt.Insets(4, 3, 4, 4);
-        jPanel6.add(jTextField17, gridBagConstraints);
+        jPanel4.add(jTextField17, gridBagConstraints);
 
         jTextField18.setText("0");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.insets = new java.awt.Insets(4, 3, 4, 4);
-        jPanel6.add(jTextField18, gridBagConstraints);
+        jPanel4.add(jTextField18, gridBagConstraints);
 
         jTextField19.setText("0");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.insets = new java.awt.Insets(4, 3, 4, 4);
-        jPanel6.add(jTextField19, gridBagConstraints);
+        jPanel4.add(jTextField19, gridBagConstraints);
 
         jTextField20.setText("0");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.insets = new java.awt.Insets(4, 3, 4, 4);
-        jPanel6.add(jTextField20, gridBagConstraints);
+        jPanel4.add(jTextField20, gridBagConstraints);
 
         jTextField21.setText("0");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.insets = new java.awt.Insets(4, 3, 4, 4);
-        jPanel6.add(jTextField21, gridBagConstraints);
+        jPanel4.add(jTextField21, gridBagConstraints);
 
         jTextField22.setText("1");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.insets = new java.awt.Insets(4, 3, 4, 4);
-        jPanel6.add(jTextField22, gridBagConstraints);
+        jPanel4.add(jTextField22, gridBagConstraints);
 
         jTextField24.setText("0");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.insets = new java.awt.Insets(4, 3, 4, 4);
-        jPanel6.add(jTextField24, gridBagConstraints);
+        jPanel4.add(jTextField24, gridBagConstraints);
 
         jTextField23.setText("0");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.insets = new java.awt.Insets(4, 3, 4, 4);
-        jPanel6.add(jTextField23, gridBagConstraints);
+        jPanel4.add(jTextField23, gridBagConstraints);
 
         jTextField25.setText("0");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.insets = new java.awt.Insets(4, 3, 4, 4);
-        jPanel6.add(jTextField25, gridBagConstraints);
+        jPanel4.add(jTextField25, gridBagConstraints);
 
         jTextField26.setText("0");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.insets = new java.awt.Insets(4, 3, 4, 4);
-        jPanel6.add(jTextField26, gridBagConstraints);
+        jPanel4.add(jTextField26, gridBagConstraints);
 
         jTextField27.setText("1");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.insets = new java.awt.Insets(4, 3, 4, 4);
-        jPanel6.add(jTextField27, gridBagConstraints);
+        jPanel4.add(jTextField27, gridBagConstraints);
 
         jButton7.setText("Executar");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 6;
         gridBagConstraints.insets = new java.awt.Insets(4, 3, 4, 4);
-        jPanel6.add(jButton7, gridBagConstraints);
+        jPanel4.add(jButton7, gridBagConstraints);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
-                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addContainerGap())
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
 
 
     }
 
+    private void inicializaPontoEAresta() {
+        double[][] pontos = {
+                {100, 300, 100, 1}, {100, 300, -100, 1}, {300, 300, 100, 1},
+                {300, 300, -100, 1}, {100, 100, 100, 1}, {100, 100, -100, 1},
+                {300, 100, 100, 1}, {300, 100, -100, 1}, {200, 50, 100, 1},
+                {200, 50, -100, 1}
+        };
+
+        for (int i = 0; i < 10; i++) {
+            System.arraycopy(pontos[i], 0, pontosTotal[i], 0, 4);
+        }
+
+        int[][] arestasArray = {
+                {1, 2}, {1, 3}, {1, 5}, {2, 6}, {2, 4}, {3, 4},
+                {3, 7}, {4, 8}, {7, 8}, {5, 6}, {5, 7}, {9, 10},
+                {5, 9}, {7, 9}, {8, 10}, {6, 10}, {6, 8}
+        };
+
+        for (int i = 0; i < 17; i++) {
+            System.arraycopy(arestasArray[i], 0, arestas[i], 0, 2);
+        }
+    }
+
+    public void desenhaCasinha() {
+
+        limparBuffer();
+
+        double[][] matrizT = {
+                {1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}
+        };
+
+        matrizDeProjecao = matrizT;
+
+        for (int aux = 0; aux < 10; aux++) {
+            double[] resultado = new double[10];
+            multiplicarMatriz(pontosTotal[aux], matrizT, resultado);
+            System.arraycopy(resultado, 0, resultadoPrintado[aux], 0, 4);
+        }
+
+        for (int aux = 0; aux < 17; aux++) {
+            int xx1 = (int) Math.round(resultadoPrintado[arestas[aux][0] - 1][0]);
+            int yy1 = (int) Math.round(resultadoPrintado[arestas[aux][0] - 1][1]);
+            int xx2 = (int) Math.round(resultadoPrintado[arestas[aux][1] - 1][0]);
+            int yy2 = (int) Math.round(resultadoPrintado[arestas[aux][1] - 1][1]);
+            // chame a função para desenhar a linha com pontos (xx1, yy1) e (xx2, yy2)
+            ImagePanel.desenharRetaBresenham(buffer.getGraphics(), xx1, yy1, xx2, yy2);
+        }
+
+    }
+
+    private void multiplicarMatriz(double[] ponto, double[][] mat, double[] resultado) {
+        for (int x = 0; x < 4; x++) {
+            double soma = 0;
+            for (int y = 0; y < 4; y++) {
+                soma += ponto[y] * mat[y][x];
+            }
+            resultado[x] = soma;
+        }
+    }
+
+
+    private void rotacaoCentroObjeto() {
+        int aux;
+        int xx1, yy1, xx2, yy2;
+        double[][] matrizT = new double[4][4];
+        double[] resultado = new double[4];
+        double somax, somay, somaz;
+        int contador;
+        double graus;
+
+        limparBuffer();
+
+        graus = (Double.parseDouble(grausRotacaoCentro.getText()) * Math.PI) / 180;
+
+        somax = 0;
+        somay = 0;
+        somaz = 0;
+        for (contador = 0; contador < 10; contador++) {
+            somax += pontosTotal[contador][0];
+            somay += pontosTotal[contador][1];
+            somaz += pontosTotal[contador][2];
+        }
+        somax /= 10;
+        somay /= 10;
+        somaz /= 10;
+
+        translacao(-somax, -somay, -somaz);
+
+        if (eixoRotacaoCentro.getText().equalsIgnoreCase("x")) {
+            matrizT[0][0] = 1;
+            matrizT[1][1] = Math.cos(graus);
+            matrizT[1][2] = -Math.sin(graus);
+            matrizT[2][1] = Math.sin(graus);
+            matrizT[2][2] = Math.cos(graus);
+            matrizT[3][3] = 1;
+        } else if (eixoRotacaoCentro.getText().equalsIgnoreCase("y")) {
+            matrizT[0][0] = Math.cos(graus);
+            matrizT[0][2] = Math.sin(graus);
+            matrizT[1][1] = 1;
+            matrizT[2][0] = -Math.sin(graus);
+            matrizT[2][2] = Math.cos(graus);
+            matrizT[3][3] = 1;
+        } else if (eixoRotacaoCentro.getText().equalsIgnoreCase("z")) {
+            matrizT[0][0] = Math.cos(graus);
+            matrizT[0][1] = -Math.sin(graus);
+            matrizT[1][0] = Math.sin(graus);
+            matrizT[1][1] = Math.cos(graus);
+            matrizT[2][2] = 1;
+            matrizT[3][3] = 1;
+        }
+
+        for (aux = 0; aux < 10; aux++) {
+            multiplicarMatriz(pontosTotal[aux], matrizT, resultado);
+            System.out.println("resultado: "+resultado);
+            System.arraycopy(resultado, 0, pontosTotal[aux], 0, 4);
+        }
+
+        translacao(somax, somay, somaz);
+
+        for (aux = 0; aux < 10; aux++) {
+            multiplicarMatriz(resultado, matrizDeProjecao, resultado);
+            resultadoPrintado[aux][0] = resultado[0];
+            resultadoPrintado[aux][1] = resultado[1];
+            resultadoPrintado[aux][2] = resultado[2];
+            resultadoPrintado[aux][3] = resultado[3];
+        }
+
+        for (aux = 0; aux < 17; aux++) {
+            xx1 = (int) Math.round(resultadoPrintado[arestas[aux][0] - 1][0]);
+            yy1 = (int) Math.round(resultadoPrintado[arestas[aux][0] - 1][1]);
+            xx2 = (int) Math.round(resultadoPrintado[arestas[aux][1] - 1][0]);
+            yy2 = (int) Math.round(resultadoPrintado[arestas[aux][1] - 1][1]);
+            // Chame a função para desenhar a linha com pontos (xx1, yy1) e (xx2, yy2)
+            ImagePanel.desenharRetaBresenham(buffer.getGraphics(), xx1, yy1, xx2, yy2);
+        }
+    }
+
+    private void translacao(double x, double y, double z) {
+        int aux;
+        int xx1, yy1, xx2, yy2;
+        double[][] matrizT = new double[4][4];
+        double[] resultado = new double[4];
+
+        //limparForm1();
+
+        matrizT[0][0] = 1;
+        matrizT[0][1] = 0;
+        matrizT[0][2] = 0;
+        matrizT[0][3] = 0;
+
+        matrizT[1][0] = 0;
+        matrizT[1][1] = 1;
+        matrizT[1][2] = 0;
+        matrizT[1][3] = 0;
+
+        matrizT[2][0] = 0;
+        matrizT[2][1] = 0;
+        matrizT[2][2] = 1;
+        matrizT[2][3] = 0;
+
+        matrizT[3][0] = x;
+        matrizT[3][1] = y;
+        matrizT[3][2] = z;
+        matrizT[3][3] = 1;
+
+        for (aux = 0; aux < 10; aux++) {
+            multiplicarMatriz(pontosTotal[aux], matrizT, resultado);
+            pontosTotal[aux] = resultado;
+            multiplicarMatriz(resultado, matrizDeProjecao, resultado);
+            resultadoPrintado[aux][0] = resultado[0];
+            resultadoPrintado[aux][1] = resultado[1];
+            resultadoPrintado[aux][2] = resultado[2];
+            resultadoPrintado[aux][3] = resultado[3];
+        }
+
+        for (aux = 0; aux < 17; aux++) {
+            xx1 = (int) Math.round(resultadoPrintado[arestas[aux][0] - 1][0]);
+            yy1 = (int) Math.round(resultadoPrintado[arestas[aux][0] - 1][1]);
+            xx2 = (int) Math.round(resultadoPrintado[arestas[aux][1] - 1][0]);
+            yy2 = (int) Math.round(resultadoPrintado[arestas[aux][1] - 1][1]);
+            // Chame a função para desenhar a linha com pontos (xx1, yy1) e (xx2, yy2)
+            ImagePanel.desenharRetaBresenham(buffer.getGraphics(), xx1, yy1, xx2, yy2);
+        }
+    }
+
+    public JButton getjButtonDesenhaCasinha() {
+        return jButtonDesenhaCasinha;
+    }
+
     // Variables declaration - do not modify
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButtonDesenhaCasinha;
+    private javax.swing.JButton jButtonReset;
+    private javax.swing.JButton jButtonTranslacao;
+    private javax.swing.JButton jButtonRotacao1Origem;
+    private javax.swing.JButton jButtonRotacaoObjeto;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
@@ -501,4 +713,45 @@ public class projecoesPanel extends JPanel {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+
+    private JTextField eixoRotacaoCentro;
+    private JTextField grausRotacaoCentro;
+
+
+    private class BotaoCasinhaListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            inicializaPontoEAresta();
+            desenhaCasinha();
+        }
+    }
+    private class BotaoResetListener implements ActionListener {
+
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            inicializaPontoEAresta();
+        }
+    }
+
+    private class BotaoRotacaoCentroListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            rotacaoCentroObjeto();
+        }
+    }
+
+    private class BotaoTranslacaoListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            //translacao();
+        }
+    }
+
+    public void limparBuffer() {
+        Graphics2D g2d = buffer.createGraphics();
+        g2d.drawImage(buffer, 0, 0, null);
+        g2d.dispose();
+    }
 }
