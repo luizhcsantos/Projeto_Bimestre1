@@ -1,5 +1,7 @@
 package gui;
 
+import Sistema.Controlador;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -14,12 +16,16 @@ public class JFramePrincipal extends JFrame {
     private static final long serialVersionUID = 2726163241486755910L;
     private final ImagePanel imagePanel;
 
+    public Controlador controlador;
+
     public JFramePrincipal() {
         setTitle("Projeto de Imagem");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(1000, 600);
 
         setLayout(new GridBagLayout());
+
+        controlador = new Controlador();
 
         // Criação da barra de menus
         JMenuBar menuBar = new JMenuBar();
@@ -40,6 +46,7 @@ public class JFramePrincipal extends JFrame {
 
 
         imagePanel = new ImagePanel();
+        controlador.setImagePanel(imagePanel);
 
         openMenuItem.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
@@ -105,7 +112,7 @@ public class JFramePrincipal extends JFrame {
         drawMenu.add(drawCircBresenhamMenuItem);
         menuBar.add(drawMenu);
 
-        // Configura as restrições para o primeiro painel
+        // Configura as restrições para o ImagePanel
         GridBagConstraints gbc1 = new GridBagConstraints();
         gbc1.gridx = 1; // coluna 2
         gbc1.gridy = 0;
@@ -114,22 +121,25 @@ public class JFramePrincipal extends JFrame {
         gbc1.fill = GridBagConstraints.BOTH; // Preenche ambos os eixos
         // definimos a âncora para GridBagConstraints.WEST para ambos os painéis,
         // o que alinha os painéis à esquerda dentro de suas células do layout.
-        //gbc1.anchor = GridBagConstraints.WEST; // Alinha à direita
+        gbc1.anchor = GridBagConstraints.EAST; // Alinha à direita
 
-        RgbHsl rgbhslPanel = new RgbHsl();
-        rgbhslPanel.setPreferredSize(new Dimension(150, 300));
+        RgbHslPanel rgbhslPanel = new RgbHslPanel();
+        //rgbhslPanel.setPreferredSize(new Dimension(150, 300));
+        controlador.setRgbHslPanel(rgbhslPanel);
 
-        // Configura as restrições para o segundo painel
+        // Configura as restrições para o RgbHslPanel
         GridBagConstraints gbc2 = new GridBagConstraints();
         gbc2.gridx = 0; // Coluna 1
         gbc2.gridy = 0; // Mesma linha que o primeiro painel
         gbc2.weightx = 1; // Proporção 1
         gbc2.weighty = 1; // Proporção 1
-        gbc2.fill = GridBagConstraints.BOTH; // Preenche ambos os eixos
-        //gbc2.anchor = GridBagConstraints.WEST; // Alinha à esquerda
+        //gbc2.fill = GridBagConstraints.BOTH; // Preenche ambos os eixos
+        gbc2.anchor = GridBagConstraints.WEST; // Alinha à esquerda
 
         TransformacoesPanel TransformacoesPanel = new TransformacoesPanel();
-        // Configura as restrições para o segundo painel
+        controlador.setTransformacoesPanel(new TransformacoesPanel());
+
+        // Configura as restrições para o TransformacoesPanel
         GridBagConstraints gbc3 = new GridBagConstraints();
         gbc3.gridx = 0; // Coluna 1
         gbc3.gridy = 1; // Mesma linha que o primeiro painel

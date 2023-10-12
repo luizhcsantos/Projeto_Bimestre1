@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0198fd03-ba47-48ec-9f38-82092f7c7e8c" name="Changes" comment="Painel de transformações (vulgo &quot;casinha&quot;)">
+    <list default="true" id="0198fd03-ba47-48ec-9f38-82092f7c7e8c" name="Changes" comment="Translação e rotação ao redor do centro do objeto.">
+      <change afterPath="$PROJECT_DIR$/src/Sistema/Controlador.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/ImagePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/ImagePanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/JFramePrincipal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/JFramePrincipal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/projecoesPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/TransformacoesPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/RgbHsl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/RgbHslPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/TransformacoesPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/TransformacoesPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,6 +111,9 @@
       <workItem from="1696950104322" duration="852000" />
       <workItem from="1696951859034" duration="4242000" />
       <workItem from="1696981275060" duration="8860000" />
+      <workItem from="1696992815762" duration="364000" />
+      <workItem from="1697129439568" duration="1345000" />
+      <workItem from="1697132507049" duration="6234000" />
     </task>
     <task id="LOCAL-00001" summary="Criação do projeto">
       <option name="closed" value="true" />
@@ -183,7 +187,15 @@
       <option name="project" value="LOCAL" />
       <updated>1696958766457</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Translação e rotação ao redor do centro do objeto.">
+      <option name="closed" value="true" />
+      <created>1696993028098</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1696993028098</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -210,6 +222,7 @@
     <MESSAGE value="Conversão RGB/HSL (e vice-versa) completa." />
     <MESSAGE value="Adição de desenho de pixel e desenho de reta utilizando drawline" />
     <MESSAGE value="Painel de transformações (vulgo &quot;casinha&quot;)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Painel de transformações (vulgo &quot;casinha&quot;)" />
+    <MESSAGE value="Translação e rotação ao redor do centro do objeto." />
+    <option name="LAST_COMMIT_MESSAGE" value="Translação e rotação ao redor do centro do objeto." />
   </component>
 </project>

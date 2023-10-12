@@ -7,14 +7,14 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.stream.IntStream;
 
-public class RgbHsl extends JPanel {
+public class RgbHslPanel extends JPanel {
 
     private final ArrayList<JTextField> listatextfieldsRGB;
     private final ArrayList<JTextField> listatextfieldsHSL;
 
     private Color corPainel;
 
-    public RgbHsl() {
+    public RgbHslPanel() {
 
         setLayout(new GridBagLayout());
 
