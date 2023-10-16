@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0198fd03-ba47-48ec-9f38-82092f7c7e8c" name="Changes" comment="Translação e rotação ao redor do centro do objeto.">
-      <change afterPath="$PROJECT_DIR$/src/Sistema/Controlador.java" afterDir="false" />
+    <list default="true" id="0198fd03-ba47-48ec-9f38-82092f7c7e8c" name="Changes" comment="Atualização da interface principal.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modelo interface.png" beforeDir="false" afterPath="$PROJECT_DIR$/modelo interface.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/ImagePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/ImagePanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/JFramePrincipal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/JFramePrincipal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/RgbHsl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/RgbHslPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/RgbHslPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/RgbHslPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/TransformacoesPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/TransformacoesPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -25,6 +26,20 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;luizhcsantos&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="0b4aacb1-4edd-4f43-ae86-84db608723ae" />
+        <option name="url" value="https://github.com/luizhcsantos/Projeto_Bimestre1.git" />
+      </UrlAndAccount>
+    </option>
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
@@ -113,7 +128,8 @@
       <workItem from="1696981275060" duration="8860000" />
       <workItem from="1696992815762" duration="364000" />
       <workItem from="1697129439568" duration="1345000" />
-      <workItem from="1697132507049" duration="6234000" />
+      <workItem from="1697132507049" duration="7131000" />
+      <workItem from="1697475916546" duration="1163000" />
     </task>
     <task id="LOCAL-00001" summary="Criação do projeto">
       <option name="closed" value="true" />
@@ -195,7 +211,15 @@
       <option name="project" value="LOCAL" />
       <updated>1696993028098</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Atualização da interface principal.">
+      <option name="closed" value="true" />
+      <created>1697140763957</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1697140763957</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -223,6 +247,7 @@
     <MESSAGE value="Adição de desenho de pixel e desenho de reta utilizando drawline" />
     <MESSAGE value="Painel de transformações (vulgo &quot;casinha&quot;)" />
     <MESSAGE value="Translação e rotação ao redor do centro do objeto." />
-    <option name="LAST_COMMIT_MESSAGE" value="Translação e rotação ao redor do centro do objeto." />
+    <MESSAGE value="Atualização da interface principal." />
+    <option name="LAST_COMMIT_MESSAGE" value="Atualização da interface principal." />
   </component>
 </project>

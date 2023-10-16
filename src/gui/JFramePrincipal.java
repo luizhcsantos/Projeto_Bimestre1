@@ -15,7 +15,9 @@ public class JFramePrincipal extends JFrame {
     @Serial
     private static final long serialVersionUID = 2726163241486755910L;
     private final ImagePanel imagePanel;
+    private final RgbHslPanel rgbHslPanel;
 
+    private final TransformacoesPanel transformacoesPanel;
     public Controlador controlador;
 
     public JFramePrincipal() {
@@ -47,6 +49,7 @@ public class JFramePrincipal extends JFrame {
 
         imagePanel = new ImagePanel();
         controlador.setImagePanel(imagePanel);
+        imagePanel.setPreferredSize(new Dimension(800, 350));
 
         openMenuItem.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
@@ -112,8 +115,45 @@ public class JFramePrincipal extends JFrame {
         drawMenu.add(drawCircBresenhamMenuItem);
         menuBar.add(drawMenu);
 
+
+        rgbHslPanel = new RgbHslPanel();
+        controlador.setRgbHslPanel(new RgbHslPanel());
+        rgbHslPanel.setPreferredSize(new Dimension(150, 300));
+
+        transformacoesPanel = new TransformacoesPanel();
+        controlador.setTransformacoesPanel(new TransformacoesPanel());
+        transformacoesPanel.setPreferredSize(new Dimension(1000, 250));
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(rgbHslPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(imagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addContainerGap()
+                                                .addComponent(transformacoesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(imagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(rgbHslPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(transformacoesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addContainerGap())
+        );
+
+
         // Configura as restrições para o ImagePanel
-        GridBagConstraints gbc1 = new GridBagConstraints();
+        /*GridBagConstraints gbc1 = new GridBagConstraints();
         gbc1.gridx = 1; // coluna 2
         gbc1.gridy = 0;
         gbc1.weightx = 2; // Proporção 1
@@ -123,9 +163,6 @@ public class JFramePrincipal extends JFrame {
         // o que alinha os painéis à esquerda dentro de suas células do layout.
         gbc1.anchor = GridBagConstraints.EAST; // Alinha à direita
 
-        RgbHslPanel rgbhslPanel = new RgbHslPanel();
-        //rgbhslPanel.setPreferredSize(new Dimension(150, 300));
-        controlador.setRgbHslPanel(rgbhslPanel);
 
         // Configura as restrições para o RgbHslPanel
         GridBagConstraints gbc2 = new GridBagConstraints();
@@ -136,8 +173,7 @@ public class JFramePrincipal extends JFrame {
         //gbc2.fill = GridBagConstraints.BOTH; // Preenche ambos os eixos
         gbc2.anchor = GridBagConstraints.WEST; // Alinha à esquerda
 
-        TransformacoesPanel TransformacoesPanel = new TransformacoesPanel();
-        controlador.setTransformacoesPanel(new TransformacoesPanel());
+
 
         // Configura as restrições para o TransformacoesPanel
         GridBagConstraints gbc3 = new GridBagConstraints();
@@ -150,6 +186,6 @@ public class JFramePrincipal extends JFrame {
 
         add(imagePanel, gbc1);
         add(rgbhslPanel, gbc2);
-        add(TransformacoesPanel, gbc3);
+        add(TransformacoesPanel, gbc3);*/
     }
 }

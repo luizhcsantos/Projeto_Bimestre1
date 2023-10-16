@@ -35,7 +35,8 @@ public class ImagePanel extends JPanel {
     private DrawingMethod drawingMethod;
 
     public ImagePanel() {
-        image = new BufferedImage(800, 600, BufferedImage.TYPE_INT_RGB);
+
+        image = new BufferedImage(800, 350, BufferedImage.TYPE_INT_RGB);
         buffer = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
 
         setBackground(Color.BLACK);

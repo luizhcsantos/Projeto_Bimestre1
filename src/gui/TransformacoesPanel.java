@@ -24,13 +24,16 @@ public class TransformacoesPanel extends JPanel {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        setPreferredSize(new Dimension(1000, 250));
         javax.swing.JTextField jTextField5;
         JPanel jPanel1 = new JPanel(); // painel 1 / desenha casinha - reseta área de desenho
+        jPanel1.setPreferredSize(new Dimension(100, 200));
         jPanel1.setBorder(BorderFactory.createLineBorder(Color.black));
         jLabel1 = new javax.swing.JLabel();
         jButtonDesenhaCasinha = new javax.swing.JButton();
         jButtonReset = new javax.swing.JButton();
-        JPanel jPanel2 = new JPanel(); // painel 2 / translação - rotação 
+        JPanel jPanel2 = new JPanel(); // painel 2 / translação - rotação
+        jPanel2.setPreferredSize(new Dimension(300, 200));
         jPanel2.setBorder(BorderFactory.createLineBorder(Color.black));
         JLabel jLabel2 = new JLabel();
         JLabel jLabel3 = new JLabel();
@@ -51,6 +54,7 @@ public class TransformacoesPanel extends JPanel {
         jLabel11 = new javax.swing.JLabel();
         jButtonRotacaoObjeto = new javax.swing.JButton();
         JPanel jPanel3 = new JPanel(); // painel 3 / escala
+        jPanel3.setPreferredSize(new Dimension(300, 200));
         jPanel3.setBorder(BorderFactory.createLineBorder(Color.black));
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
@@ -64,6 +68,7 @@ public class TransformacoesPanel extends JPanel {
         JTextField jTextField11 = new JTextField();
         jButton6 = new javax.swing.JButton();
         JPanel jPanel4 = new JPanel(); // painel 4 / cizalhamento
+        jPanel4.setPreferredSize(new Dimension(300, 200));
         jPanel4.setBorder(BorderFactory.createLineBorder(Color.black));
         JLabel jLabel18 = new JLabel();
         JTextField jTextField12 = new JTextField();

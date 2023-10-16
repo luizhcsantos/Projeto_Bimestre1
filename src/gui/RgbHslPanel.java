@@ -16,6 +16,8 @@ public class RgbHslPanel extends JPanel {
 
     public RgbHslPanel() {
 
+        setPreferredSize(new Dimension(150, 300));
+
         setLayout(new GridBagLayout());
 
         listatextfieldsRGB = new ArrayList<>();
