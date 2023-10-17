@@ -4,11 +4,23 @@ import gui.ImagePanel;
 import gui.RgbHslPanel;
 import gui.TransformacoesPanel;
 
+import java.awt.image.BufferedImage;
+
 public class Controlador {
 
     public ImagePanel imagePanel;
     public RgbHslPanel rgbHslPanel;
     public TransformacoesPanel transformacoesPanel;
+
+    public BufferedImage getBuffer() {
+        return buffer;
+    }
+
+    public void setBuffer(BufferedImage buffer) {
+        this.buffer = buffer;
+    }
+
+    public BufferedImage buffer;
 
 
     public Controlador() {

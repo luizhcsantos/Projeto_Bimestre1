@@ -15,10 +15,31 @@ public class TransformacoesPanel extends JPanel {
     private double[][] resultadoPrintado = new double[10][4];
     private double[][] matrizDeProjecao = new double[4][4];
 
+    public enum Transformacao {
+        CASINHA,
+        TRANSLACAO,
+        ROTACAO_ORIGEM,
+        ROTACAO_CENTRO,
+        ESCALA_LOCAL,
+        ESCALA_GLOBAL,
+        SHEARING
+    }
+    private Transformacao transformacao;
+
     public TransformacoesPanel() {
-        initComponents();
+        //initComponents();
+
         buffer = ImagePanel.getBuffer();
-        //inicializaPontoEAresta();
+        inicializaPontoEAresta();
+    }
+
+    public void tipoTransformacao(Transformacao transformacao) {
+        this.transformacao = transformacao;
+        limparBuffer(); // Limpa o buffer ao alterar o modo de desenho
+    }
+
+    public Transformacao getTransformacao() {
+        return transformacao;
     }
 
     private void initComponents() {
@@ -550,6 +571,7 @@ public class TransformacoesPanel extends JPanel {
             int yy2 = (int) Math.round(resultadoPrintado[arestas[aux][1] - 1][1]);
             // chame a função para desenhar a linha com pontos (xx1, yy1) e (xx2, yy2)
             ImagePanel.desenharRetaBresenham(buffer.getGraphics(), xx1, yy1, xx2, yy2);
+            repaint();
         }
 
     }
