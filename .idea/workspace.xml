@@ -4,13 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0198fd03-ba47-48ec-9f38-82092f7c7e8c" name="Changes" comment="Alteração tamanhos de painéis transf.">
+    <list default="true" id="0198fd03-ba47-48ec-9f38-82092f7c7e8c" name="Changes" comment="Desenho casinha completo. Separação de transformações em classes.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Sistema/Controlador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Sistema/Controlador.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/ImagePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/ImagePanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/JFramePrincipal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/JFramePrincipal.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/RgbHslPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/RgbHslPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/TransformacoesPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/TransformacoesPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/TranslacaoPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/TranslacaoPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,7 +127,8 @@
       <workItem from="1696992815762" duration="364000" />
       <workItem from="1697129439568" duration="1345000" />
       <workItem from="1697132507049" duration="7131000" />
-      <workItem from="1697475916546" duration="12753000" />
+      <workItem from="1697475916546" duration="13424000" />
+      <workItem from="1697558600246" duration="4400000" />
     </task>
     <task id="LOCAL-00001" summary="Criação do projeto">
       <option name="closed" value="true" />
@@ -227,7 +226,15 @@
       <option name="project" value="LOCAL" />
       <updated>1697479113526</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Desenho casinha completo. Separação de transformações em classes.">
+      <option name="closed" value="true" />
+      <created>1697513094579</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1697513094579</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -257,6 +264,7 @@
     <MESSAGE value="Translação e rotação ao redor do centro do objeto." />
     <MESSAGE value="Atualização da interface principal." />
     <MESSAGE value="Alteração tamanhos de painéis transf." />
-    <option name="LAST_COMMIT_MESSAGE" value="Alteração tamanhos de painéis transf." />
+    <MESSAGE value="Desenho casinha completo. Separação de transformações em classes." />
+    <option name="LAST_COMMIT_MESSAGE" value="Desenho casinha completo. Separação de transformações em classes." />
   </component>
 </project>

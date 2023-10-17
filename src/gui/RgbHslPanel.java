@@ -404,14 +404,5 @@ public class RgbHslPanel extends JPanel {
         }
     }
 
-    public void atualizaPainel(Component componente) {
 
-        removeAll();
-
-        add(componente);
-
-        revalidate();
-        repaint();
-
-    }
 }
