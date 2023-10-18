@@ -1,5 +1,7 @@
 package gui;
 
+import Sistema.Controlador;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,10 +15,12 @@ public class RgbHslPanel extends JPanel {
     private final ArrayList<JTextField> listatextfieldsRGB;
     private final ArrayList<JTextField> listatextfieldsHSL;
 
+    private Controlador controlador;
     private Color corPainel;
 
-    public RgbHslPanel(JFramePrincipal jFramePrincipal) {
+    public RgbHslPanel(JFramePrincipal jFramePrincipal, Controlador controlador) {
 
+        this.controlador = controlador;
         this.jFramePrincipal = jFramePrincipal;
         setPreferredSize(new Dimension(150, 200));
 
@@ -78,7 +82,14 @@ public class RgbHslPanel extends JPanel {
 
         jButtonDesenhaCasinha.setText("Plano XY");
 
-        jButtonDesenhaCasinha.addActionListener(new DesenhaActionListener());
+        jButtonDesenhaCasinha.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controlador.limparBuffer();
+                controlador.desenhaCasinha();
+                controlador.imagePanel.repaint();
+            }
+        });
 
         jButton2.setText("Reset");
 
@@ -395,14 +406,5 @@ public class RgbHslPanel extends JPanel {
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
-
-    private class DesenhaActionListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            jFramePrincipal.getImagePanel().desenhaCasinha();
-            jFramePrincipal.getImagePanel().repaint();
-        }
-    }
-
 
 }

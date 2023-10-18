@@ -6,6 +6,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.Serial;
+import java.util.ArrayList;
 
 public class ImagePanel extends JPanel {
     /**
@@ -26,16 +27,6 @@ public class ImagePanel extends JPanel {
     private double[][] resultadoPrintado = new double[10][4];
     private double[][] matrizDeProjecao = new double[4][4];
 
-    public enum Transformacao {
-        CASINHA,
-        TRANSLACAO,
-        ROTACAO_ORIGEM,
-        ROTACAO_CENTRO,
-        ESCALA_LOCAL,
-        ESCALA_GLOBAL,
-        SHEARING
-    }
-    private TransformacoesPanel.Transformacao transformacao;
 
 
     public enum DrawingMethod {
@@ -52,11 +43,10 @@ public class ImagePanel extends JPanel {
 
     public ImagePanel() {
 
-        image = new BufferedImage(800, 350, BufferedImage.TYPE_INT_RGB);
+        image = new BufferedImage(800, 600, BufferedImage.TYPE_INT_RGB);
         buffer = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
         JFramePrincipal.controlador.setBuffer(buffer);
         setBackground(Color.BLACK);
-        inicializaPontoEAresta();
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -102,16 +92,6 @@ public class ImagePanel extends JPanel {
                 }
             }
         });
-    }
-
-
-    public void tipoTransformacao(TransformacoesPanel.Transformacao transformacao) {
-        this.transformacao = transformacao;
-        limparBuffer(); // Limpa o buffer ao alterar o modo de desenho
-    }
-
-    public TransformacoesPanel.Transformacao getTransformacao() {
-        return transformacao;
     }
 
     public void metodoDesenho(DrawingMethod drawingMethod) {
@@ -457,6 +437,7 @@ public class ImagePanel extends JPanel {
     public void desenhaCasinha() {
 
         limparBuffer();
+        inicializaPontoEAresta();
 
         double[][] matrizT = {
                 {1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}
@@ -477,7 +458,6 @@ public class ImagePanel extends JPanel {
             int yy2 = (int) Math.round(resultadoPrintado[arestas[aux][1] - 1][1]);
             // chame a função para desenhar a linha com pontos (xx1, yy1) e (xx2, yy2)
             ImagePanel.desenharRetaBresenham(buffer.getGraphics(), xx1, yy1, xx2, yy2);
-
         }
 
     }
@@ -493,7 +473,7 @@ public class ImagePanel extends JPanel {
     }
 
 
-    /*private void rotacaoCentroObjeto() {
+    public void rotacaoCentroObjeto(String eixo, double grs) {
         int aux;
         int xx1, yy1, xx2, yy2;
         double[][] matrizT = new double[4][4];
@@ -504,7 +484,7 @@ public class ImagePanel extends JPanel {
 
         limparBuffer();
 
-        graus = (Double.parseDouble(grausRotacaoCentro.getText()) * Math.PI) / 180;
+        graus = (grs * Math.PI) / 180;
 
         somax = 0;
         somay = 0;
@@ -520,21 +500,21 @@ public class ImagePanel extends JPanel {
 
         translacao(-somax, -somay, -somaz);
 
-        if (eixoRotacaoCentro.getText().equalsIgnoreCase("x")) {
+        if (eixo.equalsIgnoreCase("x")) {
             matrizT[0][0] = 1;
             matrizT[1][1] = Math.cos(graus);
             matrizT[1][2] = -Math.sin(graus);
             matrizT[2][1] = Math.sin(graus);
             matrizT[2][2] = Math.cos(graus);
             matrizT[3][3] = 1;
-        } else if (eixoRotacaoCentro.getText().equalsIgnoreCase("y")) {
+        } else if (eixo.equalsIgnoreCase("y")) {
             matrizT[0][0] = Math.cos(graus);
             matrizT[0][2] = Math.sin(graus);
             matrizT[1][1] = 1;
             matrizT[2][0] = -Math.sin(graus);
             matrizT[2][2] = Math.cos(graus);
             matrizT[3][3] = 1;
-        } else if (eixoRotacaoCentro.getText().equalsIgnoreCase("z")) {
+        } else if (eixo.equalsIgnoreCase("z")) {
             matrizT[0][0] = Math.cos(graus);
             matrizT[0][1] = -Math.sin(graus);
             matrizT[1][0] = Math.sin(graus);
@@ -545,7 +525,6 @@ public class ImagePanel extends JPanel {
 
         for (aux = 0; aux < 10; aux++) {
             multiplicarMatriz(pontosTotal[aux], matrizT, resultado);
-            System.out.println("resultado: "+resultado);
             System.arraycopy(resultado, 0, pontosTotal[aux], 0, 4);
         }
 
@@ -567,15 +546,15 @@ public class ImagePanel extends JPanel {
             // Chame a função para desenhar a linha com pontos (xx1, yy1) e (xx2, yy2)
             ImagePanel.desenharRetaBresenham(buffer.getGraphics(), xx1, yy1, xx2, yy2);
         }
-    }*/
+    }
 
-    private void translacao(double x, double y, double z) {
+    public void translacao(double x, double y, double z) {
         int aux;
         int xx1, yy1, xx2, yy2;
         double[][] matrizT = new double[4][4];
         double[] resultado = new double[4];
 
-        //limparForm1();
+        limparBuffer();
 
         matrizT[0][0] = 1;
         matrizT[0][1] = 0;
@@ -615,6 +594,164 @@ public class ImagePanel extends JPanel {
             // Chame a função para desenhar a linha com pontos (xx1, yy1) e (xx2, yy2)
             ImagePanel.desenharRetaBresenham(buffer.getGraphics(), xx1, yy1, xx2, yy2);
         }
+    }
+
+    public void escalas(double x, double y, double z, double global) {
+        int aux;
+        int xx1, yy1, xx2, yy2;
+        double[][] matrizT = new double[4][4];
+        double[] resultado = new double[4];
+
+        limparBuffer();
+
+        matrizT[0][0] = x;
+        matrizT[0][1] = 0;
+        matrizT[0][2] = 0;
+        matrizT[0][3] = 0;
+
+        matrizT[1][0] = 0;
+        matrizT[1][1] = y;
+        matrizT[1][2] = 0;
+        matrizT[1][3] = 0;
+
+        matrizT[2][0] = 0;
+        matrizT[2][1] = 0;
+        matrizT[2][2] = z;
+        matrizT[2][3] = 0;
+
+        matrizT[3][0] = 0;
+        matrizT[3][1] = 0;
+        matrizT[3][2] = 0;
+        matrizT[3][3] = global;
+
+        for (aux = 1; aux <= 10; aux++) {
+            multiplicarMatriz(pontosTotal[aux], matrizT, resultado);
+            resultado[0] /= resultado[3];
+            resultado[1] /= resultado[3];
+            resultado[2] /= resultado[3];
+            resultado[3] /= resultado[3];
+            pontosTotal[aux] = resultado.clone();
+            multiplicarMatriz(resultado, matrizDeProjecao, resultado);
+            resultadoPrintado[aux][0] = resultado[0];
+            resultadoPrintado[aux][1] = resultado[1];
+            resultadoPrintado[aux][2] = resultado[2];
+            resultadoPrintado[aux][3] = resultado[3];
+        }
+
+        for (aux = 0; aux < 17; aux++) {
+            xx1 = (int) Math.round(resultadoPrintado[arestas[aux][0] - 1][0]);
+            yy1 = (int) Math.round(resultadoPrintado[arestas[aux][0] - 1][1]);
+            xx2 = (int) Math.round(resultadoPrintado[arestas[aux][1] - 1][0]);
+            yy2 = (int) Math.round(resultadoPrintado[arestas[aux][1] - 1][1]);
+            // Chame a função para desenhar a linha com pontos (xx1, yy1) e (xx2, yy2)
+            ImagePanel.desenharRetaBresenham(buffer.getGraphics(), xx1, yy1, xx2, yy2);
+        }
+    }
+
+    public void shearing(ArrayList<Double> valores) {
+        int aux;
+        int xx1, yy1, xx2, yy2;
+        double[][] matrizT = new double[4][4];
+        double[] resultado = new double[4];
+
+        limparBuffer();
+
+        matrizT[0][0] = valores.get(0); // A
+        matrizT[0][1] = valores.get(1); // B
+        matrizT[0][2] = valores.get(2); // C
+        matrizT[0][3] = 1;                                           // D
+
+        matrizT[1][0] = valores.get(3); // E
+        matrizT[1][1] = valores.get(4); // F
+        matrizT[1][2] = valores.get(5); // G
+        matrizT[1][3] = 1;                                           // H
+
+        matrizT[2][0] = valores.get(6); // I
+        matrizT[2][1] = valores.get(7); // J
+        matrizT[2][2] = valores.get(8); // K
+        matrizT[2][3] = 1;                                           // L
+
+        matrizT[3][0] = 1; // M
+        matrizT[3][1] = 1; // N
+        matrizT[3][2] = 1; // O
+        matrizT[3][3] = 1; // P
+
+        for (aux = 0; aux < 10; aux++) {
+            multiplicarMatriz(pontosTotal[aux], matrizT, resultado);
+            pontosTotal[aux] = resultado.clone();
+            multiplicarMatriz(resultado, matrizDeProjecao, resultado);
+            resultadoPrintado[aux][0] = resultado[0];
+            resultadoPrintado[aux][1] = resultado[1];
+            resultadoPrintado[aux][2] = resultado[2];
+            resultadoPrintado[aux][3] = resultado[3];
+        }
+
+        for (aux = 0; aux < 17; aux++) {
+            xx1 = (int) Math.round(resultadoPrintado[arestas[aux][0] - 1][0]);
+            yy1 = (int) Math.round(resultadoPrintado[arestas[aux][0] - 1][1]);
+            xx2 = (int) Math.round(resultadoPrintado[arestas[aux][1] - 1][0]);
+            yy2 = (int) Math.round(resultadoPrintado[arestas[aux][1] - 1][1]);
+            // Chame a função para desenhar a linha com pontos (xx1, yy1) e (xx2, yy2)
+            ImagePanel.desenharRetaBresenham(buffer.getGraphics(), xx1, yy1, xx2, yy2);
+        }
+
+    }
+    
+    public void rotacaoOrigem(String eixo, double grs) {
+
+        int aux;
+        int xx1, yy1, xx2, yy2;
+        double[][] matrizT = new double[4][4];
+        double[] resultado = new double[4];
+        double graus;
+
+        limparBuffer();
+
+        graus = (grs * Math.PI) / 180;
+
+
+        if (eixo.equals("x")) {
+            matrizT[0][0] = 1;
+            matrizT[1][1] = Math.cos(graus);
+            matrizT[1][2] = -Math.sin(graus);
+            matrizT[2][1] = Math.sin(graus);
+            matrizT[2][2] = Math.cos(graus);
+            matrizT[3][3] = 1;
+        } else if (eixo.equals("y")) {
+            matrizT[0][0] = Math.cos(graus);
+            matrizT[0][2] = Math.sin(graus);
+            matrizT[1][1] = 1;
+            matrizT[2][0] = -Math.sin(graus);
+            matrizT[2][2] = Math.cos(graus);
+            matrizT[3][3] = 1;
+        } else if (eixo.equals("z")) {
+            matrizT[0][0] = Math.cos(graus);
+            matrizT[0][1] = -Math.sin(graus);
+            matrizT[1][0] = Math.sin(graus);
+            matrizT[1][1] = Math.cos(graus);
+            matrizT[2][2] = 1;
+            matrizT[3][3] = 1;
+        }
+
+        for (aux = 0; aux < 10; aux++) {
+            multiplicarMatriz(pontosTotal[aux], matrizT, resultado);
+            pontosTotal[aux] = resultado.clone();
+            multiplicarMatriz(resultado, matrizDeProjecao, resultado);
+            resultadoPrintado[aux][0] = resultado[0];
+            resultadoPrintado[aux][1] = resultado[1];
+            resultadoPrintado[aux][2] = resultado[2];
+            resultadoPrintado[aux][3] = resultado[3];
+        }
+
+        for (aux = 0; aux < 17; aux++) {
+            xx1 = (int) Math.round(resultadoPrintado[arestas[aux][0] - 1][0]);
+            yy1 = (int) Math.round(resultadoPrintado[arestas[aux][0] - 1][1]);
+            xx2 = (int) Math.round(resultadoPrintado[arestas[aux][1] - 1][0]);
+            yy2 = (int) Math.round(resultadoPrintado[arestas[aux][1] - 1][1]);
+            // Chame a função para desenhar a linha com pontos (xx1, yy1) e (xx2, yy2)
+            ImagePanel.desenharRetaBresenham(buffer.getGraphics(), xx1, yy1, xx2, yy2);
+        }
+
     }
 
 }

@@ -5,10 +5,12 @@ import Sistema.Controlador;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serial;
+import java.util.ArrayList;
 
 public class JFramePrincipal extends JFrame {
 
@@ -53,7 +55,7 @@ public class JFramePrincipal extends JFrame {
 
         imagePanel = new ImagePanel();
         controlador.setImagePanel(imagePanel);
-        imagePanel.setPreferredSize(new Dimension(800, 400));
+        imagePanel.setPreferredSize(new Dimension(800, 600));
         imagePanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 100, 0)));
 
         openMenuItem.addActionListener(e -> {
@@ -120,7 +122,7 @@ public class JFramePrincipal extends JFrame {
         menuBar.add(drawMenu);
 
 
-        rgbHslPanel = new RgbHslPanel(this);
+        rgbHslPanel = new RgbHslPanel(this, controlador);
         controlador.setRgbHslPanel(rgbHslPanel);
         rgbHslPanel.setPreferredSize(new Dimension(300, 300));
         rgbHslPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 200)));
@@ -133,71 +135,61 @@ public class JFramePrincipal extends JFrame {
         JMenuItem translacaoMenuItem = new JMenuItem("Translação");
         JMenuItem rotacaoOrigemMenuItem = new JMenuItem("Rotação de Objeto em relação à origem");
         JMenuItem rotacaoCentroMenuItem = new JMenuItem("Rotação em relação ao centro do objeto");
-        JMenuItem escalaLocalMenuItem = new JMenuItem("Escala Local");
-        JMenuItem escalaGlobalMenuItem = new JMenuItem("Escala Global");
+        JMenuItem escalasMenuItem = new JMenuItem("Escalas (Local/Global)");
         JMenuItem shearingMenuItem = new JMenuItem("Shearing (Cizalhamento)");
         transformacoesMenu.add(translacaoMenuItem);
         transformacoesMenu.add(rotacaoOrigemMenuItem);
         transformacoesMenu.add(rotacaoCentroMenuItem);
-        transformacoesMenu.add(escalaLocalMenuItem);
-        transformacoesMenu.add(escalaGlobalMenuItem);
+        transformacoesMenu.add(escalasMenuItem);
         transformacoesMenu.add(shearingMenuItem);
         menuBar.add(transformacoesMenu);
 
 
         translacaoMenuItem.addActionListener(e -> {
-            //transformacoesPanel.tipoTransformacao(TransformacoesPanel.Transformacao.TRANSLACAO);
-            System.out.println("selecao: "+e.getID());
-            TranslacaoPanel translacaoPanel = new TranslacaoPanel();
+
             transformacoesPanel.removeAll();
+            TranslacaoPanel translacaoPanel = new TranslacaoPanel(controlador);
             transformacoesPanel.add(translacaoPanel);
-            transformacoesPanel.revalidate();
-            transformacoesPanel.repaint();
+            transformacoesPanel.validate();
 
         });
-//        rotacaoCentroMenuItem.addActionListener(e -> {
-//            transformacoesPanel.tipoTransformacao(TransformacoesPanel.Transformacao.ROTACAO_ORIGEM);
-//        });
-//        rotacaoCentroMenuItem.addActionListener(e -> {
-//            transformacoesPanel.tipoTransformacao(TransformacoesPanel.Transformacao.ROTACAO_CENTRO);
-//        });
-//        escalaLocalMenuItem.addActionListener(e -> {
-//            transformacoesPanel.tipoTransformacao(TransformacoesPanel.Transformacao.ESCALA_LOCAL);
-//        });
-//        escalaGlobalMenuItem.addActionListener(e -> {
-//            transformacoesPanel.tipoTransformacao(TransformacoesPanel.Transformacao.ESCALA_GLOBAL);
-//        });
-//        shearingMenuItem.addActionListener(e -> {
-//            transformacoesPanel.tipoTransformacao(TransformacoesPanel.Transformacao.SHEARING);
-//        });
+        rotacaoCentroMenuItem.addActionListener(e -> {
+            transformacoesPanel.removeAll();
+            RotacaoCentroPanel rotacaoCentroPanel = new RotacaoCentroPanel(controlador);
+            transformacoesPanel.add(rotacaoCentroPanel);
+            transformacoesPanel.validate();
+        });
+        rotacaoOrigemMenuItem.addActionListener(e -> {
+            transformacoesPanel.removeAll();
+            RotacaoOrigemPanel rotacaoOrigemPanel = new RotacaoOrigemPanel(controlador);
+            transformacoesPanel.add(rotacaoOrigemPanel);
+            transformacoesPanel.validate();
+        });
+        escalasMenuItem.addActionListener(e -> {
+            transformacoesPanel.removeAll();
+            EscalasPanel escalasPanel = new EscalasPanel(controlador);
+            transformacoesPanel.add(escalasPanel);
+            transformacoesPanel.validate();
+        });
+        shearingMenuItem.addActionListener(e -> {
+            transformacoesPanel.removeAll();
+            ShearingPanel shearingPanel = new ShearingPanel(controlador);
+            transformacoesPanel.add(shearingPanel);
+            transformacoesPanel.validate();
+        });
 
-
-
-        imagePanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        imagePanel.setPreferredSize(new java.awt.Dimension(800, 400));
 
         javax.swing.GroupLayout ImagePanelLayout = new javax.swing.GroupLayout(imagePanel);
         imagePanel.setLayout(ImagePanelLayout);
         ImagePanelLayout.setHorizontalGroup(
                 ImagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 708, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
         );
         ImagePanelLayout.setVerticalGroup(
                 ImagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGap(0, 0, Short.MAX_VALUE)
         );
 
-
-        javax.swing.GroupLayout transformacoesPanelLayout = new javax.swing.GroupLayout(transformacoesPanel);
-        transformacoesPanel.setLayout(transformacoesPanelLayout);
-        transformacoesPanelLayout.setHorizontalGroup(
-                transformacoesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 0, Short.MAX_VALUE)
-        );
-        transformacoesPanelLayout.setVerticalGroup(
-                transformacoesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 355, Short.MAX_VALUE)
-        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -211,7 +203,7 @@ public class JFramePrincipal extends JFrame {
                                                 .addGap(0, 0, Short.MAX_VALUE)
                                                 .addComponent(rgbHslPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(imagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 710, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(imagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -220,7 +212,7 @@ public class JFramePrincipal extends JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(layout.createSequentialGroup()
                                                 .addContainerGap()
-                                                .addComponent(imagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE))
+                                                .addComponent(imagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(layout.createSequentialGroup()
                                                 .addComponent(rgbHslPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGap(12, 12, 12)
@@ -231,7 +223,6 @@ public class JFramePrincipal extends JFrame {
         pack();
 
     }
-
 
 
     public Controlador getControlador() {
