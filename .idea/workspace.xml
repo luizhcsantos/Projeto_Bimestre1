@@ -4,17 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0198fd03-ba47-48ec-9f38-82092f7c7e8c" name="Changes" comment="Atualização painel transformações">
-      <change afterPath="$PROJECT_DIR$/src/gui/EscalasPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/gui/RotacaoCentroPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/gui/RotacaoOrigemPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/gui/ShearingPanel.java" afterDir="false" />
+    <list default="true" id="0198fd03-ba47-48ec-9f38-82092f7c7e8c" name="Changes" comment="Transformações restantes adicionadas.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Sistema/Controlador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Sistema/Controlador.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/ImagePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/ImagePanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/JFramePrincipal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/JFramePrincipal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/RgbHslPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/RgbHslPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/TranslacaoPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/TranslacaoPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -135,7 +127,9 @@
       <workItem from="1697132507049" duration="7131000" />
       <workItem from="1697475916546" duration="13424000" />
       <workItem from="1697558600246" duration="5767000" />
-      <workItem from="1697590725510" duration="9968000" />
+      <workItem from="1697590725510" duration="10364000" />
+      <workItem from="1697639356343" duration="1164000" />
+      <workItem from="1697643208687" duration="438000" />
     </task>
     <task id="LOCAL-00001" summary="Criação do projeto">
       <option name="closed" value="true" />
@@ -249,7 +243,15 @@
       <option name="project" value="LOCAL" />
       <updated>1697565404769</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Transformações restantes adicionadas.">
+      <option name="closed" value="true" />
+      <created>1697601641823</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1697601641824</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -281,6 +283,7 @@
     <MESSAGE value="Alteração tamanhos de painéis transf." />
     <MESSAGE value="Desenho casinha completo. Separação de transformações em classes." />
     <MESSAGE value="Atualização painel transformações" />
-    <option name="LAST_COMMIT_MESSAGE" value="Atualização painel transformações" />
+    <MESSAGE value="Transformações restantes adicionadas." />
+    <option name="LAST_COMMIT_MESSAGE" value="Transformações restantes adicionadas." />
   </component>
 </project>

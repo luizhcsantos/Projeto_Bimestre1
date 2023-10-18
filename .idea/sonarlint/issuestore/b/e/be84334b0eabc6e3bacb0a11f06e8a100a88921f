@@ -1,0 +1,19 @@
+
+e
+java:S2184ü"BCast one of the operands of this addition operation to a "double".(ó¶ËÛüÿÿÿÿ8ìĞšÌ«1
+c
+java:S2184"ECast one of the operands of this subtraction operation to a "double".(¢­¢8ìĞšÌ«1
+e
+java:S2184È"BCast one of the operands of this addition operation to a "double".(Œ™ Ãÿÿÿÿÿ8îĞšÌ«1
+_
+java:S2184Í"BCast one of the operands of this addition operation to a "double".(Ë¿„K8îĞšÌ«1
+e
+java:S2184ş"BCast one of the operands of this addition operation to a "double".(àö÷½üÿÿÿÿ8îĞšÌ«1
+{	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(İØ˜úÿÿÿÿ8ğĞšÌ«1
+o
+java:S3776}"RRefactor this method to reduce its Cognitive Complexity from 20 to the 15 allowed.(º£«â8¬ÕšÌ«1
+o
+java:S3776¤"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(îÎJ8¶ÕšÌ«1
+Y	java:S125Ü"<This block of commented-out lines of code should be removed.(ÕˆäÜ8ÔÕšÌ«1
+V
+java:S1144±"8Remove this unused private "drawSymmetricPoints" method.(×òì8äÕšÌ«1

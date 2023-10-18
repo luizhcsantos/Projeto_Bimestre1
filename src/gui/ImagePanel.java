@@ -27,8 +27,6 @@ public class ImagePanel extends JPanel {
     private double[][] resultadoPrintado = new double[10][4];
     private double[][] matrizDeProjecao = new double[4][4];
 
-
-
     public enum DrawingMethod {
         RETA,           // desenha reta com função do próprio java graphics
         PIXEL,          // desenha apenas um pixel
@@ -313,6 +311,7 @@ public class ImagePanel extends JPanel {
         g.fillRect(xx1 + y,yy1 + x,1, 1);
 
     }
+
     private static void drawSymmetricPoints(Graphics g, int xx1, int yy1, int x, int y) {
         g.fillRect(xx1 + x, yy1 + y, 1, 1);
         g.fillRect(xx1 - x, yy1 + y, 1, 1);
@@ -439,15 +438,15 @@ public class ImagePanel extends JPanel {
         limparBuffer();
         inicializaPontoEAresta();
 
-        double[][] matrizT = {
+        double[][] matriTransformacao = {
                 {1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}
         };
 
-        matrizDeProjecao = matrizT;
+        matrizDeProjecao = matriTransformacao;
 
         for (int aux = 0; aux < 10; aux++) {
             double[] resultado = new double[10];
-            multiplicarMatriz(pontosTotal[aux], matrizT, resultado);
+            multiplicarMatriz(pontosTotal[aux], matriTransformacao, resultado);
             System.arraycopy(resultado, 0, resultadoPrintado[aux], 0, 4);
         }
 
@@ -458,6 +457,7 @@ public class ImagePanel extends JPanel {
             int yy2 = (int) Math.round(resultadoPrintado[arestas[aux][1] - 1][1]);
             // chame a função para desenhar a linha com pontos (xx1, yy1) e (xx2, yy2)
             ImagePanel.desenharRetaBresenham(buffer.getGraphics(), xx1, yy1, xx2, yy2);
+            System.out.println();
         }
 
     }
@@ -472,11 +472,10 @@ public class ImagePanel extends JPanel {
         }
     }
 
-
     public void rotacaoCentroObjeto(String eixo, double grs) {
         int aux;
         int xx1, yy1, xx2, yy2;
-        double[][] matrizT = new double[4][4];
+        double[][] matriTransformacao = new double[4][4];
         double[] resultado = new double[4];
         double somax, somay, somaz;
         int contador;
@@ -501,30 +500,30 @@ public class ImagePanel extends JPanel {
         translacao(-somax, -somay, -somaz);
 
         if (eixo.equalsIgnoreCase("x")) {
-            matrizT[0][0] = 1;
-            matrizT[1][1] = Math.cos(graus);
-            matrizT[1][2] = -Math.sin(graus);
-            matrizT[2][1] = Math.sin(graus);
-            matrizT[2][2] = Math.cos(graus);
-            matrizT[3][3] = 1;
+            matriTransformacao[0][0] = 1;
+            matriTransformacao[1][1] = Math.cos(graus);
+            matriTransformacao[1][2] = -Math.sin(graus);
+            matriTransformacao[2][1] = Math.sin(graus);
+            matriTransformacao[2][2] = Math.cos(graus);
+            matriTransformacao[3][3] = 1;
         } else if (eixo.equalsIgnoreCase("y")) {
-            matrizT[0][0] = Math.cos(graus);
-            matrizT[0][2] = Math.sin(graus);
-            matrizT[1][1] = 1;
-            matrizT[2][0] = -Math.sin(graus);
-            matrizT[2][2] = Math.cos(graus);
-            matrizT[3][3] = 1;
+            matriTransformacao[0][0] = Math.cos(graus);
+            matriTransformacao[0][2] = Math.sin(graus);
+            matriTransformacao[1][1] = 1;
+            matriTransformacao[2][0] = -Math.sin(graus);
+            matriTransformacao[2][2] = Math.cos(graus);
+            matriTransformacao[3][3] = 1;
         } else if (eixo.equalsIgnoreCase("z")) {
-            matrizT[0][0] = Math.cos(graus);
-            matrizT[0][1] = -Math.sin(graus);
-            matrizT[1][0] = Math.sin(graus);
-            matrizT[1][1] = Math.cos(graus);
-            matrizT[2][2] = 1;
-            matrizT[3][3] = 1;
+            matriTransformacao[0][0] = Math.cos(graus);
+            matriTransformacao[0][1] = -Math.sin(graus);
+            matriTransformacao[1][0] = Math.sin(graus);
+            matriTransformacao[1][1] = Math.cos(graus);
+            matriTransformacao[2][2] = 1;
+            matriTransformacao[3][3] = 1;
         }
 
         for (aux = 0; aux < 10; aux++) {
-            multiplicarMatriz(pontosTotal[aux], matrizT, resultado);
+            multiplicarMatriz(pontosTotal[aux], matriTransformacao, resultado);
             System.arraycopy(resultado, 0, pontosTotal[aux], 0, 4);
         }
 
@@ -551,33 +550,21 @@ public class ImagePanel extends JPanel {
     public void translacao(double x, double y, double z) {
         int aux;
         int xx1, yy1, xx2, yy2;
-        double[][] matrizT = new double[4][4];
+        double[][] matriTransformacao = new double[4][4];
         double[] resultado = new double[4];
 
         limparBuffer();
 
-        matrizT[0][0] = 1;
-        matrizT[0][1] = 0;
-        matrizT[0][2] = 0;
-        matrizT[0][3] = 0;
+        matriTransformacao[0][0] = 1; matriTransformacao[0][1] = 0; matriTransformacao[0][2] = 0; matriTransformacao[0][3] = 0;
 
-        matrizT[1][0] = 0;
-        matrizT[1][1] = 1;
-        matrizT[1][2] = 0;
-        matrizT[1][3] = 0;
+        matriTransformacao[1][0] = 0; matriTransformacao[1][1] = 1; matriTransformacao[1][2] = 0; matriTransformacao[1][3] = 0;
 
-        matrizT[2][0] = 0;
-        matrizT[2][1] = 0;
-        matrizT[2][2] = 1;
-        matrizT[2][3] = 0;
+        matriTransformacao[2][0] = 0; matriTransformacao[2][1] = 0; matriTransformacao[2][2] = 1; matriTransformacao[2][3] = 0;
 
-        matrizT[3][0] = x;
-        matrizT[3][1] = y;
-        matrizT[3][2] = z;
-        matrizT[3][3] = 1;
+        matriTransformacao[3][0] = x; matriTransformacao[3][1] = y; matriTransformacao[3][2] = z; matriTransformacao[3][3] = 1;
 
         for (aux = 0; aux < 10; aux++) {
-            multiplicarMatriz(pontosTotal[aux], matrizT, resultado);
+            multiplicarMatriz(pontosTotal[aux], matriTransformacao, resultado);
             pontosTotal[aux] = resultado;
             multiplicarMatriz(resultado, matrizDeProjecao, resultado);
             resultadoPrintado[aux][0] = resultado[0];
@@ -599,33 +586,33 @@ public class ImagePanel extends JPanel {
     public void escalas(double x, double y, double z, double global) {
         int aux;
         int xx1, yy1, xx2, yy2;
-        double[][] matrizT = new double[4][4];
+        double[][] matriTransformacao = new double[4][4];
         double[] resultado = new double[4];
 
         limparBuffer();
 
-        matrizT[0][0] = x;
-        matrizT[0][1] = 0;
-        matrizT[0][2] = 0;
-        matrizT[0][3] = 0;
+        matriTransformacao[0][0] = x;
+        matriTransformacao[0][1] = 0;
+        matriTransformacao[0][2] = 0;
+        matriTransformacao[0][3] = 0;
 
-        matrizT[1][0] = 0;
-        matrizT[1][1] = y;
-        matrizT[1][2] = 0;
-        matrizT[1][3] = 0;
+        matriTransformacao[1][0] = 0;
+        matriTransformacao[1][1] = y;
+        matriTransformacao[1][2] = 0;
+        matriTransformacao[1][3] = 0;
 
-        matrizT[2][0] = 0;
-        matrizT[2][1] = 0;
-        matrizT[2][2] = z;
-        matrizT[2][3] = 0;
+        matriTransformacao[2][0] = 0;
+        matriTransformacao[2][1] = 0;
+        matriTransformacao[2][2] = z;
+        matriTransformacao[2][3] = 0;
 
-        matrizT[3][0] = 0;
-        matrizT[3][1] = 0;
-        matrizT[3][2] = 0;
-        matrizT[3][3] = global;
+        matriTransformacao[3][0] = 0;
+        matriTransformacao[3][1] = 0;
+        matriTransformacao[3][2] = 0;
+        matriTransformacao[3][3] = global;
 
         for (aux = 1; aux <= 10; aux++) {
-            multiplicarMatriz(pontosTotal[aux], matrizT, resultado);
+            multiplicarMatriz(pontosTotal[aux], matriTransformacao, resultado);
             resultado[0] /= resultado[3];
             resultado[1] /= resultado[3];
             resultado[2] /= resultado[3];
@@ -651,33 +638,33 @@ public class ImagePanel extends JPanel {
     public void shearing(ArrayList<Double> valores) {
         int aux;
         int xx1, yy1, xx2, yy2;
-        double[][] matrizT = new double[4][4];
+        double[][] matriTransformacao = new double[4][4];
         double[] resultado = new double[4];
 
         limparBuffer();
 
-        matrizT[0][0] = valores.get(0); // A
-        matrizT[0][1] = valores.get(1); // B
-        matrizT[0][2] = valores.get(2); // C
-        matrizT[0][3] = 1;                                           // D
+        matriTransformacao[0][0] = valores.get(0); // A
+        matriTransformacao[0][1] = valores.get(1); // B
+        matriTransformacao[0][2] = valores.get(2); // C
+        matriTransformacao[0][3] = 1;                                           // D
 
-        matrizT[1][0] = valores.get(3); // E
-        matrizT[1][1] = valores.get(4); // F
-        matrizT[1][2] = valores.get(5); // G
-        matrizT[1][3] = 1;                                           // H
+        matriTransformacao[1][0] = valores.get(3); // E
+        matriTransformacao[1][1] = valores.get(4); // F
+        matriTransformacao[1][2] = valores.get(5); // G
+        matriTransformacao[1][3] = 1;                                           // H
 
-        matrizT[2][0] = valores.get(6); // I
-        matrizT[2][1] = valores.get(7); // J
-        matrizT[2][2] = valores.get(8); // K
-        matrizT[2][3] = 1;                                           // L
+        matriTransformacao[2][0] = valores.get(6); // I
+        matriTransformacao[2][1] = valores.get(7); // J
+        matriTransformacao[2][2] = valores.get(8); // K
+        matriTransformacao[2][3] = 1;                                           // L
 
-        matrizT[3][0] = 1; // M
-        matrizT[3][1] = 1; // N
-        matrizT[3][2] = 1; // O
-        matrizT[3][3] = 1; // P
+        matriTransformacao[3][0] = 1; // M
+        matriTransformacao[3][1] = 1; // N
+        matriTransformacao[3][2] = 1; // O
+        matriTransformacao[3][3] = 1; // P
 
         for (aux = 0; aux < 10; aux++) {
-            multiplicarMatriz(pontosTotal[aux], matrizT, resultado);
+            multiplicarMatriz(pontosTotal[aux], matriTransformacao, resultado);
             pontosTotal[aux] = resultado.clone();
             multiplicarMatriz(resultado, matrizDeProjecao, resultado);
             resultadoPrintado[aux][0] = resultado[0];
@@ -701,7 +688,7 @@ public class ImagePanel extends JPanel {
 
         int aux;
         int xx1, yy1, xx2, yy2;
-        double[][] matrizT = new double[4][4];
+        double[][] matriTransformacao = new double[4][4];
         double[] resultado = new double[4];
         double graus;
 
@@ -711,30 +698,30 @@ public class ImagePanel extends JPanel {
 
 
         if (eixo.equals("x")) {
-            matrizT[0][0] = 1;
-            matrizT[1][1] = Math.cos(graus);
-            matrizT[1][2] = -Math.sin(graus);
-            matrizT[2][1] = Math.sin(graus);
-            matrizT[2][2] = Math.cos(graus);
-            matrizT[3][3] = 1;
+            matriTransformacao[0][0] = 1;
+            matriTransformacao[1][1] = Math.cos(graus);
+            matriTransformacao[1][2] = -Math.sin(graus);
+            matriTransformacao[2][1] = Math.sin(graus);
+            matriTransformacao[2][2] = Math.cos(graus);
+            matriTransformacao[3][3] = 1;
         } else if (eixo.equals("y")) {
-            matrizT[0][0] = Math.cos(graus);
-            matrizT[0][2] = Math.sin(graus);
-            matrizT[1][1] = 1;
-            matrizT[2][0] = -Math.sin(graus);
-            matrizT[2][2] = Math.cos(graus);
-            matrizT[3][3] = 1;
+            matriTransformacao[0][0] = Math.cos(graus);
+            matriTransformacao[0][2] = Math.sin(graus);
+            matriTransformacao[1][1] = 1;
+            matriTransformacao[2][0] = -Math.sin(graus);
+            matriTransformacao[2][2] = Math.cos(graus);
+            matriTransformacao[3][3] = 1;
         } else if (eixo.equals("z")) {
-            matrizT[0][0] = Math.cos(graus);
-            matrizT[0][1] = -Math.sin(graus);
-            matrizT[1][0] = Math.sin(graus);
-            matrizT[1][1] = Math.cos(graus);
-            matrizT[2][2] = 1;
-            matrizT[3][3] = 1;
+            matriTransformacao[0][0] = Math.cos(graus);
+            matriTransformacao[0][1] = -Math.sin(graus);
+            matriTransformacao[1][0] = Math.sin(graus);
+            matriTransformacao[1][1] = Math.cos(graus);
+            matriTransformacao[2][2] = 1;
+            matriTransformacao[3][3] = 1;
         }
 
         for (aux = 0; aux < 10; aux++) {
-            multiplicarMatriz(pontosTotal[aux], matrizT, resultado);
+            multiplicarMatriz(pontosTotal[aux], matriTransformacao, resultado);
             pontosTotal[aux] = resultado.clone();
             multiplicarMatriz(resultado, matrizDeProjecao, resultado);
             resultadoPrintado[aux][0] = resultado[0];
