@@ -5,6 +5,7 @@ import Sistema.Controlador;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -19,7 +20,6 @@ public class JFramePrincipal extends JFrame {
     private ImagePanel imagePanel;
     private RgbHslPanel rgbHslPanel;
 
-    //private final TransformacoesPanel transformacoesPanel;
     public static Controlador controlador;
 
     public JFramePrincipal() {
@@ -39,6 +39,8 @@ public class JFramePrincipal extends JFrame {
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("Arquivo");
         JMenuItem openMenuItem = new JMenuItem("Abrir Imagem");
+        JMenuItem imagemNegativaMenuItem = new JMenuItem("Imagem Negativa");
+        JMenuItem imagemGreyscaleMenuItem = new JMenuItem("Imagem - tons cinza");
 
         JMenu drawMenu = new JMenu("Desenhar");
         JMenuItem drawLinhaMenuItem = new JMenuItem("Desenhar Linha");
@@ -53,7 +55,7 @@ public class JFramePrincipal extends JFrame {
         JMenuItem drawCircBresenhamMenuItem = new JMenuItem("Circunferência (Alg. Bresenham)");
 
 
-        imagePanel = new ImagePanel();
+        imagePanel = new ImagePanel(controlador);
         controlador.setImagePanel(imagePanel);
         imagePanel.setPreferredSize(new Dimension(800, 600));
         imagePanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 100, 0)));
@@ -71,6 +73,26 @@ public class JFramePrincipal extends JFrame {
                 }
                 if (image != null) {
                     imagePanel.setImage(image);
+                }
+            }
+        });
+
+        imagemNegativaMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                BufferedImage image = controlador.imagePanel.getImage();
+                if (image != null) {
+                    controlador.imagemNevativa(image);
+                }
+            }
+        });
+
+        imagemGreyscaleMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                BufferedImage image = controlador.imagePanel.getImage();
+                if (image != null) {
+                    controlador.imagemGreyscale(image);
                 }
             }
         });
@@ -108,6 +130,8 @@ public class JFramePrincipal extends JFrame {
         });
 
         fileMenu.add(openMenuItem);
+        fileMenu.add(imagemNegativaMenuItem);
+        fileMenu.add(imagemGreyscaleMenuItem);
         menuBar.add(fileMenu);
         setJMenuBar(menuBar);
 
@@ -224,12 +248,4 @@ public class JFramePrincipal extends JFrame {
 
     }
 
-
-    public Controlador getControlador() {
-        return controlador;
-    }
-
-    public ImagePanel getImagePanel() {
-        return imagePanel;
-    }
 }

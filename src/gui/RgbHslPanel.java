@@ -11,23 +11,13 @@ import java.util.stream.IntStream;
 
 public class RgbHslPanel extends JPanel {
 
-    private JFramePrincipal jFramePrincipal;
-    private final ArrayList<JTextField> listatextfieldsRGB;
-    private final ArrayList<JTextField> listatextfieldsHSL;
-
-    private Controlador controlador;
-    private Color corPainel;
+    private final Controlador controlador;
 
     public RgbHslPanel(JFramePrincipal jFramePrincipal, Controlador controlador) {
 
         this.controlador = controlador;
-        this.jFramePrincipal = jFramePrincipal;
-        setPreferredSize(new Dimension(150, 200));
-
+        setBackground(new Color(159, 150, 150));
         setLayout(new GridBagLayout());
-
-        listatextfieldsRGB = new ArrayList<>();
-        listatextfieldsHSL = new ArrayList<>();
 
         initComponents();
 
@@ -36,51 +26,91 @@ public class RgbHslPanel extends JPanel {
 
     public void initComponents() {
         setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        setPreferredSize(new java.awt.Dimension(200, 400));
+        setPreferredSize(new java.awt.Dimension(300, 300));
+        setBackground(new Color(195, 195, 195));
 
-        jLabel19 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jButton8 = new javax.swing.JButton();
-        jButton9 = new javax.swing.JButton();
-        jLabel20 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        jButtonDesenhaCasinha = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        JLabel jLabel19 = new JLabel();
+        JTextField jTextFieldR = new javax.swing.JTextField();
+        JTextField jTextFieldG = new javax.swing.JTextField();
+        JTextField jTextFieldB = new javax.swing.JTextField();
+        JButton jButtonRgbHsl = new JButton();
+        JButton jButtonHslRgb = new JButton();
+        JLabel jLabel20 = new JLabel();
+        JTextField jTextFieldH = new javax.swing.JTextField();
+        JTextField jTextFieldS = new javax.swing.JTextField();
+        JTextField jTextFieldL = new javax.swing.JTextField();
+        JLabel jLabel1 = new JLabel();
+        JButton jButtonDesenhaCasinha = new JButton();
+        JButton jButtonResetaCasinha = new JButton();
+        JLabel jLabel2 = new JLabel();
+        JLabel jLabel3 = new JLabel();
+        JLabel jLabel4 = new JLabel();
+        JLabel jLabel5 = new JLabel();
+        JLabel jLabel6 = new JLabel();
+        JLabel jLabel7 = new JLabel();
 
         jLabel19.setText("RGB");
+        jTextFieldR.setText("0");
+        jTextFieldG.setText("0");
+        jTextFieldB.setText("0");
 
-        jTextField1.setText("0");
+        jButtonRgbHsl.setText("->");
 
-        jTextField2.setText("0");
+        jButtonRgbHsl.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                float r = Float.parseFloat(jTextFieldR.getText());
+                float g = Float.parseFloat(jTextFieldG.getText());
+                float b = Float.parseFloat(jTextFieldB.getText());
 
-        jTextField3.setText("0");
+                if (!(r == 0 && g == 0 && b == 0)) {
+                    float[] valoresHSL = rgbParaHsl(r, g, b);
+                    jTextFieldH.setText(String.valueOf(valoresHSL[0]));
+                    jTextFieldS.setText(String.valueOf(valoresHSL[1]));
+                    jTextFieldL.setText(String.valueOf(valoresHSL[2]));
 
-        jButton8.setText("->");
+                    // seta a cor RGB que o usuário inseriu como cor padrão dos desenhos
+                    controlador.setCor(new Color(
+                            valoresHSL[0]/255,
+                            valoresHSL[1]/255,
+                            valoresHSL[2]/255));
+                }
+            }
+        });
 
-        jButton9.setText("<-");
+        jButtonHslRgb.setText("<-");
 
+        jButtonHslRgb.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                float h = Float.parseFloat(jTextFieldH.getText());
+                float s = Float.parseFloat(jTextFieldS.getText());
+                float l = Float.parseFloat(jTextFieldL.getText());
+
+                if (!(h == 0 && s == 0 && l == 0)) {
+                    float[] valoresRGB = hslParaRgb(h, s, l);
+
+                    jTextFieldR.setText(String.valueOf(valoresRGB[0]));
+                    jTextFieldG.setText(String.valueOf(valoresRGB[1]));
+                    jTextFieldB.setText(String.valueOf(valoresRGB[2]));
+
+                    // seta a cor HSL que o usuário inseriu como cor padrão dos desenhos
+                    controlador.setCor(new Color(
+                            valoresRGB[0]/255,
+                            valoresRGB[1]/255,
+                            valoresRGB[2]/255));
+                }
+
+            }
+        });
         jLabel20.setText("HSL");
-
-        jTextField4.setText("0");
-
-        jTextField5.setText("0");
-
-        jTextField6.setText("0");
+        jTextFieldH.setText("0");
+        jTextFieldS.setText("0");
+        jTextFieldL.setText("0");
 
         jLabel1.setText("Desenhar Objeto");
 
-        jButtonDesenhaCasinha.setText("Plano XY");
+        jButtonDesenhaCasinha.setText("Plano XY (Z = 0)");
 
         jButtonDesenhaCasinha.addActionListener(new ActionListener() {
             @Override
@@ -91,18 +121,21 @@ public class RgbHslPanel extends JPanel {
             }
         });
 
-        jButton2.setText("Reset");
+        jButtonResetaCasinha.setText("Reset");
+
+        jButtonResetaCasinha.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controlador.resetaCasinha();
+            }
+        });
 
         jLabel2.setText("R");
-
         jLabel3.setText("G");
-
         jLabel4.setText("B");
 
         jLabel5.setText("H");
-
         jLabel6.setText("S");
-
         jLabel7.setText("L");
 
         javax.swing.GroupLayout RgbHslPanelLayout = new javax.swing.GroupLayout(this);
@@ -118,7 +151,7 @@ public class RgbHslPanel extends JPanel {
                                                         .addGroup(RgbHslPanelLayout.createSequentialGroup()
                                                                 .addComponent(jButtonDesenhaCasinha)
                                                                 .addGap(18, 18, 18)
-                                                                .addComponent(jButton2)))
+                                                                .addComponent(jButtonResetaCasinha)))
                                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGroup(RgbHslPanelLayout.createSequentialGroup()
                                                 .addGroup(RgbHslPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -132,13 +165,13 @@ public class RgbHslPanel extends JPanel {
                                                                         .addComponent(jLabel4))
                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                 .addGroup(RgbHslPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                        .addComponent(jTextFieldR, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addComponent(jTextFieldG, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addComponent(jTextFieldB, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                                                                 .addGroup(RgbHslPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                        .addComponent(jButton8, javax.swing.GroupLayout.Alignment.TRAILING)
-                                                                        .addComponent(jButton9, javax.swing.GroupLayout.Alignment.TRAILING))
+                                                                        .addComponent(jButtonRgbHsl, javax.swing.GroupLayout.Alignment.TRAILING)
+                                                                        .addComponent(jButtonHslRgb, javax.swing.GroupLayout.Alignment.TRAILING))
                                                                 .addGap(39, 39, 39)))
                                                 .addGroup(RgbHslPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                                         .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -147,9 +180,9 @@ public class RgbHslPanel extends JPanel {
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addGroup(RgbHslPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                         .addComponent(jLabel20)
-                                                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addComponent(jTextFieldH, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jTextFieldS, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jTextFieldL, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addGap(31, 31, 31))))
         );
         RgbHslPanelLayout.setVerticalGroup(
@@ -160,51 +193,50 @@ public class RgbHslPanel extends JPanel {
                                         .addGroup(RgbHslPanelLayout.createSequentialGroup()
                                                 .addComponent(jLabel19)
                                                 .addGap(20, 20, 20)
-                                                .addComponent(jButton8)
+                                                .addComponent(jButtonRgbHsl)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(jButton9))
+                                                .addComponent(jButtonHslRgb))
                                         .addGroup(RgbHslPanelLayout.createSequentialGroup()
                                                 .addComponent(jLabel20)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addGroup(RgbHslPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                         .addGroup(RgbHslPanelLayout.createSequentialGroup()
                                                                 .addGroup(RgbHslPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addComponent(jTextFieldR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                         .addComponent(jLabel2))
                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                                 .addGroup(RgbHslPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addComponent(jTextFieldG, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                         .addComponent(jLabel3))
                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                                 .addGroup(RgbHslPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addComponent(jTextFieldB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                         .addComponent(jLabel4)))
                                                         .addGroup(RgbHslPanelLayout.createSequentialGroup()
                                                                 .addGroup(RgbHslPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addComponent(jTextFieldH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                         .addComponent(jLabel5))
                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                                 .addGroup(RgbHslPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addComponent(jTextFieldS, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                         .addComponent(jLabel6))
                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                                 .addGroup(RgbHslPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addComponent(jTextFieldL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                         .addComponent(jLabel7))))))
                                 .addGap(31, 31, 31)
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(RgbHslPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jButtonDesenhaCasinha)
-                                        .addComponent(jButton2))
+                                        .addComponent(jButtonResetaCasinha))
                                 .addContainerGap(23, Short.MAX_VALUE))
         );
 
 
     }
 
-
-    public static double[] rgbParaHsl(double r, double g, double b) {
+    public static float[] rgbParaHsl(float r, float g, float b) {
         r /= 255;
         g /= 255;
         b /= 255;
@@ -216,7 +248,7 @@ public class RgbHslPanel extends JPanel {
         double l = (max + min) / 2;
 
         if (max == min) {
-            h = s = 0; // achromatic
+            h = s = 0; // acromatica
         } else {
             double d = max - min;
             s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
@@ -231,7 +263,7 @@ public class RgbHslPanel extends JPanel {
 
             h /= 6;
         }
-        double [] hsl = new double[3];
+        float [] hsl = new float[3];
         hsl[0] = Math.round( ((h/360)*240)*360);
         hsl[1] = Math.round(s*240);
         hsl[2] = Math.round(l*240);
@@ -239,20 +271,20 @@ public class RgbHslPanel extends JPanel {
         return hsl;
     }
 
-    public static double[] hslParaRgb(double valor1, double valor2, double valor3) {
-        double[] resp = new double[3];
-        double[] hsl = new double[3];
-        double temp1;
-        double temp2;
+    public float[] hslParaRgb(float h, float s, float l) {
+        float[] rgb = new float[3];
+        float[] hsl = new float[3];
+        float temp1;
+        float temp2;
 
-        hsl[0] = (valor1 * 360) / 240;
-        hsl[1] = valor2 / 240;
-        hsl[2] = valor3 / 240;
+        hsl[0] = (h * 360) / 240;
+        hsl[1] = s / 240;
+        hsl[2] = l / 240;
 
         if (hsl[0] == 0) {
-            resp[0] = (hsl[2] / 100) * 255;
-            resp[1] = (hsl[2] / 100) * 255;
-            resp[2] = (hsl[2] / 100) * 255;
+            rgb[0] = (hsl[2] / 100) * 255;
+            rgb[1] = (hsl[2] / 100) * 255;
+            rgb[2] = (hsl[2] / 100) * 255;
         }
 
         if (hsl[2] < 0.5) {
@@ -265,146 +297,44 @@ public class RgbHslPanel extends JPanel {
 
         hsl[0] = hsl[0] / 360;
 
-        resp[0] = hsl[0] + 0.333;
-        resp[1] = hsl[0];
-        resp[2] = hsl[0] - 0.333;
+        rgb[0] = (float) (hsl[0] + 0.333);
+        rgb[1] = hsl[0];
+        rgb[2] = (float) (hsl[0] - 0.333);
 
         for (int i = 0; i < 3; i++) {
-            if (resp[i] < 0) {
-                resp[i] = resp[i] + 1;
+            if (rgb[i] < 0) {
+                rgb[i] = rgb[i] + 1;
             }
 
-            if (resp[i] > 1) {
-                resp[i] = resp[i] - 1;
+            if (rgb[i] > 1) {
+                rgb[i] = rgb[i] - 1;
             }
 
-            if (6 * resp[i] < 1) {
-                resp[i] = temp2 + (((temp1 - temp2) * 6) * resp[i]);
-            } else if (2 * resp[i] < 1) {
-                resp[i] = temp1;
-            } else if (3 * resp[i] < 2) {
-                resp[i] = temp2 + ((temp1 - temp2) * (0.666 - resp[i]) * 6);
+            if (6 * rgb[i] < 1) {
+                rgb[i] = temp2 + (((temp1 - temp2) * 6) * rgb[i]);
+            } else if (2 * rgb[i] < 1) {
+                rgb[i] = temp1;
+            } else if (3 * rgb[i] < 2) {
+                rgb[i] = (float) (temp2 + ((temp1 - temp2) * (0.666 - rgb[i]) * 6));
             } else {
-                resp[i] = temp2;
+                rgb[i] = temp2;
             }
 
-            resp[i] = resp[i] * 255;
+            rgb[i] = rgb[i] * 255;
         }
 
-        resp[0] = Math.round(resp[0]);
-        resp[1] = Math.round(resp[1]);
-        resp[2] = Math.round(resp[2]);
+        rgb[0] = Math.round(rgb[0]);
+        rgb[1] = Math.round(rgb[1]);
+        rgb[2] = Math.round(rgb[2]);
 
-        return resp;
-    }
-
-    private class BotaoRGBListener implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            // rgb - hsl
-
-            ArrayList<String> valoresRGB = new ArrayList<>();
-
-            for (JTextField jTextField : listatextfieldsRGB) {
-                if (jTextField.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Valores inválidos!");
-                }
-                else {
-                    valoresRGB.add(jTextField.getText());
-                }
-
-            }
-
-            double [] valor = new double[3];
-            valor[0] = Double.parseDouble(valoresRGB.get(0));
-            valor[1] = Double.parseDouble(valoresRGB.get(1));
-            valor[2] = Double.parseDouble(valoresRGB.get(2));
-            double[] resposta = rgbParaHsl(valor[0], valor[1], valor[2]);
-
-            corPainel = new Color((int) valor[0],
-                    (int) valor[1],
-                    (int) valor[2]);
-            repaint();
-
-            IntStream.range(0, valoresRGB.size()).forEach(i -> {
-                JTextField jTextField = listatextfieldsHSL.get(i);
-                if (!jTextField.getText().isEmpty())
-                    jTextField.setText("");
-                jTextField.setText(String.valueOf(resposta[i]));
-
-            });
-        }
-    }
-
-    private class BotaoHSLListener implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            // hsl - rgb
-            ArrayList<String> valoresHSL = new ArrayList<>();
-
-            for (JTextField jTextField : listatextfieldsHSL) {
-                if (jTextField.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Valores inválidos!");
-                }
-                else {
-                    valoresHSL.add(jTextField.getText());
-                }
-
-            }
-
-            double [] valor = new double[3];
-            valor[0] = Double.parseDouble(valoresHSL.get(0));
-            valor[1] = Double.parseDouble(valoresHSL.get(1));
-            valor[2] = Double.parseDouble(valoresHSL.get(2));
-            double[] resposta = hslParaRgb(valor[0], valor[1], valor[2]);
-
-            corPainel = new Color((int) resposta[0],
-                    (int) resposta[1],
-                    (int) resposta[2]);
-            repaint();
-
-            IntStream.range(0, valoresHSL.size()).forEach(i -> {
-                JTextField jTextField = listatextfieldsRGB.get(i);
-                if (!jTextField.getText().isEmpty())
-                    jTextField.setText("");
-                jTextField.setText(String.valueOf(resposta[i]));
-            });
-        }
-    }
-
-    public Color getCorPainel() {
-        return corPainel;
+        return rgb;
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (corPainel != null) {
-            g.setColor(corPainel);
-            g.fillRect(0, 0, getWidth(), getHeight());
-        }
-    }
+        g.fillRect(0, 0, getWidth(), getHeight());
 
-    private javax.swing.JButton jButtonDesenhaCasinha;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
+    }
 
 }

@@ -1,12 +1,19 @@
 package gui;
 
+import Sistema.Controlador;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Serial;
+import java.nio.Buffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ImagePanel extends JPanel {
     /**
@@ -22,7 +29,10 @@ public class ImagePanel extends JPanel {
     private int yy2;
     private boolean drawing = false;
 
-    private double[][] pontosTotal = new double[10][4];
+    private final Controlador controlador;
+    private int cont = 0;
+
+    private final double[][] pontosTotal = new double[10][4];
     private int[][] arestas = new int[17][2];
     private double[][] resultadoPrintado = new double[10][4];
     private double[][] matrizDeProjecao = new double[4][4];
@@ -39,12 +49,13 @@ public class ImagePanel extends JPanel {
     }
     private DrawingMethod drawingMethod;
 
-    public ImagePanel() {
-
+    public ImagePanel(Controlador controlador) {
+        this.controlador = controlador;
         image = new BufferedImage(800, 600, BufferedImage.TYPE_INT_RGB);
         buffer = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
         JFramePrincipal.controlador.setBuffer(buffer);
         setBackground(Color.BLACK);
+        inicializaPontoEAresta();
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -119,14 +130,22 @@ public class ImagePanel extends JPanel {
     private void desenharRetaSimples(Graphics g, int xx1, int yy1, int xx2, int yy2) {
 
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.BLUE);
+        if (controlador.getCor() != null) {
+            g2d.setColor(controlador.getCor());
+        }
+        else
+            g2d.setColor(Color.BLUE);
         g2d.drawLine(xx1, yy1, xx2, yy2);
         repaint();
     }
 
     private void desenharPixel(Graphics g, int xx1, int yy1) {
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.BLUE);
+        if (controlador.getCor() != null) {
+            g2d.setColor(controlador.getCor());
+        }
+        else
+            g2d.setColor(Color.BLUE);
         g2d.drawRect(xx1, yy1, 1, 1);
         repaint();
     }
@@ -134,7 +153,11 @@ public class ImagePanel extends JPanel {
     private void desenharReta(Graphics g, int xx1, int yy1, int xx2, int yy2) {
 
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.BLUE);
+        if (controlador.getCor() != null) {
+            g2d.setColor(controlador.getCor());
+        }
+        else
+            g2d.setColor(Color.BLUE);
 
         double m = (double) (yy2 - yy1) / (xx2 - xx1);
 
@@ -170,10 +193,14 @@ public class ImagePanel extends JPanel {
         repaint();
     }
 
-    public static void desenharRetaBresenham(Graphics g, int xx1, int yy1, int xx2, int yy2) {
+    public void desenharRetaBresenham(Graphics g, int xx1, int yy1, int xx2, int yy2) {
 
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.GREEN);
+        if (controlador.getCor() != null) {
+            g2d.setColor(controlador.getCor());
+        }
+        else
+            g2d.setColor(Color.GREEN);
 
         int incy1 = 0;
         int incx1 = 0;
@@ -197,7 +224,8 @@ public class ImagePanel extends JPanel {
             } else {
                 incy2 = 1;
             }
-        } else {
+        }
+        else {
             int auxiliar = dx;
             dx = dy;
             dy = auxiliar;
@@ -225,7 +253,7 @@ public class ImagePanel extends JPanel {
 
         int auxiliar = Math.max(dx, dy);
 
-        g2d.setColor(Color.GREEN);
+        //g2d.setColor(Color.GREEN);
         g2d.fillRect(ax, ay, 1, 1);
 
         for (int cont = 0; cont < auxiliar; cont++) {
@@ -245,7 +273,11 @@ public class ImagePanel extends JPanel {
     private void desenharCircParametrica(Graphics g, int xx1, int yy1, int xx2, int yy2) {    // desenha circunferência usando equação paramétrica
 
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.BLUE);
+        if (controlador.getCor() != null) {
+            g2d.setColor(controlador.getCor());
+        }
+        else
+            g2d.setColor(Color.BLUE);
 
         int xc;
         int yc;
@@ -268,7 +300,6 @@ public class ImagePanel extends JPanel {
             xr = (float) (xc + (raio * Math.cos(ang)));
             yr = (float) (yc + (raio * Math.sin(ang)));
 
-            g2d.setColor(Color.GREEN);
             g2d.fillRect((int) xr, (int) yr, 1, 1);
 
             ang += (float) step;
@@ -278,7 +309,11 @@ public class ImagePanel extends JPanel {
     private void desenharCircImplicita(Graphics g, int xx1, int yy1, int xx2, int yy2) {
 
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.ORANGE);
+        if (controlador.getCor() != null) {
+            g2d.setColor(controlador.getCor());
+        }
+        else
+            g2d.setColor(Color.ORANGE);
 
         int raio;
         raio = (int) Math.abs(
@@ -298,9 +333,13 @@ public class ImagePanel extends JPanel {
         }
     }
 
-    private static void espelharCircBresenham(Graphics g, int xx1, int yy1, int x, int y) {
+    private void espelharCircBresenham(Graphics g, int xx1, int yy1, int x, int y) {
 
-        g.setColor(Color.WHITE);
+        if (controlador.getCor() != null) {
+            g.setColor(controlador.getCor());
+        }
+        else
+            g.setColor(Color.WHITE);
         g.fillRect(xx1 + x,yy1 + y,1, 1);
         g.fillRect(xx1 - x,yy1 + y,1, 1);
         g.fillRect(xx1 - y,yy1 + x,1, 1);
@@ -323,10 +362,14 @@ public class ImagePanel extends JPanel {
         g.fillRect(xx1 - y, yy1 - x, 1, 1);
     }
 
-    private static void desenharCircBresenham(Graphics g, int xx1, int yy1, int xx2, int yy2) {
+    private void desenharCircBresenham(Graphics g, int xx1, int yy1, int xx2, int yy2) {
 
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.RED);
+        if (controlador.getCor() != null) {
+            g2d.setColor(controlador.getCor());
+        }
+        else
+            g2d.setColor(Color.RED);
 
         int x;
         int y;
@@ -359,10 +402,14 @@ public class ImagePanel extends JPanel {
         }
     }
 
-    private static void desenharRetaParametrica(Graphics g, int xx1, int yy1, int xx2, int yy2) {
+    private void desenharRetaParametrica(Graphics g, int xx1, int yy1, int xx2, int yy2) {
 
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.MAGENTA);
+        if (controlador.getCor() != null) {
+            g2d.setColor(controlador.getCor());
+        }
+        else
+            g2d.setColor(Color.MAGENTA);
 
         for (double t = 0; t <= 1; t += 0.01) {
             double x = xx1 + (xx2 - xx1) * t;
@@ -384,10 +431,14 @@ public class ImagePanel extends JPanel {
         return image;
     }
 
-    public static void drawCircle(Graphics g, int xx1, int yy1, int xx2, int yy2) {
+    public void drawCircle(Graphics g, int xx1, int yy1, int xx2, int yy2) {
 
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.RED);
+        if (controlador.getCor() != null) {
+            g2d.setColor(controlador.getCor());
+        }
+        else
+            g2d.setColor(Color.RED);
 
         int radius = (int) Math.abs(Math.round(Math.sqrt((yy2 - yy1) * (yy2 - yy1) + (xx2 - xx1) * (xx2 - xx1))));
         int x = 0;
@@ -412,10 +463,8 @@ public class ImagePanel extends JPanel {
 
     public void inicializaPontoEAresta() {
         double[][] pontos = {
-                {100, 300, 100, 1}, {100, 300, -100, 1}, {300, 300, 100, 1},
-                {300, 300, -100, 1}, {100, 100, 100, 1}, {100, 100, -100, 1},
-                {300, 100, 100, 1}, {300, 100, -100, 1}, {200, 50, 100, 1},
-                {200, 50, -100, 1}
+                {100, 300, 100, 1}, {100, 300, -100, 1}, {300, 300, 100, 1}, {300, 300, -100, 1}, {100, 100, 100, 1},
+                {100, 100, -100, 1}, {300, 100, 100, 1}, {300, 100, -100, 1}, {200, 50, 100, 1}, {200, 50, -100, 1}
         };
 
         for (int i = 0; i < 10; i++) {
@@ -436,17 +485,16 @@ public class ImagePanel extends JPanel {
     public void desenhaCasinha() {
 
         limparBuffer();
-        inicializaPontoEAresta();
 
-        double[][] matriTransformacao = {
+        double[][] matrizTransformacao = {
                 {1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}
         };
 
-        matrizDeProjecao = matriTransformacao;
+        matrizDeProjecao = matrizTransformacao;
 
         for (int aux = 0; aux < 10; aux++) {
             double[] resultado = new double[10];
-            multiplicarMatriz(pontosTotal[aux], matriTransformacao, resultado);
+            multiplicarMatriz(pontosTotal[aux], matrizTransformacao, resultado);
             System.arraycopy(resultado, 0, resultadoPrintado[aux], 0, 4);
         }
 
@@ -456,8 +504,7 @@ public class ImagePanel extends JPanel {
             int xx2 = (int) Math.round(resultadoPrintado[arestas[aux][1] - 1][0]);
             int yy2 = (int) Math.round(resultadoPrintado[arestas[aux][1] - 1][1]);
             // chame a função para desenhar a linha com pontos (xx1, yy1) e (xx2, yy2)
-            ImagePanel.desenharRetaBresenham(buffer.getGraphics(), xx1, yy1, xx2, yy2);
-            System.out.println();
+            desenharRetaBresenham(buffer.getGraphics(), xx1, yy1, xx2, yy2);
         }
 
     }
@@ -475,14 +522,13 @@ public class ImagePanel extends JPanel {
     public void rotacaoCentroObjeto(String eixo, double grs) {
         int aux;
         int xx1, yy1, xx2, yy2;
-        double[][] matriTransformacao = new double[4][4];
+        double[][] matrizTransformacao = new double[4][4];
         double[] resultado = new double[4];
         double somax, somay, somaz;
         int contador;
         double graus;
 
         limparBuffer();
-
         graus = (grs * Math.PI) / 180;
 
         somax = 0;
@@ -493,37 +539,37 @@ public class ImagePanel extends JPanel {
             somay += pontosTotal[contador][1];
             somaz += pontosTotal[contador][2];
         }
-        somax /= 10;
-        somay /= 10;
-        somaz /= 10;
+        somax /= 10.0;
+        somay /= 10.0;
+        somaz /= 10.0;
 
         translacao(-somax, -somay, -somaz);
 
         if (eixo.equalsIgnoreCase("x")) {
-            matriTransformacao[0][0] = 1;
-            matriTransformacao[1][1] = Math.cos(graus);
-            matriTransformacao[1][2] = -Math.sin(graus);
-            matriTransformacao[2][1] = Math.sin(graus);
-            matriTransformacao[2][2] = Math.cos(graus);
-            matriTransformacao[3][3] = 1;
+            matrizTransformacao[0][0] = 1;
+            matrizTransformacao[1][1] = Math.cos(graus);
+            matrizTransformacao[1][2] = -Math.sin(graus);
+            matrizTransformacao[2][1] = Math.sin(graus);
+            matrizTransformacao[2][2] = Math.cos(graus);
+            matrizTransformacao[3][3] = 1;
         } else if (eixo.equalsIgnoreCase("y")) {
-            matriTransformacao[0][0] = Math.cos(graus);
-            matriTransformacao[0][2] = Math.sin(graus);
-            matriTransformacao[1][1] = 1;
-            matriTransformacao[2][0] = -Math.sin(graus);
-            matriTransformacao[2][2] = Math.cos(graus);
-            matriTransformacao[3][3] = 1;
+            matrizTransformacao[0][0] = Math.cos(graus);
+            matrizTransformacao[0][2] = Math.sin(graus);
+            matrizTransformacao[1][1] = 1;
+            matrizTransformacao[2][0] = -Math.sin(graus);
+            matrizTransformacao[2][2] = Math.cos(graus);
+            matrizTransformacao[3][3] = 1;
         } else if (eixo.equalsIgnoreCase("z")) {
-            matriTransformacao[0][0] = Math.cos(graus);
-            matriTransformacao[0][1] = -Math.sin(graus);
-            matriTransformacao[1][0] = Math.sin(graus);
-            matriTransformacao[1][1] = Math.cos(graus);
-            matriTransformacao[2][2] = 1;
-            matriTransformacao[3][3] = 1;
+            matrizTransformacao[0][0] = Math.cos(graus);
+            matrizTransformacao[0][1] = -Math.sin(graus);
+            matrizTransformacao[1][0] = Math.sin(graus);
+            matrizTransformacao[1][1] = Math.cos(graus);
+            matrizTransformacao[2][2] = 1;
+            matrizTransformacao[3][3] = 1;
         }
 
         for (aux = 0; aux < 10; aux++) {
-            multiplicarMatriz(pontosTotal[aux], matriTransformacao, resultado);
+            multiplicarMatriz(pontosTotal[aux], matrizTransformacao, resultado);
             System.arraycopy(resultado, 0, pontosTotal[aux], 0, 4);
         }
 
@@ -543,76 +589,88 @@ public class ImagePanel extends JPanel {
             xx2 = (int) Math.round(resultadoPrintado[arestas[aux][1] - 1][0]);
             yy2 = (int) Math.round(resultadoPrintado[arestas[aux][1] - 1][1]);
             // Chame a função para desenhar a linha com pontos (xx1, yy1) e (xx2, yy2)
-            ImagePanel.desenharRetaBresenham(buffer.getGraphics(), xx1, yy1, xx2, yy2);
+            desenharRetaBresenham(buffer.getGraphics(), xx1, yy1, xx2, yy2);
+        }
+    }
+
+    public static void salvarLog(int cont, int xx1, int yy1, int xx2, int yy2, double[] resultado) {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("log.txt", true));
+
+            writer.write("cont: " +cont+ "\n");
+            writer.write("xx1: " + xx1 + "\n");
+            writer.write("yy1: " + yy1 + "\n");
+            writer.write("xx2: " + xx2 + "\n");
+            writer.write("yy2: " + yy2 + "\n");
+
+            writer.write("Resultados:\n");
+            for (int i = 0; i < resultado.length; i++) {
+                writer.write("Resultado[" + i + "]: " + resultado[i] + "\n");
+            }
+
+            writer.close();
+            //System.out.println("Log salvo com sucesso.");
+        } catch (IOException e) {
+            System.err.println("Erro ao salvar o log: " + e.getMessage());
         }
     }
 
     public void translacao(double x, double y, double z) {
         int aux;
         int xx1, yy1, xx2, yy2;
-        double[][] matriTransformacao = new double[4][4];
+        double[][] matrizTransformacao = new double[4][4];
         double[] resultado = new double[4];
+        double[][] pontosTemp = new double[10][4]; // Crie uma cópia dos pontos originais
 
+
+        // Copie os pontos originais para a matriz temporária
+        for (aux = 0; aux < 10; aux++) {
+            System.arraycopy(pontosTotal[aux], 0, pontosTemp[aux], 0, 4);
+        }
         limparBuffer();
 
-        matriTransformacao[0][0] = 1; matriTransformacao[0][1] = 0; matriTransformacao[0][2] = 0; matriTransformacao[0][3] = 0;
-
-        matriTransformacao[1][0] = 0; matriTransformacao[1][1] = 1; matriTransformacao[1][2] = 0; matriTransformacao[1][3] = 0;
-
-        matriTransformacao[2][0] = 0; matriTransformacao[2][1] = 0; matriTransformacao[2][2] = 1; matriTransformacao[2][3] = 0;
-
-        matriTransformacao[3][0] = x; matriTransformacao[3][1] = y; matriTransformacao[3][2] = z; matriTransformacao[3][3] = 1;
+        matrizTransformacao[0][0] = 1; matrizTransformacao[0][1] = 0; matrizTransformacao[0][2] = 0; matrizTransformacao[0][3] = 0;
+        matrizTransformacao[1][0] = 0; matrizTransformacao[1][1] = 1; matrizTransformacao[1][2] = 0; matrizTransformacao[1][3] = 0;
+        matrizTransformacao[2][0] = 0; matrizTransformacao[2][1] = 0; matrizTransformacao[2][2] = 1; matrizTransformacao[2][3] = 0;
+        matrizTransformacao[3][0] = x; matrizTransformacao[3][1] = y; matrizTransformacao[3][2] = z; matrizTransformacao[3][3] = 1;
 
         for (aux = 0; aux < 10; aux++) {
-            multiplicarMatriz(pontosTotal[aux], matriTransformacao, resultado);
-            pontosTotal[aux] = resultado;
+            multiplicarMatriz(pontosTemp[aux], matrizTransformacao, resultado);
+            pontosTemp[aux] = resultado.clone();
             multiplicarMatriz(resultado, matrizDeProjecao, resultado);
             resultadoPrintado[aux][0] = resultado[0];
             resultadoPrintado[aux][1] = resultado[1];
             resultadoPrintado[aux][2] = resultado[2];
             resultadoPrintado[aux][3] = resultado[3];
         }
-
         for (aux = 0; aux < 17; aux++) {
             xx1 = (int) Math.round(resultadoPrintado[arestas[aux][0] - 1][0]);
             yy1 = (int) Math.round(resultadoPrintado[arestas[aux][0] - 1][1]);
             xx2 = (int) Math.round(resultadoPrintado[arestas[aux][1] - 1][0]);
             yy2 = (int) Math.round(resultadoPrintado[arestas[aux][1] - 1][1]);
             // Chame a função para desenhar a linha com pontos (xx1, yy1) e (xx2, yy2)
-            ImagePanel.desenharRetaBresenham(buffer.getGraphics(), xx1, yy1, xx2, yy2);
+            desenharRetaBresenham(buffer.getGraphics(), xx1, yy1, xx2, yy2);
+            //salvarLog(cont, xx1, yy1, xx2, yy2, resultado);
+            //cont++;
         }
     }
 
     public void escalas(double x, double y, double z, double global) {
         int aux;
         int xx1, yy1, xx2, yy2;
-        double[][] matriTransformacao = new double[4][4];
+        double[][] matrizTransformacao = new double[4][4];
         double[] resultado = new double[4];
 
         limparBuffer();
 
-        matriTransformacao[0][0] = x;
-        matriTransformacao[0][1] = 0;
-        matriTransformacao[0][2] = 0;
-        matriTransformacao[0][3] = 0;
+        matrizTransformacao[0][0] = x; matrizTransformacao[0][1] = 0; matrizTransformacao[0][2] = 0; matrizTransformacao[0][3] = 0;
+        matrizTransformacao[1][0] = 0; matrizTransformacao[1][1] = y; matrizTransformacao[1][2] = 0; matrizTransformacao[1][3] = 0;
+        matrizTransformacao[2][0] = 0; matrizTransformacao[2][1] = 0; matrizTransformacao[2][2] = z; matrizTransformacao[2][3] = 0;
+        matrizTransformacao[3][0] = 0; matrizTransformacao[3][1] = 0; matrizTransformacao[3][2] = 0; matrizTransformacao[3][3] = global;
 
-        matriTransformacao[1][0] = 0;
-        matriTransformacao[1][1] = y;
-        matriTransformacao[1][2] = 0;
-        matriTransformacao[1][3] = 0;
 
-        matriTransformacao[2][0] = 0;
-        matriTransformacao[2][1] = 0;
-        matriTransformacao[2][2] = z;
-        matriTransformacao[2][3] = 0;
-
-        matriTransformacao[3][0] = 0;
-        matriTransformacao[3][1] = 0;
-        matriTransformacao[3][2] = 0;
-        matriTransformacao[3][3] = global;
-
-        for (aux = 1; aux <= 10; aux++) {
-            multiplicarMatriz(pontosTotal[aux], matriTransformacao, resultado);
+        for (aux = 1; aux < 10; aux++) {
+            multiplicarMatriz(pontosTotal[aux], matrizTransformacao, resultado);
             resultado[0] /= resultado[3];
             resultado[1] /= resultado[3];
             resultado[2] /= resultado[3];
@@ -631,40 +689,40 @@ public class ImagePanel extends JPanel {
             xx2 = (int) Math.round(resultadoPrintado[arestas[aux][1] - 1][0]);
             yy2 = (int) Math.round(resultadoPrintado[arestas[aux][1] - 1][1]);
             // Chame a função para desenhar a linha com pontos (xx1, yy1) e (xx2, yy2)
-            ImagePanel.desenharRetaBresenham(buffer.getGraphics(), xx1, yy1, xx2, yy2);
+            desenharRetaBresenham(buffer.getGraphics(), xx1, yy1, xx2, yy2);
         }
     }
 
     public void shearing(ArrayList<Double> valores) {
         int aux;
         int xx1, yy1, xx2, yy2;
-        double[][] matriTransformacao = new double[4][4];
+        double[][] matrizTransformacao = new double[4][4];
         double[] resultado = new double[4];
 
         limparBuffer();
 
-        matriTransformacao[0][0] = valores.get(0); // A
-        matriTransformacao[0][1] = valores.get(1); // B
-        matriTransformacao[0][2] = valores.get(2); // C
-        matriTransformacao[0][3] = 1;                                           // D
+        matrizTransformacao[0][0] = valores.get(0); // A
+        matrizTransformacao[0][1] = valores.get(1); // B
+        matrizTransformacao[0][2] = valores.get(2); // C
+        matrizTransformacao[0][3] = 1;              // D
 
-        matriTransformacao[1][0] = valores.get(3); // E
-        matriTransformacao[1][1] = valores.get(4); // F
-        matriTransformacao[1][2] = valores.get(5); // G
-        matriTransformacao[1][3] = 1;                                           // H
+        matrizTransformacao[1][0] = valores.get(3); // E
+        matrizTransformacao[1][1] = valores.get(4); // F
+        matrizTransformacao[1][2] = valores.get(5); // G
+        matrizTransformacao[1][3] = 1;              // H
 
-        matriTransformacao[2][0] = valores.get(6); // I
-        matriTransformacao[2][1] = valores.get(7); // J
-        matriTransformacao[2][2] = valores.get(8); // K
-        matriTransformacao[2][3] = 1;                                           // L
+        matrizTransformacao[2][0] = valores.get(6); // I
+        matrizTransformacao[2][1] = valores.get(7); // J
+        matrizTransformacao[2][2] = valores.get(8); // K
+        matrizTransformacao[2][3] = 1;              // L
 
-        matriTransformacao[3][0] = 1; // M
-        matriTransformacao[3][1] = 1; // N
-        matriTransformacao[3][2] = 1; // O
-        matriTransformacao[3][3] = 1; // P
+        matrizTransformacao[3][0] = 1; // M
+        matrizTransformacao[3][1] = 1; // N
+        matrizTransformacao[3][2] = 1; // O
+        matrizTransformacao[3][3] = 1; // P
 
         for (aux = 0; aux < 10; aux++) {
-            multiplicarMatriz(pontosTotal[aux], matriTransformacao, resultado);
+            multiplicarMatriz(pontosTotal[aux], matrizTransformacao, resultado);
             pontosTotal[aux] = resultado.clone();
             multiplicarMatriz(resultado, matrizDeProjecao, resultado);
             resultadoPrintado[aux][0] = resultado[0];
@@ -679,16 +737,16 @@ public class ImagePanel extends JPanel {
             xx2 = (int) Math.round(resultadoPrintado[arestas[aux][1] - 1][0]);
             yy2 = (int) Math.round(resultadoPrintado[arestas[aux][1] - 1][1]);
             // Chame a função para desenhar a linha com pontos (xx1, yy1) e (xx2, yy2)
-            ImagePanel.desenharRetaBresenham(buffer.getGraphics(), xx1, yy1, xx2, yy2);
+            desenharRetaBresenham(buffer.getGraphics(), xx1, yy1, xx2, yy2);
         }
 
     }
-    
+
     public void rotacaoOrigem(String eixo, double grs) {
 
         int aux;
         int xx1, yy1, xx2, yy2;
-        double[][] matriTransformacao = new double[4][4];
+        double[][] matrizTransformacao = new double[4][4];
         double[] resultado = new double[4];
         double graus;
 
@@ -697,31 +755,35 @@ public class ImagePanel extends JPanel {
         graus = (grs * Math.PI) / 180;
 
 
-        if (eixo.equals("x")) {
-            matriTransformacao[0][0] = 1;
-            matriTransformacao[1][1] = Math.cos(graus);
-            matriTransformacao[1][2] = -Math.sin(graus);
-            matriTransformacao[2][1] = Math.sin(graus);
-            matriTransformacao[2][2] = Math.cos(graus);
-            matriTransformacao[3][3] = 1;
-        } else if (eixo.equals("y")) {
-            matriTransformacao[0][0] = Math.cos(graus);
-            matriTransformacao[0][2] = Math.sin(graus);
-            matriTransformacao[1][1] = 1;
-            matriTransformacao[2][0] = -Math.sin(graus);
-            matriTransformacao[2][2] = Math.cos(graus);
-            matriTransformacao[3][3] = 1;
-        } else if (eixo.equals("z")) {
-            matriTransformacao[0][0] = Math.cos(graus);
-            matriTransformacao[0][1] = -Math.sin(graus);
-            matriTransformacao[1][0] = Math.sin(graus);
-            matriTransformacao[1][1] = Math.cos(graus);
-            matriTransformacao[2][2] = 1;
-            matriTransformacao[3][3] = 1;
+        switch (eixo) {
+            case "x" -> {
+                matrizTransformacao[0][0] = 1;
+                matrizTransformacao[1][1] = Math.cos(graus);
+                matrizTransformacao[1][2] = -Math.sin(graus);
+                matrizTransformacao[2][1] = Math.sin(graus);
+                matrizTransformacao[2][2] = Math.cos(graus);
+                matrizTransformacao[3][3] = 1;
+            }
+            case "y" -> {
+                matrizTransformacao[0][0] = Math.cos(graus);
+                matrizTransformacao[0][2] = Math.sin(graus);
+                matrizTransformacao[1][1] = 1;
+                matrizTransformacao[2][0] = -Math.sin(graus);
+                matrizTransformacao[2][2] = Math.cos(graus);
+                matrizTransformacao[3][3] = 1;
+            }
+            case "z" -> {
+                matrizTransformacao[0][0] = Math.cos(graus);
+                matrizTransformacao[0][1] = -Math.sin(graus);
+                matrizTransformacao[1][0] = Math.sin(graus);
+                matrizTransformacao[1][1] = Math.cos(graus);
+                matrizTransformacao[2][2] = 1;
+                matrizTransformacao[3][3] = 1;
+            }
         }
 
         for (aux = 0; aux < 10; aux++) {
-            multiplicarMatriz(pontosTotal[aux], matriTransformacao, resultado);
+            multiplicarMatriz(pontosTotal[aux], matrizTransformacao, resultado);
             pontosTotal[aux] = resultado.clone();
             multiplicarMatriz(resultado, matrizDeProjecao, resultado);
             resultadoPrintado[aux][0] = resultado[0];
@@ -736,9 +798,66 @@ public class ImagePanel extends JPanel {
             xx2 = (int) Math.round(resultadoPrintado[arestas[aux][1] - 1][0]);
             yy2 = (int) Math.round(resultadoPrintado[arestas[aux][1] - 1][1]);
             // Chame a função para desenhar a linha com pontos (xx1, yy1) e (xx2, yy2)
-            ImagePanel.desenharRetaBresenham(buffer.getGraphics(), xx1, yy1, xx2, yy2);
+            desenharRetaBresenham(buffer.getGraphics(), xx1, yy1, xx2, yy2);
+            //salvarLog(cont, xx1, yy1, xx2, yy2, resultado);
         }
 
     }
 
+    public BufferedImage imagemNegativa(BufferedImage imagem) {
+        int largura = imagem.getWidth();
+        int altura = imagem.getHeight();
+        BufferedImage novaImagem = imagem;
+
+        for (int y = 0; y < altura; y++) {
+            for (int x = 0; x < largura; x++) {
+                int p = imagem.getRGB(x, y);
+                int a = (p >> 24) & 0xff;
+                int r = (p >> 16) & 0xff;
+                int g = (p >> 8) & 0xff;
+                int b = p & 0xff;
+
+                // subtract RGB from 255 
+                r = 255 - r;
+                g = 255 - g;
+                b = 255 - b;
+
+                // set new RGB value 
+                p = (a << 24) | (r << 16) | (g << 8) | b;
+                novaImagem.setRGB(x, y, p);
+            }
+        }
+        return novaImagem;
+    }
+
+    public BufferedImage imagemGreyscale(BufferedImage imagem) {
+        int largura = imagem.getWidth();
+        int altura = imagem.getHeight();
+        BufferedImage novaImagem = imagem;
+
+        int[] pixels = imagem.getRGB(0, 0, largura, altura, null, 0, largura);
+        // convert to grayscale
+        for (int i = 0; i < pixels.length; i++) {
+
+            // Here i denotes the index of array of pixels
+            // for modifying the pixel value.
+            int p = pixels[i];
+
+            int a = (p >> 24) & 0xff;
+            int r = (p >> 16) & 0xff;
+            int g = (p >> 8) & 0xff;
+            int b = p & 0xff;
+
+            // calculate average
+            int media = (r + g + b) / 3;
+
+            // replace RGB value with avg
+            p = (a << 24) | (media << 16) | (media << 8) | media;
+
+            pixels[i] = p;
+        }
+        novaImagem.setRGB(0, 0, largura, altura, pixels, 0, largura);
+
+        return novaImagem;
+    }
 }

@@ -4,6 +4,7 @@ import gui.ImagePanel;
 import gui.RgbHslPanel;
 import gui.TransformacoesPanel;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -11,7 +12,11 @@ public class Controlador {
 
     public ImagePanel imagePanel;
     public RgbHslPanel rgbHslPanel;
-    public TransformacoesPanel transformacoesPanel;
+    public BufferedImage buffer;
+    public Color cor = null;
+
+    public Controlador() {
+    }
 
     public BufferedImage getBuffer() {
         return buffer;
@@ -21,34 +26,13 @@ public class Controlador {
         this.buffer = buffer;
     }
 
-    public BufferedImage buffer;
-
-
-    public Controlador() {
-    }
-
-    public ImagePanel getImagePanel() {
-        return imagePanel;
-    }
-
     public void setImagePanel(ImagePanel imagePanel) {
         this.imagePanel = imagePanel;
     }
 
-    public RgbHslPanel getRgbHslPanel() {
-        return rgbHslPanel;
-    }
 
     public void setRgbHslPanel(RgbHslPanel rgbHslPanel) {
         this.rgbHslPanel = rgbHslPanel;
-    }
-
-    public TransformacoesPanel getTransformacoesPanel() {
-        return transformacoesPanel;
-    }
-
-    public void setTransformacoesPanel(TransformacoesPanel transformacoesPanel) {
-        this.transformacoesPanel = transformacoesPanel;
     }
 
     public void limparBuffer() {
@@ -61,6 +45,12 @@ public class Controlador {
 
     public void desenhaTranslacao(double x, double y, double z) {
         imagePanel.translacao(x, y, z);
+        imagePanel.repaint();
+    }
+
+    public void resetaCasinha() {
+        imagePanel.inicializaPontoEAresta();
+        imagePanel.limparBuffer();
         imagePanel.repaint();
     }
 
@@ -84,4 +74,21 @@ public class Controlador {
         imagePanel.repaint();
     }
 
+    public void setCor(Color color) {
+        this.cor = color;
+    }
+
+    public Color getCor() {
+        return cor;
+    }
+
+    public void imagemNevativa(BufferedImage image) {
+        BufferedImage bufferedImage = imagePanel.imagemNegativa(image);
+        imagePanel.setImage(bufferedImage);
+    }
+
+    public void imagemGreyscale(BufferedImage image) {
+        BufferedImage bufferedImage = imagePanel.imagemGreyscale(image);
+        imagePanel.setImage(bufferedImage);
+    }
 }

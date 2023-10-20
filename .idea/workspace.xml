@@ -4,9 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0198fd03-ba47-48ec-9f38-82092f7c7e8c" name="Changes" comment="Transformações restantes adicionadas.">
+    <list default="true" id="0198fd03-ba47-48ec-9f38-82092f7c7e8c" name="Changes" comment="Translação consertada. Escala ainda com problema.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Sistema/Controlador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Sistema/Controlador.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/EscalasPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/EscalasPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/ImagePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/ImagePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/JFramePrincipal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/JFramePrincipal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/RgbHslPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/RgbHslPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/TransformacoesPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/TransformacoesPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/TranslacaoPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/TranslacaoPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,32 +52,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
-    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Downloaded.Files.Path.Enabled": "false",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "dart.analysis.tool.window.visible": "false",
+    "extract.method.default.visibility": "private",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "show.migrate.to.gradle.popup": "false",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Application.Main">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Sistema.Main" />
@@ -130,6 +137,12 @@
       <workItem from="1697590725510" duration="10364000" />
       <workItem from="1697639356343" duration="1164000" />
       <workItem from="1697643208687" duration="438000" />
+      <workItem from="1697648683841" duration="1225000" />
+      <workItem from="1697673300772" duration="405000" />
+      <workItem from="1697726278020" duration="318000" />
+      <workItem from="1697727342468" duration="892000" />
+      <workItem from="1697729636905" duration="4079000" />
+      <workItem from="1697754222909" duration="8692000" />
     </task>
     <task id="LOCAL-00001" summary="Criação do projeto">
       <option name="closed" value="true" />
@@ -284,6 +297,7 @@
     <MESSAGE value="Desenho casinha completo. Separação de transformações em classes." />
     <MESSAGE value="Atualização painel transformações" />
     <MESSAGE value="Transformações restantes adicionadas." />
-    <option name="LAST_COMMIT_MESSAGE" value="Transformações restantes adicionadas." />
+    <MESSAGE value="Translação consertada. Escala ainda com problema." />
+    <option name="LAST_COMMIT_MESSAGE" value="Translação consertada. Escala ainda com problema." />
   </component>
 </project>
