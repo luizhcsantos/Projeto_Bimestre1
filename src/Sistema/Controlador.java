@@ -2,7 +2,6 @@ package Sistema;
 
 import gui.ImagePanel;
 import gui.RgbHslPanel;
-import gui.TransformacoesPanel;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

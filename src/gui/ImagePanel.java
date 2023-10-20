@@ -30,7 +30,7 @@ public class ImagePanel extends JPanel {
     private boolean drawing = false;
 
     private final Controlador controlador;
-    private int cont = 0;
+    //private int cont = 0;
 
     private final double[][] pontosTotal = new double[10][4];
     private final int[][] arestas = new int[17][2];
@@ -54,6 +54,7 @@ public class ImagePanel extends JPanel {
         image = new BufferedImage(800, 600, BufferedImage.TYPE_INT_RGB);
         buffer = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
         JFramePrincipal.controlador.setBuffer(buffer);
+        setBorder(javax.swing.BorderFactory.createLoweredBevelBorder());
         setBackground(Color.BLACK);
         inicializaPontoEAresta();
 

@@ -18,7 +18,6 @@ public class EscalasPanel extends JPanel {
     public void init() {
 
         setPreferredSize(new Dimension(280, 280));
-        setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(150, 0, 112)));
 
         JLabel jLabelEscalaTitulo = new JLabel();
         JLabel jLabelEscalaLocal = new JLabel();

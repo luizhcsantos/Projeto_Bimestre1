@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 
 public class TranslacaoPanel extends JPanel {
 
-    private Controlador controlador;
+    private final Controlador controlador;
 
     public TranslacaoPanel(Controlador controlador) {
         this.controlador = controlador;
@@ -19,7 +19,6 @@ public class TranslacaoPanel extends JPanel {
     public void init() {
 
         setPreferredSize(new Dimension(280, 280));
-        setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(150, 0, 112)));
         JLabel jLabel2 = new JLabel();
         JLabel jLabel3 = new JLabel();
         JLabel jLabel4 = new JLabel();

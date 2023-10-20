@@ -19,7 +19,6 @@ public class ShearingPanel extends JPanel {
     public void init() {
 
         setPreferredSize(new Dimension(280, 280));
-        setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(150, 0, 112)));
         setLayout(new java.awt.GridBagLayout());
         GridBagConstraints gridBagConstraints;
 

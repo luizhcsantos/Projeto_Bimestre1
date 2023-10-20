@@ -18,7 +18,6 @@ public class JFramePrincipal extends JFrame {
     @Serial
     private static final long serialVersionUID = 2726163241486755910L;
     private ImagePanel imagePanel;
-    private RgbHslPanel rgbHslPanel;
 
     public static Controlador controlador;
 
@@ -31,7 +30,6 @@ public class JFramePrincipal extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(1000, 600);
         setResizable(false);
-
         setLayout(new GridBagLayout());
 
         controlador = new Controlador();
@@ -59,7 +57,6 @@ public class JFramePrincipal extends JFrame {
         imagePanel = new ImagePanel(controlador);
         controlador.setImagePanel(imagePanel);
         imagePanel.setPreferredSize(new Dimension(800, 600));
-        imagePanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 100, 0)));
 
         openMenuItem.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
@@ -147,14 +144,16 @@ public class JFramePrincipal extends JFrame {
         menuBar.add(drawMenu);
 
 
-        rgbHslPanel = new RgbHslPanel(this, controlador);
+        RgbHslPanel rgbHslPanel = new RgbHslPanel(this, controlador);
         controlador.setRgbHslPanel(rgbHslPanel);
         rgbHslPanel.setPreferredSize(new Dimension(300, 300));
-        rgbHslPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 200)));
+        rgbHslPanel.setBorder(javax.swing.BorderFactory.createLoweredSoftBevelBorder());
+        rgbHslPanel.repaint();
 
         JPanel transformacoesPanel = new JPanel();
         transformacoesPanel.setPreferredSize(new Dimension(300, 300));
-        transformacoesPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(100, 0, 0)));
+        transformacoesPanel.setBorder(javax.swing.BorderFactory.createLoweredBevelBorder());
+        transformacoesPanel.repaint();
 
         JMenu transformacoesMenu = new JMenu("Transformações");
         JMenuItem translacaoMenuItem = new JMenuItem("Translação");
@@ -174,6 +173,7 @@ public class JFramePrincipal extends JFrame {
 
             transformacoesPanel.removeAll();
             TranslacaoPanel translacaoPanel = new TranslacaoPanel(controlador);
+            translacaoPanel.setBorder(javax.swing.BorderFactory.createLoweredBevelBorder());
             transformacoesPanel.add(translacaoPanel);
             transformacoesPanel.validate();
 
@@ -181,24 +181,28 @@ public class JFramePrincipal extends JFrame {
         rotacaoCentroMenuItem.addActionListener(e -> {
             transformacoesPanel.removeAll();
             RotacaoCentroPanel rotacaoCentroPanel = new RotacaoCentroPanel(controlador);
+            rotacaoCentroPanel.setBorder(javax.swing.BorderFactory.createLoweredBevelBorder());
             transformacoesPanel.add(rotacaoCentroPanel);
             transformacoesPanel.validate();
         });
         rotacaoOrigemMenuItem.addActionListener(e -> {
             transformacoesPanel.removeAll();
             RotacaoOrigemPanel rotacaoOrigemPanel = new RotacaoOrigemPanel(controlador);
+            rotacaoOrigemPanel.setBorder(javax.swing.BorderFactory.createLoweredBevelBorder());
             transformacoesPanel.add(rotacaoOrigemPanel);
             transformacoesPanel.validate();
         });
         escalasMenuItem.addActionListener(e -> {
             transformacoesPanel.removeAll();
             EscalasPanel escalasPanel = new EscalasPanel(controlador);
+            escalasPanel.setBorder(javax.swing.BorderFactory.createLoweredBevelBorder());
             transformacoesPanel.add(escalasPanel);
             transformacoesPanel.validate();
         });
         shearingMenuItem.addActionListener(e -> {
             transformacoesPanel.removeAll();
             ShearingPanel shearingPanel = new ShearingPanel(controlador);
+            shearingPanel.setBorder(javax.swing.BorderFactory.createLoweredBevelBorder());
             transformacoesPanel.add(shearingPanel);
             transformacoesPanel.validate();
         });
@@ -226,7 +230,7 @@ public class JFramePrincipal extends JFrame {
                                         .addComponent(transformacoesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                                 .addGap(0, 0, Short.MAX_VALUE)
-                                                .addComponent(rgbHslPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                .addComponent(rgbHslPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(imagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap())
@@ -239,7 +243,7 @@ public class JFramePrincipal extends JFrame {
                                                 .addContainerGap()
                                                 .addComponent(imagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(layout.createSequentialGroup()
-                                                .addComponent(rgbHslPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(rgbHslPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGap(12, 12, 12)
                                                 .addComponent(transformacoesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                 .addContainerGap())

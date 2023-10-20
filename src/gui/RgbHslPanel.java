@@ -16,18 +16,15 @@ public class RgbHslPanel extends JPanel {
     public RgbHslPanel(JFramePrincipal jFramePrincipal, Controlador controlador) {
 
         this.controlador = controlador;
-        setBackground(new Color(159, 150, 150));
         setLayout(new GridBagLayout());
-
         initComponents();
 
 
     }
 
     public void initComponents() {
-        setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        setBorder(javax.swing.BorderFactory.createLoweredBevelBorder());
         setPreferredSize(new java.awt.Dimension(300, 300));
-        setBackground(new Color(195, 195, 195));
 
         JLabel jLabel19 = new JLabel();
         JTextField jTextFieldR = new javax.swing.JTextField();
@@ -330,11 +327,11 @@ public class RgbHslPanel extends JPanel {
         return rgb;
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.fillRect(0, 0, getWidth(), getHeight());
-
-    }
+//    @Override
+//    protected void paintComponent(Graphics g) {
+//        super.paintComponent(g);
+//        g.fillRect(0, 0, getWidth(), getHeight());
+//
+//    }
 
 }

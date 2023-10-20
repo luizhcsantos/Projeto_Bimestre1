@@ -17,7 +17,6 @@ public class RotacaoCentroPanel extends JPanel {
 
     public void init() {
         setPreferredSize(new Dimension(280, 280));
-        setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(150, 0, 112)));
 
         JLabel jLabel9 = new JLabel();
         JLabel jLabel10 = new JLabel();
