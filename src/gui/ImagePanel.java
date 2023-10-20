@@ -33,8 +33,8 @@ public class ImagePanel extends JPanel {
     private int cont = 0;
 
     private final double[][] pontosTotal = new double[10][4];
-    private int[][] arestas = new int[17][2];
-    private double[][] resultadoPrintado = new double[10][4];
+    private final int[][] arestas = new int[17][2];
+    private final double[][] resultadoPrintado = new double[10][4];
     private double[][] matrizDeProjecao = new double[4][4];
 
     public enum DrawingMethod {
@@ -457,10 +457,6 @@ public class ImagePanel extends JPanel {
         }
     }
 
-    public static BufferedImage getBuffer() {
-        return buffer;
-    }
-
     public void inicializaPontoEAresta() {
         double[][] pontos = {
                 {100, 300, 100, 1}, {100, 300, -100, 1}, {300, 300, 100, 1}, {300, 300, -100, 1}, {100, 100, 100, 1},
@@ -653,6 +649,10 @@ public class ImagePanel extends JPanel {
             //salvarLog(cont, xx1, yy1, xx2, yy2, resultado);
             //cont++;
         }
+
+        for (aux = 0; aux < 10; aux++) {
+            System.arraycopy(pontosTemp[aux], 0, pontosTotal[aux], 0, 4);
+        }
     }
 
     public void escalas(double x, double y, double z, double global) {
@@ -669,7 +669,7 @@ public class ImagePanel extends JPanel {
         matrizTransformacao[3][0] = 0; matrizTransformacao[3][1] = 0; matrizTransformacao[3][2] = 0; matrizTransformacao[3][3] = global;
 
 
-        for (aux = 1; aux < 10; aux++) {
+        for (aux = 0; aux < 10; aux++) {
             multiplicarMatriz(pontosTotal[aux], matrizTransformacao, resultado);
             resultado[0] /= resultado[3];
             resultado[1] /= resultado[3];

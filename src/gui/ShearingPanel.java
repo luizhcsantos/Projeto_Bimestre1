@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class ShearingPanel extends JPanel {
 
-    private Controlador controlador;
+    private final Controlador controlador;
     public ShearingPanel(Controlador controlador) {
         this.controlador = controlador;
         init();
@@ -44,7 +44,7 @@ public class ShearingPanel extends JPanel {
 
         ArrayList<JTextField> listaTextfield = new ArrayList<>();
 
-        jLabel18.setText("Shearing (Cizalhamento)");
+        jLabel18.setText("Shearing (Cisalhamento)");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;

@@ -6,12 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="0198fd03-ba47-48ec-9f38-82092f7c7e8c" name="Changes" comment="Translação consertada. Escala ainda com problema.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Sistema/Controlador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Sistema/Controlador.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/EscalasPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/EscalasPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/ImagePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/ImagePanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/JFramePrincipal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/JFramePrincipal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/RgbHslPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/RgbHslPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/TransformacoesPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/TransformacoesPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/ShearingPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/ShearingPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/TranslacaoPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/TranslacaoPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -142,7 +139,7 @@
       <workItem from="1697726278020" duration="318000" />
       <workItem from="1697727342468" duration="892000" />
       <workItem from="1697729636905" duration="4079000" />
-      <workItem from="1697754222909" duration="8692000" />
+      <workItem from="1697754222909" duration="11064000" />
     </task>
     <task id="LOCAL-00001" summary="Criação do projeto">
       <option name="closed" value="true" />
@@ -264,7 +261,15 @@
       <option name="project" value="LOCAL" />
       <updated>1697601641824</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Translação consertada. Escala ainda com problema.">
+      <option name="closed" value="true" />
+      <created>1697764892833</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1697764892833</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -299,5 +304,16 @@
     <MESSAGE value="Transformações restantes adicionadas." />
     <MESSAGE value="Translação consertada. Escala ainda com problema." />
     <option name="LAST_COMMIT_MESSAGE" value="Translação consertada. Escala ainda com problema." />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/gui/TranslacaoPanel.java</url>
+          <line>45</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

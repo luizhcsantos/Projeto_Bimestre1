@@ -30,6 +30,7 @@ public class JFramePrincipal extends JFrame {
         setTitle("Projeto de Imagem");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(1000, 600);
+        setResizable(false);
 
         setLayout(new GridBagLayout());
 
@@ -160,7 +161,7 @@ public class JFramePrincipal extends JFrame {
         JMenuItem rotacaoOrigemMenuItem = new JMenuItem("Rotação de Objeto em relação à origem");
         JMenuItem rotacaoCentroMenuItem = new JMenuItem("Rotação em relação ao centro do objeto");
         JMenuItem escalasMenuItem = new JMenuItem("Escalas (Local/Global)");
-        JMenuItem shearingMenuItem = new JMenuItem("Shearing (Cizalhamento)");
+        JMenuItem shearingMenuItem = new JMenuItem("Shearing (Cisalhamento)");
         transformacoesMenu.add(translacaoMenuItem);
         transformacoesMenu.add(rotacaoOrigemMenuItem);
         transformacoesMenu.add(rotacaoCentroMenuItem);

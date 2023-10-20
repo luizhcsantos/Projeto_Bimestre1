@@ -32,15 +32,12 @@ public class TranslacaoPanel extends JPanel {
         jLabel2.setText("Translação");
 
         jLabel3.setText("X");
-
-        jLabel4.setText("Y");
-
-        jLabel5.setText("Z");
-
         jTextFieldX.setText("0");
 
+        jLabel4.setText("Y");
         jTextFieldY.setText("0");
 
+        jLabel5.setText("Z");
         jTextFieldZ.setText("0");
 
         jButtonTranslacao.setText("Translação");
