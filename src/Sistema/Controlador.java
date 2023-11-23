@@ -29,7 +29,6 @@ public class Controlador {
         this.imagePanel = imagePanel;
     }
 
-
     public void setRgbHslPanel(RgbHslPanel rgbHslPanel) {
         this.rgbHslPanel = rgbHslPanel;
     }

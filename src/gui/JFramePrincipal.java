@@ -168,6 +168,26 @@ public class JFramePrincipal extends JFrame {
         transformacoesMenu.add(shearingMenuItem);
         menuBar.add(transformacoesMenu);
 
+        JMenu preenchimentoMenu = new JMenu("Preenchimento");
+        JMenuItem floodfill4 = new JMenuItem("Floodfill vizinhança 4");
+        JMenuItem floodfill8 = new JMenuItem("Floodfill vizinhança 8");
+        preenchimentoMenu.add(floodfill4);
+        preenchimentoMenu.add(floodfill8);
+        menuBar.add(preenchimentoMenu);
+
+        floodfill4.addActionListener(e -> {
+            if (!imagePanel.isFloodfill4Selecionado())
+                imagePanel.setFloodfill4Selecionado(true);
+            imagePanel.carregarImagem();
+        });
+
+        floodfill8.addActionListener(e -> {
+            if (!imagePanel.isFloodfill8Selecionado())
+                imagePanel.setFloodfill8Selecionado(true);
+            imagePanel.carregarImagem();
+        });
+
+
 
         translacaoMenuItem.addActionListener(e -> {
 

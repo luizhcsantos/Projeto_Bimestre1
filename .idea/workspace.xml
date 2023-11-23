@@ -4,19 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0198fd03-ba47-48ec-9f38-82092f7c7e8c" name="Changes" comment="Projeto finalizado.">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="0198fd03-ba47-48ec-9f38-82092f7c7e8c" name="Changes" comment="Atualização cor painel rgbhsl.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Sistema/Controlador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Sistema/Controlador.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/EscalasPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/EscalasPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/ImagePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/ImagePanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/JFramePrincipal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/JFramePrincipal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/RgbHslPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/RgbHslPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/RotacaoCentroPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/RotacaoCentroPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/RotacaoOrigemPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/RotacaoOrigemPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/ShearingPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/ShearingPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/TransformacoesPanel.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/TranslacaoPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/TranslacaoPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,6 +61,7 @@
     &quot;extract.method.default.visibility&quot;: &quot;private&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/lhsan/UNESP/2023/2 Semestre/Comp Grafica/Trabalhos/1 Bimestre/TP1 java/Projeto_Bimestre1&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -147,7 +139,8 @@
       <workItem from="1697727342468" duration="892000" />
       <workItem from="1697729636905" duration="4079000" />
       <workItem from="1697754222909" duration="11391000" />
-      <workItem from="1697810857344" duration="1919000" />
+      <workItem from="1697810857344" duration="2764000" />
+      <workItem from="1697847602334" duration="7000" />
     </task>
     <task id="LOCAL-00001" summary="Criação do projeto">
       <option name="closed" value="true" />
@@ -285,7 +278,15 @@
       <option name="project" value="LOCAL" />
       <updated>1697767371058</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Atualização cor painel rgbhsl.">
+      <option name="closed" value="true" />
+      <created>1697812961872</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1697812961872</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -320,6 +321,7 @@
     <MESSAGE value="Transformações restantes adicionadas." />
     <MESSAGE value="Translação consertada. Escala ainda com problema." />
     <MESSAGE value="Projeto finalizado." />
-    <option name="LAST_COMMIT_MESSAGE" value="Projeto finalizado." />
+    <MESSAGE value="Atualização cor painel rgbhsl." />
+    <option name="LAST_COMMIT_MESSAGE" value="Atualização cor painel rgbhsl." />
   </component>
 </project>
