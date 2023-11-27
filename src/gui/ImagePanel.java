@@ -7,13 +7,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.nio.Buffer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 public class ImagePanel extends JPanel {
     /**
@@ -48,7 +45,19 @@ public class ImagePanel extends JPanel {
     private boolean floodfill4Selecionado = false;
     private boolean floodfill8Selecionado = false;
     private int[][] pontosPoligono;
+    private final int[][] arestasEdgefill = {
+            {16, 180, 180, 180},
+            {180, 86, 180, 180},
+            {120, 120, 180, 86},
+            {16, 36, 120, 120},
+            {16, 36, 16, 180}
+    };
 
+    private final int[][] boundingBox = {
+            {12, 30},
+            {184, 184}
+    };
+    private boolean edgeFillSelecionado = false;
     public ImagePanel(Controlador controlador) {
         this.controlador = controlador;
         image = new BufferedImage(800, 600, BufferedImage.TYPE_INT_RGB);
@@ -99,15 +108,9 @@ public class ImagePanel extends JPanel {
                 int yy3 = e.getY();
 
 
-                if (floodfill4Selecionado) {
-                    floodFill4(buffer, xx3, yy3, Color.BLACK.getRGB(), Color.CYAN.getRGB());
-                    floodfill4Selecionado = false;
-                }
+                acionarFloodfill4(xx3, yy3);
 
-                if (floodfill8Selecionado) {
-                    floodfill8(buffer, xx3, yy3, Color.BLACK.getRGB(), Color.RED.getRGB());
-                    floodfill8Selecionado = false;
-                }
+                acionarFloodfill8(xx3, yy3);
             }
         });
 
@@ -141,19 +144,320 @@ public class ImagePanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
 
         if (image != null) {
             g.drawImage(buffer, 0, 0, this);
         }
 
-//        if (floodfill4Selecionado || floodfill8Selecionado) {
-//            if (pontosPoligono != null && pontosPoligono.length > 0) {
-//                g.setColor(Color.RED);  // Cor do polígono (ajuste conforme necessário)
-//                g.drawPolygon(pontosPoligono[0], pontosPoligono[1], pontosPoligono.length);
-//            }
-//        }
+        if (edgeFillSelecionado) {
+            g2d.setColor(new Color(250, 218, 94)); // Cor de preenchimento
+            g2d.fillRect(0, 0, getWidth(), getHeight()); // Preenche toda a área com a cor
+        }
+
+        drawFigure(g2d); // Chama o método para desenhar a figura
+
     }
 
+    private void drawFigure(Graphics2D g2d) {
+        g2d.setColor(Color.BLACK); // Cor das linhas
+
+        for (int[] edge : arestasEdgefill) {
+            int x1 = edge[0];
+            int y1 = edge[1];
+            int x2 = edge[2];
+            int y2 = edge[3];
+
+            g2d.draw(new Line2D.Double(x1, y1, x2, y2));
+        }
+    }
+
+    public boolean isFloodfill4Selecionado() {
+        return floodfill4Selecionado;
+    }
+
+    public void setFloodfill4Selecionado(boolean floodfill4Selecionado) {
+        this.floodfill4Selecionado = floodfill4Selecionado;
+
+    }
+
+    private void acionarFloodfill4(int x, int y) {
+        if (floodfill4Selecionado) {
+            floodfill8Selecionado = false;
+            System.out.println("\nxx3: " + x + "\tyy3: " + y);
+            floodFill4(buffer, x, y, Color.BLACK.getRGB(), Color.CYAN.getRGB());
+
+        }
+
+    }
+
+    private void acionarFloodfill8(int x, int y) {
+        if (floodfill8Selecionado) {
+            floodfill4Selecionado = false;
+            System.out.println("\nxx3: " + x + "\tyy3: " + y);
+            floodfill8(buffer, x, y, Color.BLACK.getRGB(), Color.GREEN.getRGB());
+
+        }
+
+    }
+
+    public void floodFill4(BufferedImage image, int x, int y, int targetColor, int replacementColor) {
+
+        // Verifica se as coordenadas estão dentro dos limites da imagem
+        if (x < 0 || x >= image.getWidth() || y < 0 || y >= image.getHeight()) {
+            return;
+        }
+
+        // Obtém a cor do pixel atual
+        int currentColor = image.getRGB(x, y);
+
+        // Verifica se o pixel já foi preenchido ou se tem a cor alvo
+        if (currentColor != targetColor) {
+            return;
+        }
+
+        // Cria uma fila para armazenar os pixels a serem processados
+        Queue<Point> queue = new LinkedList<>();
+        queue.add(new Point(x, y));
+
+        while (!queue.isEmpty()) {
+            Point point = queue.poll();
+            x = point.x;
+            y = point.y;
+
+            // Verifica se as novas coordenadas estão dentro dos limites da imagem
+            if (x >= 0 && x < image.getWidth() && y >= 0 && y < image.getHeight()) {
+                // Obtém a cor do pixel atual
+                currentColor = image.getRGB(x, y);
+
+                // Verifica se o pixel ainda tem a cor alvo
+                if (currentColor == targetColor) {
+                    // Pinta o pixel com a nova cor
+                    image.setRGB(x, y, replacementColor);
+
+                    // Adiciona os pixels vizinhos à fila para processamento
+                    queue.add(new Point(x - 1, y));
+                    queue.add(new Point(x + 1, y));
+                    queue.add(new Point(x, y - 1));
+                    queue.add(new Point(x, y + 1));
+                }
+            }
+        }
+    }
+
+    public boolean isFloodfill8Selecionado() {
+        return floodfill8Selecionado;
+    }
+
+    public void setFloodfill8Selecionado(boolean floodfill8Selecionado) {
+        this.floodfill8Selecionado = floodfill8Selecionado;
+    }
+
+    public void floodfill8(BufferedImage image, int x, int y, int targetColor, int replacementColor) {
+        // Verifica se as coordenadas estão dentro dos limites da imagem
+        if (x < 0 || x >= image.getWidth() || y < 0 || y >= image.getHeight()) {
+            return;
+        }
+
+        // Obtém a cor do pixel atual
+        int currentColor = image.getRGB(x, y);
+
+        // Verifica se o pixel já foi preenchido ou se tem a cor alvo
+        if (currentColor != targetColor) {
+            return;
+        }
+
+        // Cria uma fila para armazenar os pixels a serem processados
+        Queue<int[]> queue = new LinkedList<>();
+        queue.add(new int[]{x, y});
+
+        while (!queue.isEmpty()) {
+            int[] point = queue.poll();
+            x = point[0];
+            y = point[1];
+
+            // Verifica se as novas coordenadas estão dentro dos limites da imagem
+            if (x >= 0 && x < image.getWidth() && y >= 0 && y < image.getHeight()) {
+                // Obtém a cor do pixel atual
+                currentColor = image.getRGB(x, y);
+
+                // Verifica se o pixel ainda tem a cor alvo
+                if (currentColor == targetColor) {
+                    // Pinta o pixel com a nova cor
+                    image.setRGB(x, y, replacementColor);
+
+                    // Adiciona os pixels vizinhos à fila para processamento (vizinhança 8)
+                    addValidPoint(queue, x - 1, y);
+                    addValidPoint(queue, x + 1, y);
+                    addValidPoint(queue, x, y - 1);
+                    addValidPoint(queue, x, y + 1);
+                    addValidPoint(queue, x - 1, y - 1);
+                    addValidPoint(queue, x + 1, y - 1);
+                    addValidPoint(queue, x - 1, y + 1);
+                    addValidPoint(queue, x + 1, y + 1);
+                }
+            }
+        }
+    }
+
+    private void addValidPoint(Queue<int[]> queue, int x, int y) {
+        // Adiciona o ponto à fila somente se estiver dentro dos limites da imagem
+        if (x >= 0 && x < image.getWidth() && y >= 0 && y < image.getHeight()) {
+            queue.add(new int[]{x, y});
+        }
+    }
+
+    public void carregarImagem() {
+        try {
+            // Carregar imagem BMP da pasta raiz do projeto
+            String caminhoImagem = "Testar_FloodFill.bmp";  // Nome do arquivo da imagem
+            File arquivoImagem = new File(caminhoImagem);
+
+            // Verificar se o arquivo existe antes de tentar ler
+            if (!arquivoImagem.exists()) {
+                System.err.println("Arquivo de imagem não encontrado: " + caminhoImagem);
+                return;
+            }
+
+            BufferedImage imagem = ImageIO.read(arquivoImagem);
+
+            // Encontrar coordenadas do polígono (pixels pretos) e desenhá-lo na nova imagem
+            for (int i = 0; i < imagem.getWidth(); i++) {
+                for (int j = 0; j < imagem.getHeight(); j++) {
+                    int corPixel = imagem.getRGB(i, j);
+
+                    // Verificar se o pixel é preto
+                    if (corPixel == -16777216) {  // 0xFF000000/-16777216 representa a cor preta no formato ARGB
+                        // Definir a cor do pixel correspondente no novo BufferedImage
+                        buffer.setRGB(50+i, 50+j, -1);
+                    }
+                }
+            }
+
+            // Encontrar coordenadas do polígono (exemplo: procurando por pixels de uma cor específica)
+            //identificarPontosPoligono(imagem);
+
+            // Repintar a tela para exibir o polígono
+            repaint();
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void adicionarPontoPoligono(int x, int y) {
+        // Adicionar coordenadas do ponto ao array de pontos do polígono
+        // Aqui você pode implementar a lógica para armazenar os pontos do polígono
+        // (por exemplo, adicionar ao ArrayList, matriz, etc.)
+
+        // Verifica se a matriz de pontos do polígono já foi inicializada
+        if (pontosPoligono == null) {
+            pontosPoligono = new int[2][1];
+            pontosPoligono[0][0] = x;
+            pontosPoligono[1][0] = y;
+        } else {
+            // Amplia a matriz para incluir o novo ponto
+            int colunasAtuais = pontosPoligono[0].length;
+            int[][] novaMatriz = new int[2][colunasAtuais + 1];
+
+            // Copia os pontos existentes para a nova matriz
+            for (int i = 0; i < colunasAtuais; i++) {
+                novaMatriz[0][i] = pontosPoligono[0][i];
+                novaMatriz[1][i] = pontosPoligono[1][i];
+            }
+
+            // Adiciona o novo ponto à nova matriz
+            novaMatriz[0][colunasAtuais] = x;
+            novaMatriz[1][colunasAtuais] = y;
+
+            // Atualiza a referência da matriz de pontos do polígono
+            pontosPoligono = novaMatriz;
+        }
+    }
+
+    public static void floodFill(BufferedImage img, int xo, int yo, int paintColor, int targetColor) {
+        if (paintColor == targetColor) {
+            return;
+        }
+
+        img.setRGB(xo, yo, paintColor);
+
+        Stack<int[]> stack = new Stack<>();
+        stack.push(new int[]{xo, yo});
+
+        while (!stack.isEmpty()) {
+            int[] current = stack.pop();
+            int x = current[0];
+            int y = current[1];
+
+            if (x > 0 && img.getRGB(x - 1, y) == targetColor) {
+                img.setRGB(x - 1, y, paintColor);
+                stack.push(new int[]{x - 1, y});
+            }
+            if (x < img.getWidth() - 1 && img.getRGB(x + 1, y) == targetColor) {
+                img.setRGB(x + 1, y, paintColor);
+                stack.push(new int[]{x + 1, y});
+            }
+            if (y > 0 && img.getRGB(x, y - 1) == targetColor) {
+                img.setRGB(x, y - 1, paintColor);
+                stack.push(new int[]{x, y - 1});
+            }
+            if (y < img.getHeight() - 1 && img.getRGB(x, y + 1) == targetColor) {
+                img.setRGB(x, y + 1, paintColor);
+                stack.push(new int[]{x, y + 1});
+            }
+        }
+    }
+
+    public boolean isEdgeFillSelecionado() {
+        return edgeFillSelecionado;
+    }
+
+    public void setEdgeFillSelecionado(boolean edgeFillSelecionado) {
+        this.edgeFillSelecionado = edgeFillSelecionado;
+    }
+
+    public void edgefill() {
+
+        for (int[] edge : arestasEdgefill) {
+            int x1 = edge[0];
+            int y1 = edge[1];
+            int x2 = edge[2];
+            int y2 = edge[3];
+
+            if (y1 == y2) {
+                continue;
+            }
+
+            if (y1 > y2) {
+                int temp = x1;
+                x1 = x2;
+                x2 = temp;
+
+                temp = y1;
+                y1 = y2;
+                y2 = temp;
+            }
+
+            for (int y = y1; y <= y2; y++) {
+                int x = Math.round(x1 + (float) ((x2 - x1) * (y - y1)) / (y2 - y1));
+
+                for (int i = x; i <= boundingBox[1][0]; i++) {
+                    int rgb = buffer.getRGB(i, y);
+                    int r = (rgb >> 16) & 0xFF;
+                    int g = (rgb >> 8) & 0xFF;
+                    int b = rgb & 0xFF;
+                    buffer.setRGB(i, y, new Color(255 - r, 255 - g, 255 - b, 255).getRGB());
+
+                }
+            }
+        }
+    }
+
+    /*************************************/
+    /**FUNÇÕES DO TRABALHO DO BIMESTRE 1**/
+    /*************************************/
     private void desenharRetaSimples(Graphics g, int xx1, int yy1, int xx2, int yy2) {
 
         Graphics2D g2d = (Graphics2D) g;
@@ -887,189 +1191,4 @@ public class ImagePanel extends JPanel {
 
         return novaImagem;
     }
-
-    public boolean isFloodfill4Selecionado() {
-        return floodfill4Selecionado;
-    }
-
-    public void setFloodfill4Selecionado(boolean floodfill4Selecionado) {
-        this.floodfill4Selecionado = floodfill4Selecionado;
-
-    }
-
-    public void floodFill4(BufferedImage image, int x, int y, int targetColor, int replacementColor) {
-
-        // Verifica se as coordenadas estão dentro dos limites da imagem
-        if (x < 0 || x >= image.getWidth() || y < 0 || y >= image.getHeight()) {
-            return;
-        }
-
-        // Obtém a cor do pixel atual
-        int currentColor = image.getRGB(x, y);
-
-        // Verifica se o pixel já foi preenchido ou se tem a cor alvo
-        if (currentColor != targetColor) {
-            return;
-        }
-
-        // Cria uma fila para armazenar os pixels a serem processados
-        Queue<Point> queue = new LinkedList<>();
-        queue.add(new Point(x, y));
-
-        while (!queue.isEmpty()) {
-            Point point = queue.poll();
-            x = point.x;
-            y = point.y;
-
-            // Verifica se as novas coordenadas estão dentro dos limites da imagem
-            if (x >= 0 && x < image.getWidth() && y >= 0 && y < image.getHeight()) {
-                // Obtém a cor do pixel atual
-                currentColor = image.getRGB(x, y);
-
-                // Verifica se o pixel ainda tem a cor alvo
-                if (currentColor == targetColor) {
-                    // Pinta o pixel com a nova cor
-                    image.setRGB(x, y, replacementColor);
-
-                    // Adiciona os pixels vizinhos à fila para processamento
-                    queue.add(new Point(x - 1, y));
-                    queue.add(new Point(x + 1, y));
-                    queue.add(new Point(x, y - 1));
-                    queue.add(new Point(x, y + 1));
-                }
-            }
-        }
-    }
-
-    public boolean isFloodfill8Selecionado() {
-        return floodfill8Selecionado;
-    }
-
-    public void setFloodfill8Selecionado(boolean floodfill8Selecionado) {
-        this.floodfill8Selecionado = floodfill8Selecionado;
-    }
-
-    public void floodfill8(BufferedImage image, int x, int y, int targetColor, int replacementColor) {
-        // Verifica se as coordenadas estão dentro dos limites da imagem
-        if (x < 0 || x >= image.getWidth() || y < 0 || y >= image.getHeight()) {
-            return;
-        }
-
-        // Obtém a cor do pixel atual
-        int currentColor = image.getRGB(x, y);
-
-        // Verifica se o pixel já foi preenchido ou se tem a cor alvo
-        if (currentColor != targetColor) {
-            return;
-        }
-
-        // Cria uma fila para armazenar os pixels a serem processados
-        Queue<int[]> queue = new LinkedList<>();
-        queue.add(new int[]{x, y});
-
-        while (!queue.isEmpty()) {
-            int[] point = queue.poll();
-            x = point[0];
-            y = point[1];
-
-            // Verifica se as novas coordenadas estão dentro dos limites da imagem
-            if (x >= 0 && x < image.getWidth() && y >= 0 && y < image.getHeight()) {
-                // Obtém a cor do pixel atual
-                currentColor = image.getRGB(x, y);
-
-                // Verifica se o pixel ainda tem a cor alvo
-                if (currentColor == targetColor) {
-                    // Pinta o pixel com a nova cor
-                    image.setRGB(x, y, replacementColor);
-
-                    // Adiciona os pixels vizinhos à fila para processamento (vizinhança 8)
-                    addValidPoint(queue, x - 1, y);
-                    addValidPoint(queue, x + 1, y);
-                    addValidPoint(queue, x, y - 1);
-                    addValidPoint(queue, x, y + 1);
-                    addValidPoint(queue, x - 1, y - 1);
-                    addValidPoint(queue, x + 1, y - 1);
-                    addValidPoint(queue, x - 1, y + 1);
-                    addValidPoint(queue, x + 1, y + 1);
-                }
-            }
-        }
-    }
-
-    private void addValidPoint(Queue<int[]> queue, int x, int y) {
-        // Adiciona o ponto à fila somente se estiver dentro dos limites da imagem
-        if (x >= 0 && x < image.getWidth() && y >= 0 && y < image.getHeight()) {
-            queue.add(new int[]{x, y});
-        }
-    }
-
-    public void carregarImagem() {
-        try {
-            // Carregar imagem BMP da pasta raiz do projeto
-            String caminhoImagem = "Testar_FloodFill.bmp";  // Nome do arquivo da imagem
-            File arquivoImagem = new File(caminhoImagem);
-
-            // Verificar se o arquivo existe antes de tentar ler
-            if (!arquivoImagem.exists()) {
-                System.err.println("Arquivo de imagem não encontrado: " + caminhoImagem);
-                return;
-            }
-
-            BufferedImage imagem = ImageIO.read(arquivoImagem);
-
-            // Encontrar coordenadas do polígono (pixels pretos) e desenhá-lo na nova imagem
-            for (int i = 0; i < imagem.getWidth(); i++) {
-                for (int j = 0; j < imagem.getHeight(); j++) {
-                    int corPixel = imagem.getRGB(i, j);
-
-                    // Verificar se o pixel é preto
-                    if (corPixel == -16777216) {  // 0xFF000000/-16777216 representa a cor preta no formato ARGB
-                        // Definir a cor do pixel correspondente no novo BufferedImage
-                        buffer.setRGB(50+i, 50+j, -1);
-                    }
-                }
-            }
-
-            // Encontrar coordenadas do polígono (exemplo: procurando por pixels de uma cor específica)
-            //identificarPontosPoligono(imagem);
-
-            // Repintar a tela para exibir o polígono
-            repaint();
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void adicionarPontoPoligono(int x, int y) {
-        // Adicionar coordenadas do ponto ao array de pontos do polígono
-        // Aqui você pode implementar a lógica para armazenar os pontos do polígono
-        // (por exemplo, adicionar ao ArrayList, matriz, etc.)
-
-        // Verifica se a matriz de pontos do polígono já foi inicializada
-        if (pontosPoligono == null) {
-            pontosPoligono = new int[2][1];
-            pontosPoligono[0][0] = x;
-            pontosPoligono[1][0] = y;
-        } else {
-            // Amplia a matriz para incluir o novo ponto
-            int colunasAtuais = pontosPoligono[0].length;
-            int[][] novaMatriz = new int[2][colunasAtuais + 1];
-
-            // Copia os pontos existentes para a nova matriz
-            for (int i = 0; i < colunasAtuais; i++) {
-                novaMatriz[0][i] = pontosPoligono[0][i];
-                novaMatriz[1][i] = pontosPoligono[1][i];
-            }
-
-            // Adiciona o novo ponto à nova matriz
-            novaMatriz[0][colunasAtuais] = x;
-            novaMatriz[1][colunasAtuais] = y;
-
-            // Atualiza a referência da matriz de pontos do polígono
-            pontosPoligono = novaMatriz;
-        }
-    }
-
 }

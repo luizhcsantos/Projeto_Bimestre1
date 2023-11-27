@@ -89,4 +89,9 @@ public class Controlador {
         BufferedImage bufferedImage = imagePanel.imagemGreyscale(image);
         imagePanel.setImage(bufferedImage);
     }
+
+    public void edgefill() {
+        imagePanel.edgefill();
+        imagePanel.repaint();
+    }
 }

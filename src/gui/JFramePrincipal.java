@@ -169,25 +169,35 @@ public class JFramePrincipal extends JFrame {
         menuBar.add(transformacoesMenu);
 
         JMenu preenchimentoMenu = new JMenu("Preenchimento");
-        JMenuItem floodfill4 = new JMenuItem("Floodfill vizinhança 4");
-        JMenuItem floodfill8 = new JMenuItem("Floodfill vizinhança 8");
-        preenchimentoMenu.add(floodfill4);
-        preenchimentoMenu.add(floodfill8);
+        JMenuItem floodfill4MenuItem = new JMenuItem("Floodfill vizinhança 4");
+        JMenuItem floodfill8MenuItem = new JMenuItem("Floodfill vizinhança 8");
+        JMenuItem edgefillMenuItem = new JMenuItem("Edge Fill (Inversão de Cores)");
+        preenchimentoMenu.add(floodfill4MenuItem);
+        preenchimentoMenu.add(floodfill8MenuItem);
+        preenchimentoMenu.add(edgefillMenuItem);
         menuBar.add(preenchimentoMenu);
 
-        floodfill4.addActionListener(e -> {
+        floodfill4MenuItem.addActionListener(e -> {
             if (!imagePanel.isFloodfill4Selecionado())
                 imagePanel.setFloodfill4Selecionado(true);
             imagePanel.carregarImagem();
         });
 
-        floodfill8.addActionListener(e -> {
+        floodfill8MenuItem.addActionListener(e -> {
             if (!imagePanel.isFloodfill8Selecionado())
                 imagePanel.setFloodfill8Selecionado(true);
             imagePanel.carregarImagem();
         });
 
+        edgefillMenuItem.addActionListener(e -> {
+            imagePanel.setEdgeFillSelecionado(true);
+            transformacoesPanel.removeAll();
+            EdgeFillPanel edgeFillPanel = new EdgeFillPanel(controlador);
+            edgeFillPanel.setBorder(javax.swing.BorderFactory.createLoweredBevelBorder());
+            transformacoesPanel.add(edgeFillPanel);
+            transformacoesPanel.validate();
 
+        });
 
         translacaoMenuItem.addActionListener(e -> {
 
